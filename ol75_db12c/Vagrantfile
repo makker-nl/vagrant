@@ -109,6 +109,15 @@ Vagrant.configure("2") do |config|
     echo _______________________________________________________________________________
     echo 3. Java SDK 8
     sudo runuser -l oracle -c '/vagrant/scripts/fmw/installJava.sh'
+    echo _______________________________________________________________________________
+    echo 4. Database 12c
+    sudo runuser -l oracle -c '/vagrant/scripts/database/installDB.sh'
+    echo _______________________________________________________________________________
+    echo 5.1 SQLCL and SQLDeveloper
+    sudo runuser -l oracle -c '/vagrant/scripts/database/installSqlcl.sh'
+    echo _______________________________________________________________________________
+    echo 5.2 SQLDeveloper
+    sudo runuser -l oracle -c '/vagrant/scripts/database/installSqlDeveloper.sh'
     #
    SHELL
 end

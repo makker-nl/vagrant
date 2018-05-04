@@ -1,3 +1,5 @@
 /ol75/.vagrant/machines/darwin/virtualbox/*
 /ol75/.vagrant/machines/default/virtualbox/*
 /ol75_db12c/.vagrant/machines/default/virtualbox/*
+/ol75/.vagrant
+/ol75_db12c/.vagrant

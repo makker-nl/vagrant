@@ -3,7 +3,8 @@ SCRIPTPATH=$(dirname $0)
 #
 . $SCRIPTPATH/db12c_install_env.sh
 #
-DB_STAGE_HOME=/media/sf_Stage/DBInstallation/12.1.0.2/x86_64
+STAGE_HOME=/media/sf_Stage
+DB_STAGE_HOME=$STAGE_HOME/DBInstallation/12.1.0.2/x86_64
 DB_ZIP_HOME=$DB_STAGE_HOME/Zipped
 DB_INSTALL_HOME=$DB_STAGE_HOME/Extracted
 DB_INSTALL_RSP=db12c_software.rsp

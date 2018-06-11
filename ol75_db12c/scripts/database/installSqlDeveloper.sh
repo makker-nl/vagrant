@@ -1,11 +1,11 @@
 #!/bin/bash
 SCRIPTPATH=$(dirname $0)
 #
-. $SCRIPTPATH/db12c_install_env.sh
+. $SCRIPTPATH/../install_env.sh
+. $SCRIPTPATH/db12c_env.sh
 #
-SQLDEV_STAGE_HOME=/media/sf_Stage/DBInstallation
-SQLDEV_ZIP_HOME=$SQLDEV_STAGE_HOME/Zipped/SQLDeveloper
-SQLDEV_INSTALL_HOME=$SQLDEV_STAGE_HOME/Extracted/SQLDeveloper
+SQLDEV_ZIP_HOME=$STAGE_HOME/DBInstallation/SQLDeveloper
+SQLDEV_INSTALL_HOME=$EXTRACT_HOME/DB/SQLDeveloper
 SQLDEV_INSTALL_ZIP1=sqldeveloper-18.1.0.095.1630-no-jre.zip
 SQLDEV_INSTALL_FLDR=sqldeveloper
 #

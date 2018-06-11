@@ -1,12 +1,11 @@
 #!/bin/bash
 SCRIPTPATH=$(dirname $0)
 #
-. $SCRIPTPATH/db12c_install_env.sh
+. $SCRIPTPATH/../install_env.sh
+. $SCRIPTPATH/db12c_env.sh
 #
-STAGE_HOME=/media/sf_Stage
-DB_STAGE_HOME=$STAGE_HOME/DBInstallation/12.1.0.2/x86_64
-DB_ZIP_HOME=$DB_STAGE_HOME/Zipped
-DB_INSTALL_HOME=$DB_STAGE_HOME/Extracted
+DB_ZIP_HOME=$DB_STAGE_HOME
+DB_INSTALL_HOME=$EXTRACT_HOME/DB/$DB_VER
 DB_INSTALL_RSP=db12c_software.rsp
 DB_INSTALL_RSP_TPL=$DB_INSTALL_RSP.tpl
 DB_INSTALL_ZIP1=V46095-01_1of2.zip
@@ -28,6 +27,7 @@ if [ ! -f "$ORACLE_HOME/bin/oraping" ]; then
   #Unzip DB12
   if [ ! -f "$DB_INSTALL_HOME/database/runInstaller" ]; then
     if [[ -f "$DB_ZIP_HOME/$DB_INSTALL_ZIP1" && -f "$DB_ZIP_HOME/$DB_INSTALL_ZIP2" ]]; then
+      mkdir -p $DB_INSTALL_HOME
       echo Unzip $DB_ZIP_HOME/$DB_INSTALL_ZIP1 to $DB_INSTALL_HOME
       unzip $DB_ZIP_HOME/$DB_INSTALL_ZIP1 -d $DB_INSTALL_HOME
       echo Unzip $DB_ZIP_HOME/$DB_INSTALL_ZIP2 to $DB_INSTALL_HOME
@@ -54,7 +54,7 @@ if [ ! -f "$ORACLE_HOME/bin/oraping" ]; then
     #
     sudo $INVENTORY_DIRECTORY/orainstRoot.sh
     sudo $ORACLE_HOME/root.sh
-    $ORACLE_HOME/bin/dbca -silent -createDatabase -templateName General_Purpose.dbc -gdbname orcl -sid orcl -responseFile NO_VALUE -characterSet AL32UTF8 -memoryPercentage 30 -emConfiguration LOCAL -SysPassword welcome1 -SystemPassword welcome1 
+    $ORACLE_HOME/bin/dbca -silent -createDatabase -templateName General_Purpose.dbc -gdbname $ORACLE_SID -sid $ORACLE_SID -responseFile NO_VALUE -characterSet AL32UTF8 -memoryPercentage 30 -emConfiguration LOCAL -SysPassword welcome1 -SystemPassword welcome1 
     echo listener.ora and tnsnames.ora
     cp $SCRIPTPATH/*.ora $ORACLE_HOME/network/admin/
     #echo try to do configTOolCommands

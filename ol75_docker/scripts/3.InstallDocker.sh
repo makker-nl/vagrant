@@ -22,8 +22,6 @@ sudo yum install -q -y docker-engine
 echo 2. Install curl
 sudo yum install -q -y  curl 
 #
-# According to oracle-base you should create a filesystem, preferably using BTRFS. But let's stick with ext4.
-
 echo 3. Add  ${DOCKER_GROUP} group to ${DOCKER_USER}
 sudo usermod -aG ${DOCKER_GROUP} ${DOCKER_USER}
 #
@@ -32,6 +30,8 @@ docker --version
 sudo systemctl start docker
 sudo systemctl status docker
 echo 5. Change docker default folder
+# According to oracle-base you should create a filesystem, preferably using BTRFS, for the container-home. https://oracle-base.com/articles/linux/docker-install-docker-on-oracle-linux-ol7. 
+# But let's stick with ext4.
 ## Adapted from  https://sanenthusiast.com/change-default-image-container-location-docker/
 ##https://stackoverflow.com/questions/30091681/why-does-docker-prompt-permission-denied-when-backing-up-the-data-volume
 echo 5.1. Find Storage Driver

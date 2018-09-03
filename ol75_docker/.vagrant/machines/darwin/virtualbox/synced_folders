@@ -1,1 +1,0 @@
-{"virtualbox":{"/media/sf_Stage":{"guestpath":"/media/sf_Stage","hostpath":"D:/Projects/vagrant/Stage","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"D:/Projects/vagrant/ol75_docker","disabled":false,"__vagrantfile":true}}}

@@ -38,15 +38,3 @@ net.core.wmem_max = 4194304
 '>>/etc/sysctl.conf"
 /sbin/sysctl -p
 fi
-
-echo 'Changing /etc/hosts'
-if grep -Fq darlin-vce /etc/hosts
-then
-    echo 'WARNING: Skipping, please verify!'
-else
-    echo 'Adding'
-    sudo sh -c "echo '
-#Darlin-vce
-127.0.0.1 darlin-vce darlin-vce.darwin-it.local
-'>>/etc/hosts"
-fi

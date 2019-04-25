@@ -22,7 +22,7 @@ sudo /usr/sbin/groupadd -g 2000 oinstall
 #
 # Create the Oracle user
 echo Create the oracle user
-sudo /usr/sbin/useradd -u 2000 -g oinstall -G dba oracle
+sudo /usr/sbin/useradd -u 2000 -g oinstall -G dba,vboxsf oracle
 echo Setting the oracle password to...
 sudo sh -c "echo $(prop 'oracle.password') |passwd oracle --stdin"
 sudo chown oracle:oinstall /app

@@ -1,11 +1,11 @@
 Starting Oracle Universal Installer...
 
-Checking Temp space: must be greater than 500 MB.   Actual 46031 MB    Passed
+Checking Temp space: must be greater than 500 MB.   Actual 46631 MB    Passed
 Checking swap space: must be greater than 150 MB.   Actual 5055 MB    Passed
-Preparing to launch Oracle Universal Installer from /tmp/OraInstall2018-06-11_07-52-25AM. Please wait ...You can find the log of this install session at:
- /app/oracle/oraInventory/logs/installActions2018-06-11_07-52-25AM.log
+Preparing to launch Oracle Universal Installer from /tmp/OraInstall2018-08-23_05-28-42AM. Please wait ...You can find the log of this install session at:
+ /app/oracle/oraInventory/logs/installActions2018-08-23_05-28-42AM.log
 The installation of Oracle Database 12c was successful.
-Please check '/app/oracle/oraInventory/logs/silentInstall2018-06-11_07-52-25AM.log' for more details.
+Please check '/app/oracle/oraInventory/logs/silentInstall2018-08-23_05-28-42AM.log' for more details.
 
 As a root user, execute the following script(s):
 	1. /app/oracle/product/database/dbhome_1/root.sh

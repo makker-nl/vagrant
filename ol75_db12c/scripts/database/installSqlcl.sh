@@ -2,11 +2,12 @@
 SCRIPTPATH=$(dirname $0)
 #
 . $SCRIPTPATH/../install_env.sh
-. $SCRIPTPATH/db12c_env.sh
+. $SCRIPTPATH/db18c_install_env.sh
 #
 SQLCL_ZIP_HOME=$STAGE_HOME/DBInstallation/SQLCL
 SQLCL_INSTALL_HOME=$EXTRACT_HOME/DB/SQLCL
-SQLCL_INSTALL_ZIP1=sqlcl-17.4.0.354.2224-no-jre.zip
+SQLCL_INSTALL_ZIP1=sqlcl-18.2.0.zip
+#SQLCL_INSTALL_ZIP1=sqlcl-17.4.0.354.2224-no-jre.zip
 #
 echo SQLCL_HOME=$SQLCL_HOME
 #

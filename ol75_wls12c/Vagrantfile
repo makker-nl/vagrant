@@ -3,17 +3,22 @@
 BOX_NAME="ol75"
 BOX_URL="file://../boxes/OL75v1.0.box"
 VM_MEMORY = 12288 # 12*1024 MB
+#VM_MEMORY = 8192 # 8*1024 MB
 VM_CPUS=4
 VM_GUI=false
+#VM_GUI=true
 VMS_HOME="c:/data/VirtualMachines/VirtualBox"
 #VMS_HOME="d:/VirtualMachines/VirtualBox"
 VM_NAME="OL7U5_wls12c" 
 VM_MACHINE_NAME="darwin-wls12c"   
-VM_DISK2=VMS_HOME+"/  "+VM_NAME+"/"+VM_NAME+".disk2.vdi"
+VM_DISK2=VMS_HOME+"/"+VM_NAME+"/"+VM_NAME+".disk2.vdi"
 VM_DISK2_SIZE=1024 * 512
 # Stage folders
 STAGE_HOST_FOLDER="d:/Projects/vagrant/Stage"
 STAGE_GUEST_FOLDER="/media/sf_Stage"
+# Project folders
+PROJECT_HOST_FOLDER="d:/Projects"
+PROJECT_GUEST_FOLDER="/media/sf_Projects"
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -47,7 +52,7 @@ Vagrant.configure("2") do |config|
   config.ssh.username="vagrant"
   config.ssh.password="vagrant"
   #Base Mac address.
-  config.vm.base_mac="080027126D17"
+  #config.vm.base_mac="080027126D17"
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
@@ -78,6 +83,7 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   config.vm.synced_folder STAGE_HOST_FOLDER, STAGE_GUEST_FOLDER
+  config.vm.synced_folder PROJECT_HOST_FOLDER, PROJECT_GUEST_FOLDER
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
@@ -124,5 +130,14 @@ Vagrant.configure("2") do |config|
     echo ______________________________________________________________________________
     echo 7. Install WLS 12c
     sudo runuser -l oracle -c '/vagrant/scripts/fmw/installWLS.sh'
+	  echo ______________________________________________________________________________
+    echo 8. Install Jdeveloper 12c
+    sudo runuser -l oracle -c '/vagrant/scripts/fmw/installJdev.sh'
+    echo ______________________________________________________________________________
+    echo "9. Install OpenDJ 3.0.0 (For WLS12c Advanced Admin training)"
+    sudo runuser -l oracle -c '/vagrant/scripts/open_source/installOpenDJ.sh'
+    echo ______________________________________________________________________________
+    echo "10. Install Kafka (Confluent 5.0.0)"
+    sudo runuser -l oracle -c '/vagrant/scripts/open_source/installKafka.sh'
     SHELL
 end

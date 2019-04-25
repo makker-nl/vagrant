@@ -6,6 +6,8 @@ sudo yum -q -y install compat-libcap1* compat-libstdc* libstdc* gcc-c++* ksh lib
 echo install Haveged from OL7 developer EPEL repository
 sudo yum-config-manager --enable ol7_developer_EPEL
 sudo yum -q -y install haveged
+echo install Midnight Commander
+sudo yum -q -y install mc
 #
 echo 'Adding entries into /etc/security/limits.conf for oracle user'
 if grep -Fq oracle /etc/security/limits.conf

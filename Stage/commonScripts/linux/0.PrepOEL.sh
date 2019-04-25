@@ -1,11 +1,12 @@
 #!/bin/bash
 SCRIPTPATH=$(dirname $0)
 #
-. $SCRIPTPATH/install_env.sh
 echo Installing packages required by the software
 sudo yum -q -y install compat-libcap1* compat-libstdc* libstdc* gcc-c++* ksh libaio-devel* dos2unix system-storage-manager
-echo install Haveged
-sudo rpm -ihv $STAGE_HOME/Zipped/haveged-1.9.1-1.el7.x86_64.rpm
+echo install Haveged from OL7 developer EPEL repository
+sudo yum-config-manager --enable ol7_developer_EPEL
+sudo yum -q -y install haveged
+#
 echo 'Adding entries into /etc/security/limits.conf for oracle user'
 if grep -Fq oracle /etc/security/limits.conf
 then

@@ -1,0 +1,11 @@
+  # Install Java 7 script
+  $installJava7Script = <<-SCRIPT
+    export SCRIPT_HOME=/media/sf_Stage/commonScripts/fmw/java
+    echo _______________________________________________________________________________
+    echo Java SDK 7
+    CMD=${SCRIPT_HOME}/jdk7/installJava7.sh
+    sudo runuser -l oracle -c $CMD
+  SCRIPT
+  
+  #Provisioner
+  config.vm.provision "installJava7", type: "shell", run: "once", inline: $installJava7Script

@@ -114,5 +114,39 @@ Vagrant.configure("2") do |config|
     $SCRIPT_HOME/2.MakeOracleUser.sh
   SCRIPT
   #
+  $installJava7Script = <<-SCRIPT
+    export SCRIPT_HOME=/media/sf_Stage/commonScripts/fmw/java
+    echo _______________________________________________________________________________
+    echo Java SDK 7
+    CMD=${SCRIPT_HOME}/jdk7/installJava7.sh
+    sudo runuser -l oracle -c $CMD
+  SCRIPT
+  #
+  $installJava8Script = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Java SDK 8
+    export SCRIPT_HOME=/media/sf_Stage/commonScripts/fmw/java
+    CMD=${SCRIPT_HOME}/jdk8/installJava8.sh
+    sudo runuser -l oracle -c $CMD
+  SCRIPT
+  #
+  $installJdev11gScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo JDeveloper 11g
+    export SCRIPT_HOME=/media/sf_Stage/commonScripts/fmw/jdeveloper
+    CMD=${SCRIPT_HOME}/11g/installJdev11g.sh
+    sudo runuser -l oracle -c $CMD
+  SCRIPT
+  # 
+  $installSoapUIScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo SoapUI
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/opensource/soapui/installSoapUI.sh'
+  SCRIPT
+  #
   config.vm.provision "init", type: "shell", run: "once", inline: $initScript
+  config.vm.provision "installJava7", type: "shell", run: "once", inline: $installJava7Script
+  config.vm.provision "installJava8", type: "shell", run: "once", inline: $installJava8Script
+  config.vm.provision "installJdev11g", type: "shell", run: "once", inline: $installJdev11gScript
+  config.vm.provision "installSoapUI", type: "shell", run: "once", inline: $installSoapUIScript
 end

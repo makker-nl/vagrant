@@ -102,9 +102,10 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-    export SCRIPT_HOME=/vagrant/scripts
-    . $SCRIPT_HOME/install_env.sh
+  #
+  # Linux Initialisation
+  $initScript = <<-SCRIPT
+    export SCRIPT_HOME=/media/sf_Stage/commonScripts/linux
     echo _______________________________________________________________________________
     echo 0. Prepare Oracle Linux
     $SCRIPT_HOME/0.PrepOEL.sh
@@ -114,30 +115,61 @@ Vagrant.configure("2") do |config|
     echo _______________________________________________________________________________
     echo 2. Create Oracle User
     $SCRIPT_HOME/2.MakeOracleUser.sh
-    #
+  SCRIPT
+  # Install Java 8
+  $installJava8Script = <<-SCRIPT
     echo _______________________________________________________________________________
-    echo 4. Java SDK 8
-    sudo runuser -l oracle -c '/vagrant/scripts/fmw/installJava.sh'
+    echo Java SDK 8
+    export SCRIPT_HOME=/media/sf_Stage/commonScripts/fmw/java
+    CMD=${SCRIPT_HOME}/jdk8/installJava8.sh
+    sudo runuser -l oracle -c $CMD
+  SCRIPT
+  # Install Database
+  $installDB121Script = <<-SCRIPT
     echo _______________________________________________________________________________
-    echo 5. Database 12c
-    sudo runuser -l oracle -c '/vagrant/scripts/database/installDB.sh'
+    echo Database 12c
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/12.1/installDB.sh'
+  SCRIPT
+  # Install SQLDeveloper
+  $installSqlDevScript = <<-SCRIPT
+    # echo _______________________________________________________________________________
+    # echo SQLCL and SQLDeveloper
+    # sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/sqldev/installSqlcl.sh'
     echo _______________________________________________________________________________
-    echo 6.1 SQLCL and SQLDeveloper
-    sudo runuser -l oracle -c '/vagrant/scripts/database/installSqlcl.sh'
-    echo _______________________________________________________________________________
-    echo 6.2 SQLDeveloper
-    sudo runuser -l oracle -c '/vagrant/scripts/database/installSqlDeveloper.sh'
+    echo SQLDeveloper
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/sqldev/installSqlDeveloper.sh'
+  SCRIPT
+  # Install WLS12c
+  $installWls12cScript = <<-SCRIPT
     echo ______________________________________________________________________________
-    echo 7. Install WLS 12c
-    sudo runuser -l oracle -c '/vagrant/scripts/fmw/installWLS.sh'
+    echo Install WLS 12c
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/wls/12.2.1.3//installWLS.sh'
+  SCRIPT
+  # Install JDeveloper
+  $installJdev12cScript = <<-SCRIPT
 	  echo ______________________________________________________________________________
-    echo 8. Install Jdeveloper 12c
-    sudo runuser -l oracle -c '/vagrant/scripts/fmw/installJdev.sh'
+    echo Install Jdeveloper 12c
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/jdeveloper/12.2.1.3/installJdev.sh'
+  SCRIPT
+  # Install OpenDJ
+  $installOpenDJScript = <<-SCRIPT
     echo ______________________________________________________________________________
-    echo "9. Install OpenDJ 3.0.0 (For WLS12c Advanced Admin training)"
-    sudo runuser -l oracle -c '/vagrant/scripts/open_source/installOpenDJ.sh'
+    echo "Install OpenDJ 3.0.0 (For WLS12c Advanced Admin training)"
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/opensource/OpenDJ/installOpenDJ.sh'
+  SCRIPT
+  # Install Confluent Kafka
+  $installKafkaScript = <<-SCRIPT
     echo ______________________________________________________________________________
-    echo "10. Install Kafka (Confluent 5.0.0)"
-    sudo runuser -l oracle -c '/vagrant/scripts/open_source/installKafka.sh'
-    SHELL
+    echo "Install Kafka (Confluent 5.0.0)"
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/opensource/confluent/installKafka.sh'
+  SCRIPT
+  #
+  config.vm.provision "init", type: "shell", run: "once", inline: $initScript
+  config.vm.provision "installJava8", type: "shell", run: "once", inline: $installJava8Script
+  config.vm.provision "installDB12c", type: "shell", run: "once", inline: $installDB121Script
+  config.vm.provision "installSQLDev", type: "shell", run: "once", inline: $installSqlDevScript
+  config.vm.provision "installWLS12c", type: "shell", run: "once", inline: $installWls12cScript  
+  config.vm.provision "installJdev12c", type: "shell", run: "once", inline: $installJdev12cScript
+  config.vm.provision "installOpenDJ", type: "shell", run: "once", inline: $installOpenDJScript
+  config.vm.provision "installKafka", type: "shell", run: "once", inline: $installKafkaScript
 end

@@ -1,7 +1,7 @@
 #!/bin/bash
 SCRIPTPATH=$(dirname $0)
 #
-. $SCRIPTPATH/../install_env.sh
+. $SCRIPTPATH/../../../install_env.sh
 . $SCRIPTPATH/fmw12c_env.sh
 FMW_VER=12.2.1.3
 FMW_STAGE_HOME=$INSTALL_HOME/FMW/$FMW_VER

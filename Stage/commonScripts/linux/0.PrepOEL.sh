@@ -2,7 +2,7 @@
 SCRIPTPATH=$(dirname $0)
 #
 echo Installing packages required by the software
-sudo yum -q -y install compat-libcap1* compat-libstdc* libstdc* gcc-c++* ksh libaio-devel* dos2unix system-storage-manager
+sudo yum -q -y install compat-libcap1* compat-libstdc* libstdc* gcc-c++* ksh libaio-devel* dos2unix system-storage-manager motif-2.3.4-7
 echo install Haveged from OL7 developer EPEL repository
 sudo yum-config-manager --enable ol7_developer_EPEL
 sudo yum -q -y install haveged

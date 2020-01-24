@@ -1,0 +1,1 @@
+vagrant package --base ol77 --output  d:\Projects\vagrant\boxes\ol77GUIv1.0.box

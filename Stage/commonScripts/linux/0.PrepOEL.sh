@@ -50,3 +50,9 @@ else
 127.0.0.1 darlin-vce darlin-vce.darwin-it.local
 '>>/etc/hosts"
 fi
+
+echo 'Allow PasswordAuthhentication'
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.org
+sudo sed -i 's/PasswordAuthentication no/#PasswordAuthentication no/g' /etc/ssh/sshd_config
+sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+sudo service sshd restart

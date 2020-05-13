@@ -1,4 +1,4 @@
-  # Indatall Java 8 script
+  # Install Java 8 script
   $installJava8Script = <<-SCRIPT
     export SCRIPT_HOME=/media/sf_Stage/commonScripts/fmw/java/jdk8
     echo _______________________________________________________________________________

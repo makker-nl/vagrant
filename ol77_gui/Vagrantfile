@@ -6,9 +6,12 @@ BOX_URL="file://../boxes/ol77GUIv1.1.box"
 #VM_MEMORY = 12288 # 12*1024 MB
 VM_MEMORY = 8192 # 12*1024 MB
 VM_CPUS=4
+#VM_GUI=false
+VM_GUI=true
 #VMS_HOME="d:\\VirtualMachines\\VirtualBox"
 VMS_HOME="C:/Data/VirtualMachines/VirtualBox"
-VM_NAME="OL7U7_GUI"    
+VM_NAME="OL7U7_GUI"
+VM_STORAGE_CTRL="SATA"  
 VM_DISK2=VMS_HOME+"/"+VM_NAME+"/"+VM_NAME+".disk2.vdi"
 VM_DISK2_SIZE=1024 * 512
 # Stage folders
@@ -30,7 +33,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "darwin"
   config.vm.provider :virtualbox do |vb|
     vb.name = VM_NAME
-    vb.gui = true
+    vb.gui = VM_GUI
     vb.memory = VM_MEMORY
     vb.cpus = VM_CPUS
 	#Pre-allocate the memory when starting the guest.
@@ -43,7 +46,7 @@ Vagrant.configure("2") do |config|
       vb.customize [ "createmedium", "disk", "--filename", VM_DISK2, "--format", "vdi", "--size", VM_DISK2_SIZE , "--variant", "Standard" ]
     end
     # Add it to the VM.
-    vb.customize [ "storageattach", :id , "--storagectl", "SATA", "--port", "2", "--device", "0", "--type", "hdd", "--medium", VM_DISK2]
+    vb.customize [ "storageattach", :id , "--storagectl", VM_STORAGE_CTRL, "--port", "2", "--device", "0", "--type", "hdd", "--medium", VM_DISK2]
   end
   #config.ssh.username="darwin"
   config.ssh.username="vagrant"

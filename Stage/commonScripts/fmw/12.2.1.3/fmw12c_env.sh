@@ -1,7 +1,6 @@
 #!/bin/bash
 echo set Fusion MiddleWare 12cR2 environment
 export FMW_VER=12.2.1.3
-export FMW_STAGE_HOME=$STAGE_HOME/FMWInstallation/$FMW_VER
 export DOMAIN_NAME=fmw12c_domain
 export OHS_DOMAIN_NAME=ohs_domain
 export INSTANCE_NAME=ohs1

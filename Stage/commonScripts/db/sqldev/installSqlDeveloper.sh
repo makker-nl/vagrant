@@ -14,7 +14,7 @@ echo SQLDEV_HOME=$SQLDEV_HOME
 #
 if [ ! -d "$SQLDEV_HOME" ]; then
   #Unzip SQLDEV_
-  if [ -f "$SQLDEV_ZIP_HOME/$SQLDEV_INSTALL_ZIP1" ]; then    
+  if [ -f "$SQLDEV_ZIP_HOME/$SQLDEV_INSTALL_ZIP" ]; then    
     mkdir -p $SQLDEV_INSTALL_HOME
     echo Unzip $SQLDEV_ZIP_HOME/$SQLDEV_INSTALL_ZIP to $SQLDEV_HOME
     unzip $SQLDEV_ZIP_HOME/$SQLDEV_INSTALL_ZIP -d $SQLDEV_INSTALL_HOME
@@ -23,7 +23,7 @@ if [ ! -d "$SQLDEV_HOME" ]; then
     mv $SQLDEV_INSTALL_HOME/$SQLDEV_INSTALL_FLDR/* $SQLDEV_HOME
     rm -rf $SQLDEV_INSTALL_HOME/$SQLDEV_INSTALL_FLDR
   else
-    echo $SQLDEV_ZIP_HOME/$SQLDEV_INSTALL_ZIP1 does not exist
+    echo $SQLDEV_ZIP_HOME/$SQLDEV_INSTALL_ZIP does not exist
   fi
 else
   echo sqldeveloper already unzipped

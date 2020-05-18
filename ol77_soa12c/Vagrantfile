@@ -131,6 +131,13 @@ Vagrant.configure("2") do |config|
     sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/12.1/installDB.sh'
   SCRIPT
   #
+  # Downsize Database to about 350M
+  $downsizeDB121Script = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Database 12c
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/12.1/downsizeDB.sh'
+  SCRIPT
+  #
   # Start Database  
   $startDBScript = <<-SCRIPT
     echo _______________________________________________________________________________
@@ -228,6 +235,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "init", type: "shell", run: "once", inline: $initScript
   config.vm.provision "installJava8", type: "shell", run: "once", inline: $installJava8Script
   config.vm.provision "installDB12c", type: "shell", run: "once", inline: $installDB121Script
+  config.vm.provision "downsizeDB12c", type: "shell", run: "once", inline: $downsizeDB121Script
   config.vm.provision "startDB", type: "shell", run: "always", inline: $startDBScript
   config.vm.provision "installSQLDev", type: "shell", run: "once", inline: $installSqlDevScript
   config.vm.provision "installFMWInfra", type: "shell", run: "once", inline: $installFMWInfraScript

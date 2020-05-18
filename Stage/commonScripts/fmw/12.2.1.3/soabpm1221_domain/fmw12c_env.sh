@@ -2,6 +2,7 @@
 echo set Fusion MiddleWare 12cR2 environment
 export ORACLE_BASE=/app/oracle
 export FMW_HOME=$ORACLE_BASE/product/middleware/FMW12213
+export JAVA_HOME=$ORACLE_BASE/product/jdk8
 export WL_HOME=${FMW_HOME}/wlserver
 export SHARED_CONFIG_DIR=/app/oracle/config
 export DOMAIN_NAME=soa12c_domain

@@ -132,7 +132,7 @@ def createCluster(cluster):
   create(cluster, 'Cluster')
 #
 #
-def createUnixMachine(serverMachine,serverAddress):
+def createUnixMachine(serverMachine,listenAddress,listenPort, nmType):
   print('\nCreate machine '+serverMachine+' with type UnixMachine')
   print(lineSeperator)
   cd('/')
@@ -140,7 +140,9 @@ def createUnixMachine(serverMachine,serverAddress):
   cd('UnixMachine/'+serverMachine)
   create(serverMachine,'NodeManager')
   cd('NodeManager/'+serverMachine)
-  set('ListenAddress',serverAddress)
+  set('ListenAddress',listenAddress)
+  set('ListenPort',listenPort)
+  set('NMType',nmType)
 #
 #
 def addServerToMachine(serverName, serverMachine):
@@ -376,9 +378,9 @@ def createMachinesClustersAndServers():
   print(lineSeperator)
   cd('/')
   #
-  createUnixMachine(server1Machine,server1Address)
+  createUnixMachine(server1Machine,nodeMgr1ListenAddress,nodeMgr1ListenPort,nodeMgr1Type)
   if server2Enabled == 'true':
-    createUnixMachine(server2Machine,server2Address)
+    createUnixMachine(server2Machine,nodeMgr2ListenAddress,nodeMgr2ListenPort,nodeMgr2Type)
   #
   addServerToMachine(adminServerName,server1Machine)
   #

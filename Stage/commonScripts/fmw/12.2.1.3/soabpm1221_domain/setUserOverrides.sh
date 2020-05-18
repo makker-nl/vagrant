@@ -45,7 +45,8 @@ export EXTRA_JAVA_PROPERTIES="${EXTRA_JAVA_PROPERTIES} -XX:FlightRecorderOptions
 
 ##### AdminServer only #####
 if [ "${STARTUP_GROUP}" = "AdminServerStartupGroup" ] ; then
-   USER_MEM_ARGS="-Xms2g -Xmx2g"
+   #USER_MEM_ARGS="-Xms2g -Xmx2g"
+   USER_MEM_ARGS="-Xms1g -Xmx1g"
 fi
 ##### AdminServer only #####
 

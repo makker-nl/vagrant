@@ -13,6 +13,10 @@ DB_INSTALL_RSP=db12c_software.rsp
 DB_INSTALL_RSP_TPL=$DB_INSTALL_RSP.tpl
 DB_INSTALL_ZIP1=V46095-01_1of2.zip
 DB_INSTALL_ZIP2=V46095-01_2of2.zip
+DB_LSNR_ORA=listener.ora
+DB_LSNR_ORA_TPL=$DB_LSNR_ORA.tpl
+DB_TNSNM_ORA=tnsnames.ora
+DB_TNSNM_ORA_TPL=$DB_LSNR_ORA.tpl
 #
 STARTSTOP_HOME=$SCRIPTPATH/StartStop
 #
@@ -58,7 +62,9 @@ if [ ! -f "$ORACLE_HOME/bin/oraping" ]; then
     sudo $INVENTORY_DIRECTORY/orainstRoot.sh
     sudo $ORACLE_HOME/root.sh
     $ORACLE_HOME/bin/dbca -silent -createDatabase -templateName General_Purpose.dbc -gdbname $ORACLE_SID -sid $ORACLE_SID -responseFile NO_VALUE -characterSet AL32UTF8 -memoryPercentage 30 -emConfiguration LOCAL -SysPassword welcome1 -SystemPassword welcome1 
-    echo listener.ora and tnsnames.ora
+    echo Expand and copy $DB_LSNR_ORA and $DB_TNSNM_ORA
+	envsubst < $SCRIPTPATH/$DB_LSNR_ORA_TPL > $SCRIPTPATH/$DB_LSNR_ORA
+	envsubst < $SCRIPTPATH/$DB_TNSNM_ORA_TPL > $SCRIPTPATH/$DB_TNSNM_ORA
     cp $SCRIPTPATH/*.ora $ORACLE_HOME/network/admin/
     #echo try to do configTOolCommands
     #$ORACLE_HOME/cfgtoollogs/configToolAllCommands RESPONSE_FILE=$DB_RSP

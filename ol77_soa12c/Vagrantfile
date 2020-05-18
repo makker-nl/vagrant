@@ -5,13 +5,16 @@ BOX_NAME="ol77GUIv1.1"
 BOX_URL="file://../boxes/ol77GUIv1.1.box"
 #VM_MEMORY = 12288 # 12*1024 MB
 #VM_MEMORY = 8192 # 8*1024 MB
-VM_MEMORY = 6144 # 6*1024 MB
+#VM_MEMORY = 6144 # 6*1024 MB
+VM_MEMORY = 7168 # 7*1024 MB
 VM_CPUS=4
 VM_GUI=false
 #VM_GUI=true
 #VMS_HOME="d:\\VirtualMachines\\VirtualBox"
 VMS_HOME="C:/Data/VirtualMachines/VirtualBox"
 VM_NAME="OL7U7_SOA12c"  
+VM_HOST_NAME="darlin-vce.darwin-it.local"
+VM_MACHINE="darwin"
 VM_STORAGE_CTRL="SATA"  
 VM_DISK2=VMS_HOME+"/"+VM_NAME+"/"+VM_NAME+".disk2.vdi"
 VM_DISK2_SIZE=1024 * 512
@@ -29,15 +32,15 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = BOX_NAME
+  config.vm.box=BOX_NAME
   config.vm.box_url=BOX_URL
-  config.vm.hostname="darlin-vce.darwin-it.local"
-  config.vm.define "darwin"
+  config.vm.hostname=VM_HOST_NAME
+  config.vm.define VM_MACHINE
   config.vm.provider :virtualbox do |vb|
-    vb.name = VM_NAME
-    vb.gui = VM_GUI
-    vb.memory = VM_MEMORY
-    vb.cpus = VM_CPUS
+    vb.name=VM_NAME
+    vb.gui=VM_GUI
+    vb.memory=VM_MEMORY
+    vb.cpus=VM_CPUS
 	#Pre-allocate the memory when starting the guest.
 	#vb.customize ["setextradata", :id, "VBoxInternal/RamPreAlloc", 1]
     # Set clipboard and drag&drop bidirectional
@@ -78,7 +81,7 @@ Vagrant.configure("2") do |config|
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
-  # config.vm.network "public_network"
+  config.vm.network "public_network"
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -232,6 +235,16 @@ Vagrant.configure("2") do |config|
     echo SoapUI
     sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/opensource/soapui/installSoapUI.sh'
   SCRIPT
+  $configFirewallScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Open Port 1521 for Oracle database
+    sudo firewall-cmd --zone=public --add-port=1521/tcp --permanent
+	echo Open Port 7001 and 8001 for FMW
+    sudo firewall-cmd --zone=public --add-port=7001/tcp --permanent
+	sudo firewall-cmd --zone=public --add-port=8001/tcp --permanent
+	echo Reload firewall
+	sudo firewall-cmd --reload
+  SCRIPT
   #
   config.vm.provision "init", type: "shell", run: "once", inline: $initScript
   config.vm.provision "installJava8", type: "shell", run: "once", inline: $installJava8Script
@@ -246,6 +259,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "installFMWBPMQS", type: "shell", run: "once", inline: $installFMWBPMQSScript
   config.vm.provision "installFMWRCU", type: "shell", run: "once", inline: $configFMWRCUScript
   config.vm.provision "configFMWCreateDmn", type: "shell", run: "once", inline: $configFMWCreateDmnScript
+  config.vm.provision "configFirewall", type: "shell", run: "once", inline: $configFirewallScript
 #  config.vm.provision "startFMWDMN", type: "shell", run: "always", inline: $startFMWDMNScript
 #  config.vm.provision "installSoapUI", type: "shell", run: "once", inline: $installSoapUIScript  
 end

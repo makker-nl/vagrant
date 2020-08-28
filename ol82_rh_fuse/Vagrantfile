@@ -1,0 +1,264 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+#
+BOX_NAME="OL8.2SwGUIv1.0"
+BOX_URL="file://../boxes/OL8.2SwGUIv1.0.box"
+#VM_MEMORY = 12288 # 12*1024 MB
+#VM_MEMORY = 8192 # 8*1024 MB
+VM_MEMORY = 6144 # 6*1024 MB
+#VM_MEMORY = 6656 # 6,5*1024 MB
+VM_CPUS=2
+VM_GUI=false
+#VM_GUI=true
+#VMS_HOME="d:\\VirtualMachines\\VirtualBox"
+VMS_HOME="C:/Data/VirtualMachines/VirtualBox"
+VM_NAME="OL8U2_RH_FUSE"  
+VM_HOST_NAME="rhfuse.conclusion.local"
+VM_MACHINE="rhfuse"
+VM_STORAGE_CTRL="SATA"  
+VM_DISK2=VMS_HOME+"/"+VM_NAME+"/"+VM_NAME+".disk2.vdi"
+VM_DISK2_SIZE=1024 * 512
+# Stage folders
+STAGE_HOST_FOLDER="c:/Data/Projects/vagrant/Stage"
+STAGE_GUEST_FOLDER="/media/sf_Stage"
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box=BOX_NAME
+  config.vm.box_url=BOX_URL
+  config.vm.hostname=VM_HOST_NAME
+  config.vm.define VM_MACHINE
+  config.vm.provider :virtualbox do |vb|
+    vb.name=VM_NAME
+    vb.gui=VM_GUI
+    vb.memory=VM_MEMORY
+    vb.cpus=VM_CPUS
+	#Pre-allocate the memory when starting the guest.
+	#vb.customize ["setextradata", :id, "VBoxInternal/RamPreAlloc", 1]
+    # Set clipboard and drag&drop bidirectional
+    vb.customize ["modifyvm", :id, "--clipboard-mode", "bidirectional"]
+    vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
+    # Create a disk  
+    unless File.exist?(VM_DISK2)
+      vb.customize [ "createmedium", "disk", "--filename", VM_DISK2, "--format", "vdi", "--size", VM_DISK2_SIZE , "--variant", "Standard" ]
+    end
+    # Add it to the VM.
+    vb.customize [ "storageattach", :id , "--storagectl", VM_STORAGE_CTRL, "--port", "2", "--device", "0", "--type", "hdd", "--medium", VM_DISK2]
+  end
+  config.ssh.username="vagrant"
+  config.ssh.password="vagrant"
+  #Base Mac address.
+  #config.vm.base_mac="080027126D17"
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # `vagrant box outdated`. This is not recommended.
+  # config.vm.box_check_update = false
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  # NOTE: This will enable public access to the opened port
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine and only allow access
+  # via 127.0.0.1 to disable public access
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  # config.vm.network "private_network", ip: "192.168.33.10"
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  config.vm.network "public_network"
+
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  config.vm.synced_folder STAGE_HOST_FOLDER, STAGE_GUEST_FOLDER
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+  # config.vm.provider "virtualbox" do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+  #   vb.gui = true
+  #
+  #   # Customize the amount of memory on the VM:
+  #   vb.memory = "1024"
+  # end
+  #
+  # View the documentation for the provider you are using for more
+  # information on available options.
+
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+  $initScript = <<-SCRIPT
+    export SCRIPT_HOME=/media/sf_Stage/commonScripts/linux
+    echo _______________________________________________________________________________
+    echo 0. Prepare Oracle Linux
+    # $SCRIPT_HOME/0.PrepOEL.sh
+    echo _______________________________________________________________________________
+    echo 1. Create Filesystem
+    # $SCRIPT_HOME/1.FileSystem.sh
+    echo _______________________________________________________________________________
+    # echo 2. Create Oracle User
+    # $SCRIPT_HOME/2.MakeOracleUser.sh
+  SCRIPT
+  #
+  # Install Java 8 script
+  $installJava8Script = <<-SCRIPT
+    export SCRIPT_HOME=/media/sf_Stage/commonScripts/fmw/java/jdk8
+    echo _______________________________________________________________________________
+    echo Java SDK 8
+    CMD=${SCRIPT_HOME}/installJava8.sh
+    sudo runuser -l oracle -c $CMD
+  SCRIPT
+  #
+  # Install Database
+  $installDB121Script = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Database 12c
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/12.1/installDB.sh'
+  SCRIPT
+  #
+  # Downsize Database to about 350M
+  $downsizeDB121Script = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Database 12c
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/12.1/downsizeDB.sh'
+  SCRIPT
+  #
+  # Start Database  
+  $startDBScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Start Database   
+    sudo runuser -l oracle -c '~/bin/startDB.sh'
+  SCRIPT
+  #
+  # Install SQLDeveloper
+  $installSqlDevScript = <<-SCRIPT
+    # echo _______________________________________________________________________________
+    # echo SQLCL and SQLDeveloper
+    # sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/sqldev/installSqlcl.sh'
+    echo _______________________________________________________________________________
+    echo SQLDeveloper
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/sqldev/installSqlDeveloper.sh'
+  SCRIPT
+  #
+  # Install FMW Infrastructure
+  $installFMWInfraScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Fusion Middleware - Infra
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/fmwinfra/installFMWInfra.sh'
+  SCRIPT
+  #
+  # Install SOA Suite
+  $installFMWSOAScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Fusion Middleware - SOA
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/soa/installSOA.sh'
+  SCRIPT
+  #
+  # Install Oracle Service Bus
+  $installFMWOSBScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Fusion Middleware - OSB
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/osb/installOSB.sh'
+  SCRIPT
+  #
+  # Oracle HTTP Server
+  $installFMWOHSScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Fusion Middleware - OHS
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/ohs/installOHS.sh'
+  SCRIPT
+  #
+  # BPM Quickstart
+  $installFMWBPMQSScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Fusion Middleware - BPM Quickstart
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/bpmqs/installBPMQS.sh'
+  SCRIPT
+  #
+  # Run Repository Creation Utility
+  $configFMWRCUScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Fusion Middleware - RCU SOA 
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/rcu/rcuSOA.sh'
+  SCRIPT
+  #
+  # Create domain
+  $configFMWCreateDmnScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Fusion Middleware - Configuration - 1. Create Domain    
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/soabpm1221_domain/recreateFMWDomain.sh'
+    echo _______________________________________________________________________________
+    echo Fusion Middleware - Configuration - 2. Modify Nodemanager
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/soabpm1221_domain/modifyNodeManager.sh'
+    echo _______________________________________________________________________________
+    echo Fusion Middleware - Configuration - 3. Create Nodemanager service
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/soabpm1221_domain/createNodemanagerService.sh'
+    echo _______________________________________________________________________________
+    echo Fusion Middleware - Configuration - 4. Copy Start Stop Scripts
+    sudo runuser -l oracle -c 'cp -R /media/sf_Stage/commonScripts/fmw/12.2.1.3/startStop/* ~/bin'
+    echo _______________________________________________________________________________
+    echo Fusion Middleware - Configuration - 5. StartAdmin Server
+    sudo runuser -l oracle -c '~/bin/startAdmin.sh'
+    echo _______________________________________________________________________________
+    echo Fusion Middleware - Configuration - 6. Create User Config Files
+    sudo runuser -l oracle -c '~/bin/createUserConfigFiles.sh'    
+  SCRIPT
+  #
+  # Start Database  
+  $startFMWDMNScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Start FMW Domain   
+    sudo runuser -l oracle -c '~/bin/startDomain.sh'
+  SCRIPT
+  #
+  $installSoapUIScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo SoapUI
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/opensource/soapui/installSoapUI.sh'
+  SCRIPT
+  $configFirewallScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Open Port 1521 for Oracle database
+    sudo firewall-cmd --zone=public --add-port=1521/tcp --permanent
+	echo Open Port 7001 and 8001 for FMW
+    sudo firewall-cmd --zone=public --add-port=7001/tcp --permanent
+	sudo firewall-cmd --zone=public --add-port=8001/tcp --permanent
+	echo Reload firewall
+	sudo firewall-cmd --reload
+  SCRIPT
+  #
+#  config.vm.provision "init", type: "shell", run: "once", inline: $initScript
+#  config.vm.provision "installJava8", type: "shell", run: "once", inline: $installJava8Script
+#  config.vm.provision "installDB12c", type: "shell", run: "once", inline: $installDB121Script
+#  config.vm.provision "downsizeDB12c", type: "shell", run: "once", inline: $downsizeDB121Script
+#  config.vm.provision "startDB", type: "shell", run: "always", inline: $startDBScript
+#  config.vm.provision "installSQLDev", type: "shell", run: "once", inline: $installSqlDevScript
+#  config.vm.provision "installFMWInfra", type: "shell", run: "once", inline: $installFMWInfraScript
+#  config.vm.provision "installFMWSOA", type: "shell", run: "once", inline: $installFMWSOAScript
+#  config.vm.provision "installFMWOSB", type: "shell", run: "once", inline: $installFMWOSBScript
+#  config.vm.provision "installFMWOHS", type: "shell", run: "once", inline: $installFMWOHSScript
+#  config.vm.provision "installFMWBPMQS", type: "shell", run: "once", inline: $installFMWBPMQSScript
+#  config.vm.provision "installFMWRCU", type: "shell", run: "never", inline: $configFMWRCUScript
+#  config.vm.provision "configFMWCreateDmn", type: "shell", run: "never", inline: $configFMWCreateDmnScript
+#  config.vm.provision "configFirewall", type: "shell", run: "never", inline: $configFirewallScript
+#  config.vm.provision "startFMWDMN", type: "shell", run: "always", inline: $startFMWDMNScript
+#  config.vm.provision "installSoapUI", type: "shell", run: "once", inline: $installSoapUIScript  
+end

@@ -14,7 +14,9 @@ if [ ! -f "$RHCRS_HOME/codereadystudio" ]; then
   # Install CodeReadyStudio
   echo Install CodeReadyStudio
   java -jar $RHCRS_JAR_HOME/$RHCRS_INSTALL_JAR $SCRIPTPATH/InstallConfigRecord.xml
-
+  echo Copy start script to user home
+  mkdir -p ~/bin
+  cp $SCRIPTPATH/codereadystudio.sh ~/bin
 else
   echo CodeReadyStudio already installed
 fi

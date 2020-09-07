@@ -7,3 +7,4 @@ export EXTRACT_HOME=/media/sf_Stage/Extracted
 export TMP_DIR=/tmp
 export INSTALL_TMP_DIR=/app/tmp
 export OS_BASE=/app/opensource
+export RH_BASE=/app/redhat

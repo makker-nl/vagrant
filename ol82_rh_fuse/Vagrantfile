@@ -108,14 +108,14 @@ Vagrant.configure("2") do |config|
   $initScript = <<-SCRIPT
     export SCRIPT_HOME=/media/sf_Stage/commonScripts/linux
     echo _______________________________________________________________________________
-    echo 0. Prepare Oracle Linux
-    # $SCRIPT_HOME/0.PrepOEL.sh
+    echo Prepare Oracle Linux
+    # $SCRIPT_HOME/OL8Prep.sh
     echo _______________________________________________________________________________
     echo 1. Create Filesystem
-    # $SCRIPT_HOME/1.FileSystem.sh
+    # $SCRIPT_HOME/OL8FileSystem.sh
     echo _______________________________________________________________________________
-    # echo 2. Create Oracle User
-    # $SCRIPT_HOME/2.MakeOracleUser.sh
+    # echo 2. Create RedHat User
+    # $SCRIPT_HOME/OL8MakeRedHatUser.sh
   SCRIPT
   #
   # Install Java 8 script
@@ -124,141 +124,29 @@ Vagrant.configure("2") do |config|
     echo _______________________________________________________________________________
     echo Java SDK 8
     CMD=${SCRIPT_HOME}/installJava8.sh
-    sudo runuser -l oracle -c $CMD
+    sudo runuser -l redhat -c $CMD
   SCRIPT
   #
-  # Install Database
-  $installDB121Script = <<-SCRIPT
+  # Install Maven script
+  $installMavenScript = <<-SCRIPT
+    export SCRIPT_HOME=/media/sf_Stage/commonScripts/opensource/maven
     echo _______________________________________________________________________________
-    echo Database 12c
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/12.1/installDB.sh'
+    echo Maven
+    CMD=${SCRIPT_HOME}/installMaven.sh
+    sudo runuser -l redhat -c $CMD
   SCRIPT
   #
-  # Downsize Database to about 350M
-  $downsizeDB121Script = <<-SCRIPT
+  # Install Maven script
+  $installEclipseScript = <<-SCRIPT
+    export SCRIPT_HOME=/media/sf_Stage/commonScripts/opensource/Eclipse
     echo _______________________________________________________________________________
-    echo Database 12c
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/12.1/downsizeDB.sh'
+    echo Maven
+    CMD=${SCRIPT_HOME}/installEclipse.sh
+    sudo runuser -l redhat -c $CMD
   SCRIPT
   #
-  # Start Database  
-  $startDBScript = <<-SCRIPT
-    echo _______________________________________________________________________________
-    echo Start Database   
-    sudo runuser -l oracle -c '~/bin/startDB.sh'
-  SCRIPT
-  #
-  # Install SQLDeveloper
-  $installSqlDevScript = <<-SCRIPT
-    # echo _______________________________________________________________________________
-    # echo SQLCL and SQLDeveloper
-    # sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/sqldev/installSqlcl.sh'
-    echo _______________________________________________________________________________
-    echo SQLDeveloper
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/sqldev/installSqlDeveloper.sh'
-  SCRIPT
-  #
-  # Install FMW Infrastructure
-  $installFMWInfraScript = <<-SCRIPT
-    echo _______________________________________________________________________________
-    echo Fusion Middleware - Infra
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/fmwinfra/installFMWInfra.sh'
-  SCRIPT
-  #
-  # Install SOA Suite
-  $installFMWSOAScript = <<-SCRIPT
-    echo _______________________________________________________________________________
-    echo Fusion Middleware - SOA
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/soa/installSOA.sh'
-  SCRIPT
-  #
-  # Install Oracle Service Bus
-  $installFMWOSBScript = <<-SCRIPT
-    echo _______________________________________________________________________________
-    echo Fusion Middleware - OSB
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/osb/installOSB.sh'
-  SCRIPT
-  #
-  # Oracle HTTP Server
-  $installFMWOHSScript = <<-SCRIPT
-    echo _______________________________________________________________________________
-    echo Fusion Middleware - OHS
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/ohs/installOHS.sh'
-  SCRIPT
-  #
-  # BPM Quickstart
-  $installFMWBPMQSScript = <<-SCRIPT
-    echo _______________________________________________________________________________
-    echo Fusion Middleware - BPM Quickstart
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/bpmqs/installBPMQS.sh'
-  SCRIPT
-  #
-  # Run Repository Creation Utility
-  $configFMWRCUScript = <<-SCRIPT
-    echo _______________________________________________________________________________
-    echo Fusion Middleware - RCU SOA 
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/rcu/rcuSOA.sh'
-  SCRIPT
-  #
-  # Create domain
-  $configFMWCreateDmnScript = <<-SCRIPT
-    echo _______________________________________________________________________________
-    echo Fusion Middleware - Configuration - 1. Create Domain    
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/soabpm1221_domain/recreateFMWDomain.sh'
-    echo _______________________________________________________________________________
-    echo Fusion Middleware - Configuration - 2. Modify Nodemanager
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/soabpm1221_domain/modifyNodeManager.sh'
-    echo _______________________________________________________________________________
-    echo Fusion Middleware - Configuration - 3. Create Nodemanager service
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/soabpm1221_domain/createNodemanagerService.sh'
-    echo _______________________________________________________________________________
-    echo Fusion Middleware - Configuration - 4. Copy Start Stop Scripts
-    sudo runuser -l oracle -c 'cp -R /media/sf_Stage/commonScripts/fmw/12.2.1.3/startStop/* ~/bin'
-    echo _______________________________________________________________________________
-    echo Fusion Middleware - Configuration - 5. StartAdmin Server
-    sudo runuser -l oracle -c '~/bin/startAdmin.sh'
-    echo _______________________________________________________________________________
-    echo Fusion Middleware - Configuration - 6. Create User Config Files
-    sudo runuser -l oracle -c '~/bin/createUserConfigFiles.sh'    
-  SCRIPT
-  #
-  # Start Database  
-  $startFMWDMNScript = <<-SCRIPT
-    echo _______________________________________________________________________________
-    echo Start FMW Domain   
-    sudo runuser -l oracle -c '~/bin/startDomain.sh'
-  SCRIPT
-  #
-  $installSoapUIScript = <<-SCRIPT
-    echo _______________________________________________________________________________
-    echo SoapUI
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/opensource/soapui/installSoapUI.sh'
-  SCRIPT
-  $configFirewallScript = <<-SCRIPT
-    echo _______________________________________________________________________________
-    echo Open Port 1521 for Oracle database
-    sudo firewall-cmd --zone=public --add-port=1521/tcp --permanent
-	echo Open Port 7001 and 8001 for FMW
-    sudo firewall-cmd --zone=public --add-port=7001/tcp --permanent
-	sudo firewall-cmd --zone=public --add-port=8001/tcp --permanent
-	echo Reload firewall
-	sudo firewall-cmd --reload
-  SCRIPT
-  #
-#  config.vm.provision "init", type: "shell", run: "once", inline: $initScript
-#  config.vm.provision "installJava8", type: "shell", run: "once", inline: $installJava8Script
-#  config.vm.provision "installDB12c", type: "shell", run: "once", inline: $installDB121Script
-#  config.vm.provision "downsizeDB12c", type: "shell", run: "once", inline: $downsizeDB121Script
-#  config.vm.provision "startDB", type: "shell", run: "always", inline: $startDBScript
-#  config.vm.provision "installSQLDev", type: "shell", run: "once", inline: $installSqlDevScript
-#  config.vm.provision "installFMWInfra", type: "shell", run: "once", inline: $installFMWInfraScript
-#  config.vm.provision "installFMWSOA", type: "shell", run: "once", inline: $installFMWSOAScript
-#  config.vm.provision "installFMWOSB", type: "shell", run: "once", inline: $installFMWOSBScript
-#  config.vm.provision "installFMWOHS", type: "shell", run: "once", inline: $installFMWOHSScript
-#  config.vm.provision "installFMWBPMQS", type: "shell", run: "once", inline: $installFMWBPMQSScript
-#  config.vm.provision "installFMWRCU", type: "shell", run: "never", inline: $configFMWRCUScript
-#  config.vm.provision "configFMWCreateDmn", type: "shell", run: "never", inline: $configFMWCreateDmnScript
-#  config.vm.provision "configFirewall", type: "shell", run: "never", inline: $configFirewallScript
-#  config.vm.provision "startFMWDMN", type: "shell", run: "always", inline: $startFMWDMNScript
-#  config.vm.provision "installSoapUI", type: "shell", run: "once", inline: $installSoapUIScript  
+config.vm.provision "init", type: "shell", run: "once", inline: $initScript
+config.vm.provision "installJava8", type: "shell", run: "once", inline: $installJava8Script
+config.vm.provision "installMaven", type: "shell", run: "once", inline: $installMavenScript
+config.vm.provision "installEclipse", type: "shell", run: "once", inline: $installEclipseScript
 end

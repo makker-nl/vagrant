@@ -140,7 +140,7 @@ Vagrant.configure("2") do |config|
   $installEclipseScript = <<-SCRIPT
     export SCRIPT_HOME=/media/sf_Stage/commonScripts/opensource/Eclipse
     echo _______________________________________________________________________________
-    echo Maven
+    echo Eclipse
     CMD=${SCRIPT_HOME}/installEclipse.sh
     sudo runuser -l redhat -c $CMD
   SCRIPT
@@ -149,8 +149,17 @@ Vagrant.configure("2") do |config|
   $installCodeReadyStudioScript = <<-SCRIPT
     export SCRIPT_HOME=/media/sf_Stage/commonScripts/redhat/CodeReadyStudio
     echo _______________________________________________________________________________
-    echo Maven
+    echo RedHat CodeReadyStudio
     CMD=${SCRIPT_HOME}/installCodeReadyStudio.sh
+    sudo runuser -l redhat -c $CMD
+  SCRIPT
+  #
+  # Install Camel script
+  $installCamelScript = <<-SCRIPT
+    export SCRIPT_HOME=/media/sf_Stage/commonScripts/opensource/Camel
+    echo _______________________________________________________________________________
+    echo Camel
+    CMD=${SCRIPT_HOME}/installCamel.sh
     sudo runuser -l redhat -c $CMD
   SCRIPT
   #
@@ -159,5 +168,5 @@ config.vm.provision "installJava8", type: "shell", run: "once", inline: $install
 config.vm.provision "installMaven", type: "shell", run: "once", inline: $installMavenScript
 config.vm.provision "installEclipse", type: "shell", run: "once", inline: $installEclipseScript
 config.vm.provision "installCodeReadyStudio", type: "shell", run: "once", inline: $installCodeReadyStudioScript
-
+config.vm.provision "installCamel", type: "shell", run: "once", inline: $installCamelScript
 end

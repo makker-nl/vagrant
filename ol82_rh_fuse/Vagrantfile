@@ -19,7 +19,7 @@ VM_STORAGE_CTRL="SATA"
 VM_DISK2=VMS_HOME+"/"+VM_NAME+"/"+VM_NAME+".disk2.vdi"
 VM_DISK2_SIZE=1024 * 512
 # Stage folders
-STAGE_HOST_FOLDER="c:/Data/Projects/vagrant/Stage"
+STAGE_HOST_FOLDER="d:/Projects/vagrant/Stage"
 STAGE_GUEST_FOLDER="/media/sf_Stage"
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -109,13 +109,13 @@ Vagrant.configure("2") do |config|
     export SCRIPT_HOME=/media/sf_Stage/commonScripts/linux
     echo _______________________________________________________________________________
     echo Prepare Oracle Linux
-    # $SCRIPT_HOME/OL8Prep.sh
+    $SCRIPT_HOME/OL8Prep.sh
     echo _______________________________________________________________________________
     echo 1. Create Filesystem
-    # $SCRIPT_HOME/OL8FileSystem.sh
+    $SCRIPT_HOME/OL8FileSystem.sh
     echo _______________________________________________________________________________
-    # echo 2. Create RedHat User
-    # $SCRIPT_HOME/OL8MakeRedHatUser.sh
+    echo 2. Create RedHat User
+    $SCRIPT_HOME/OL8MakeRedHatUser.sh
   SCRIPT
   #
   # Install Java 8 script

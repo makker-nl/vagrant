@@ -21,7 +21,8 @@
 <com.izforge.izpack.panels.SummaryPanel id="summary"/>
 <com.izforge.izpack.panels.InstallPanel id="install"/>
 <com.jboss.devstudio.core.installer.CreateLinkPanel id="createlink">
-<jrelocation>/etc/alternatives/java_sdk/bin/java</jrelocation>
+<!--jrelocation>/etc/alternatives/java_sdk/bin/java</jrelocation-->
+<jrelocation>/app/oracle/product/jdk8/bin/java</jrelocation>
 </com.jboss.devstudio.core.installer.CreateLinkPanel>
 <com.izforge.izpack.panels.ShortcutPanel id="shortcut">
 <programGroup name=""/>

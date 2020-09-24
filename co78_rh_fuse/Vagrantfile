@@ -1,18 +1,18 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 #
-BOX_NAME="OL8.2SwGUIv1.0"
-BOX_URL="file://../boxes/OL8.2SwGUIv1.0.box"
-#VM_MEMORY = 12288 # 12*1024 MB
+BOX_NAME="CO77GUIv1.1"
+BOX_URL="file://../boxes/CO78SwGUIv1.0.box"
+VM_MEMORY = 12288 # 12*1024 MB
 #VM_MEMORY = 8192 # 8*1024 MB
-VM_MEMORY = 6144 # 6*1024 MB
+#VM_MEMORY = 6144 # 6*1024 MB
 #VM_MEMORY = 6656 # 6,5*1024 MB
-VM_CPUS=2
+VM_CPUS=4
 VM_GUI=false
 #VM_GUI=true
 #VMS_HOME="d:\\VirtualMachines\\VirtualBox"
 VMS_HOME="C:/Data/VirtualMachines/VirtualBox"
-VM_NAME="OL8U2_RH_FUSE"  
+VM_NAME="CO7U8_RH_FUSE"  
 VM_HOST_NAME="rhfuse.conclusion.local"
 VM_MACHINE="rhfuse"
 VM_STORAGE_CTRL="SATA"  
@@ -108,14 +108,14 @@ Vagrant.configure("2") do |config|
   $initScript = <<-SCRIPT
     export SCRIPT_HOME=/media/sf_Stage/commonScripts/linux
     echo _______________________________________________________________________________
-    echo Prepare Oracle Linux
-    $SCRIPT_HOME/OL8Prep.sh
+    echo Prepare CentOS Linux
+    $SCRIPT_HOME/0.CO7PrepOEL.sh
     echo _______________________________________________________________________________
     echo 1. Create Filesystem
-    $SCRIPT_HOME/OL8FileSystem.sh
+    $SCRIPT_HOME/1.FileSystem.sh
     echo _______________________________________________________________________________
     echo 2. Create RedHat User
-    $SCRIPT_HOME/OL8MakeRedHatUser.sh
+    $SCRIPT_HOME/2.CO7MakeRedHatUser.sh
   SCRIPT
   #
   # Install Java 8 script
@@ -132,7 +132,7 @@ Vagrant.configure("2") do |config|
     export SCRIPT_HOME=/media/sf_Stage/commonScripts/opensource/maven
     echo _______________________________________________________________________________
     echo Maven
-    CMD=${SCRIPT_HOME}/installMaven.sh
+    CMD=${SCRIPT_HOME}/ol7InstallMaven.sh
     sudo runuser -l redhat -c $CMD
   SCRIPT
   #
@@ -163,10 +163,31 @@ Vagrant.configure("2") do |config|
     sudo runuser -l redhat -c $CMD
   SCRIPT
   #
-config.vm.provision "init", type: "shell", run: "once", inline: $initScript
-config.vm.provision "installJava8", type: "shell", run: "once", inline: $installJava8Script
-config.vm.provision "installMaven", type: "shell", run: "once", inline: $installMavenScript
-config.vm.provision "installEclipse", type: "shell", run: "once", inline: $installEclipseScript
-config.vm.provision "installCodeReadyStudio", type: "shell", run: "once", inline: $installCodeReadyStudioScript
-config.vm.provision "installCamel", type: "shell", run: "once", inline: $installCamelScript
+  #
+  # Install Docker script
+  $installDockerScript = <<-SCRIPT
+    export SCRIPT_HOME=/media/sf_Stage/commonScripts/opensource/docker
+	USER_PROPS=/vagrant/makeDockerUser.properties
+    echo _______________________________________________________________________________
+    echo Docker on CentOS
+	echo . copy $USER_PROPS to $SCRIPT_HOME
+	cp -rf $USER_PROPS $SCRIPT_HOME
+    CMD=${SCRIPT_HOME}/CO7InstallDocker.sh
+    sudo runuser -l redhat -c $CMD
+  SCRIPT
+  #
+  $installSoapUIScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo SoapUI
+    sudo runuser -l redhat -c '/media/sf_Stage/commonScripts/opensource/soapui/installSoapUI.sh'
+  SCRIPT
+  #
+  config.vm.provision "init", type: "shell", run: "once", inline: $initScript
+  config.vm.provision "installJava8", type: "shell", run: "once", inline: $installJava8Script
+  config.vm.provision "installMaven", type: "shell", run: "once", inline: $installMavenScript
+  config.vm.provision "installEclipse", type: "shell", run: "once", inline: $installEclipseScript
+  config.vm.provision "installCodeReadyStudio", type: "shell", run: "once", inline: $installCodeReadyStudioScript
+  config.vm.provision "installCamel", type: "shell", run: "once", inline: $installCamelScript
+  config.vm.provision "installDocker", type: "shell", run: "once", inline: $installDockerScript
+  config.vm.provision "installSoapUI", type: "shell", run: "once", inline: $installSoapUIScript  
 end

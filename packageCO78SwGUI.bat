@@ -1,0 +1,1 @@
+vagrant package --base CO7U8 --output d:\Projects\vagrant\boxes\CO78SwGUIv1.0.box

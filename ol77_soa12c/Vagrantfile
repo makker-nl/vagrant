@@ -5,9 +5,9 @@ BOX_NAME="ol77GUIv1.1"
 BOX_URL="file://../boxes/ol77GUIv1.1.box"
 #VM_MEMORY = 12288 # 12*1024 MB
 #VM_MEMORY = 8192 # 8*1024 MB
-#VM_MEMORY = 6144 # 6*1024 MB
-VM_MEMORY = 7168 # 7*1024 MB
-VM_CPUS=4
+VM_MEMORY = 6144 # 6*1024 MB
+#VM_MEMORY = 6656 # 6,5*1024 MB
+VM_CPUS=2
 VM_GUI=false
 #VM_GUI=true
 #VMS_HOME="d:\\VirtualMachines\\VirtualBox"
@@ -19,7 +19,7 @@ VM_STORAGE_CTRL="SATA"
 VM_DISK2=VMS_HOME+"/"+VM_NAME+"/"+VM_NAME+".disk2.vdi"
 VM_DISK2_SIZE=1024 * 512
 # Stage folders
-STAGE_HOST_FOLDER="d:/Projects/vagrant/Stage"
+STAGE_HOST_FOLDER="c:/Data/Projects/vagrant/Stage"
 STAGE_GUEST_FOLDER="/media/sf_Stage"
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -57,7 +57,7 @@ Vagrant.configure("2") do |config|
   config.ssh.username="vagrant"
   config.ssh.password="vagrant"
   #Base Mac address.
-  config.vm.base_mac="080027126D17"
+  #config.vm.base_mac="080027126D17"
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
@@ -257,9 +257,9 @@ Vagrant.configure("2") do |config|
   config.vm.provision "installFMWOSB", type: "shell", run: "once", inline: $installFMWOSBScript
   config.vm.provision "installFMWOHS", type: "shell", run: "once", inline: $installFMWOHSScript
   config.vm.provision "installFMWBPMQS", type: "shell", run: "once", inline: $installFMWBPMQSScript
-  config.vm.provision "installFMWRCU", type: "shell", run: "once", inline: $configFMWRCUScript
-  config.vm.provision "configFMWCreateDmn", type: "shell", run: "once", inline: $configFMWCreateDmnScript
-  config.vm.provision "configFirewall", type: "shell", run: "once", inline: $configFirewallScript
+  config.vm.provision "installFMWRCU", type: "shell", run: "never", inline: $configFMWRCUScript
+  config.vm.provision "configFMWCreateDmn", type: "shell", run: "never", inline: $configFMWCreateDmnScript
+  config.vm.provision "configFirewall", type: "shell", run: "never", inline: $configFirewallScript
 #  config.vm.provision "startFMWDMN", type: "shell", run: "always", inline: $startFMWDMNScript
 #  config.vm.provision "installSoapUI", type: "shell", run: "once", inline: $installSoapUIScript  
 end

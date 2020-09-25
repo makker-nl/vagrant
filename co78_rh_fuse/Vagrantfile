@@ -1,8 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 #
-BOX_NAME="CO77GUIv1.1"
-BOX_URL="file://../boxes/CO78SwGUIv1.0.box"
+BOX_NAME="makker/CO78SwGUI"
+BOX_VERSION = "1"
+#BOX_URL="file://../boxes/CO78SwGUIv1.0.box"
 VM_MEMORY = 12288 # 12*1024 MB
 #VM_MEMORY = 8192 # 8*1024 MB
 #VM_MEMORY = 6144 # 6*1024 MB
@@ -32,8 +33,9 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box=BOX_NAME
-  config.vm.box_url=BOX_URL
+  config.vm.box = BOX_NAME
+  config.vm.box_version = BOX_VERSION
+  # config.vm.box_url=BOX_URL
   config.vm.hostname=VM_HOST_NAME
   config.vm.define VM_MACHINE
   config.vm.provider :virtualbox do |vb|

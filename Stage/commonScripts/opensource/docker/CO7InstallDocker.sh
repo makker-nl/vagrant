@@ -22,7 +22,7 @@ sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/dock
 #
 echo . install docker-engine
 #sudo yum install -q -y docker-engine
-sudo yum install docker-ce docker-ce-cli containerd.io
+sudo yum install -q -y docker-ce docker-ce-cli containerd.io
 #
 echo 2. Install curl 
 sudo yum install -q -y  curl 

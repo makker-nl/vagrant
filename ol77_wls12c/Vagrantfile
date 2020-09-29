@@ -165,11 +165,23 @@ Vagrant.configure("2") do |config|
     echo "Install OpenDJ 3.0.0 (For WLS12c Advanced Admin training)"
     sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/opensource/OpenDJ/installOpenDJ.sh'
   SCRIPT
+  $installJdev12cScript = <<-SCRIPT
+	  echo ______________________________________________________________________________
+    echo Install SOA QuickStart 12cR2 (12.2.1.3)
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/jdeveloper/12.2.1.3/installJdev.sh'
+  SCRIPT
   # Install Confluent Kafka
   $installKafkaScript = <<-SCRIPT
     echo ______________________________________________________________________________
     echo "Install Kafka (Confluent 5.0.0)"
     sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/opensource/confluent/installKafka.sh'
+  SCRIPT
+  #
+  # BPM Quickstart
+  $installFMWSOAQSScript = <<-SCRIPT
+    echo _______________________________________________________________________________
+    echo Fusion Middleware - SOA Quickstart
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/soaqs/installSOAQS.sh'
   SCRIPT
   #
   config.vm.provision "init", type: "shell", run: "once", inline: $initScript
@@ -181,4 +193,5 @@ Vagrant.configure("2") do |config|
   config.vm.provision "installJdev12c", type: "shell", run: "once", inline: $installJdev12cScript
   config.vm.provision "installOpenDJ", type: "shell", run: "once", inline: $installOpenDJScript
   config.vm.provision "installKafka", type: "shell", run: "once", inline: $installKafkaScript
+  config.vm.provision "installFMWSOAQS", type: "shell", run: "never", inline: $installFMWSOAQSScript
 end

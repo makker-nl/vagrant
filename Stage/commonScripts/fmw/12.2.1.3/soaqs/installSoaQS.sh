@@ -16,6 +16,10 @@ JDEV_INSTALL_RSP_TPL=$JDEV_INSTALL_RSP.tpl
 ### Need to check the name of the zip file.
 JDEV_INSTALL_ZIP1=V886442-01_1of2.zip
 JDEV_INSTALL_ZIP2=V886442-01_2of2.zip
+#
+JDEV_USR_HOME=~/.jdeveloper/12.2.1.3.0
+JDEV_PROD_CONF=product.conf
+JDEV_PROD_CONF_TPL=$JDEV_PROD_CONF.tpl
 # Set ORACLE_HOME
 export ORACLE_HOME=$JDEV_HOME
 #
@@ -52,6 +56,13 @@ if [ ! -d "$JDEV_HOME" ]; then
     echo copy $SCRIPTPATH/ide.conf to $JDEV_HOME/jdeveloper/ide/bin
     mv $JDEV_HOME/jdeveloper/ide/bin/ide.conf $JDEV_HOME/jdeveloper/jdev/bin/ide.conf.org
     cp $SCRIPTPATH/ide.conf $JDEV_HOME/jdeveloper/ide/bin/ide.conf
+    #
+    echo copy $SCRIPTPATH/$JDEV_PROD_CONF to $JDEV_USR_HOME/$JDEV_PROD_CONF
+    envsubst < $SCRIPTPATH/$JDEV_PROD_CONF_TPL > $SCRIPTPATH/$JDEV_PROD_CONF
+    mv $JDEV_USR_HOME/$JDEV_PROD_CONF $JDEV_USR_HOME/$JDEV_PROD_CONF.org
+    mkdir -p $JDEV_USR_HOME
+    cp $SCRIPTPATH/$JDEV_PROD_CONF $JDEV_USR_HOME/$JDEV_PROD_CONF
+    #
     echo copy JDeveloper SOA QuickStart 12cR2 environment and start scripts to ~/bin
     mkdir -p ~/bin/
     cp $SCRIPTPATH/jdevsoa12c_env.sh ~/bin/ 

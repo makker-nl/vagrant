@@ -16,6 +16,10 @@ JDEV_INSTALL_RSP_TPL=$JDEV_INSTALL_RSP.tpl
 ### Need to check the name of the zip file.
 JDEV_INSTALL_ZIP1=fmw_12.2.1.3.0_bpmqs_Disk1_1of2.zip
 JDEV_INSTALL_ZIP2=fmw_12.2.1.3.0_bpmqs_Disk1_2of2.zip
+#
+JDEV_USR_HOME=~/.jdeveloper/12.2.1.3.0
+JDEV_PROD_CONF=product.conf
+JDEV_PROD_CONF_TPL=$JDEV_PROD_CONF.tpl
 # Set ORACLE_HOME
 export ORACLE_HOME=$JDEV_HOME
 #
@@ -49,10 +53,17 @@ if [ ! -d "$JDEV_HOME" ]; then
     echo copy $SCRIPTPATH/jdev.boot naar $JDEV_HOME/jdeveloper/jdev/bin
     mv $JDEV_HOME/jdeveloper/jdev/bin/jdev.boot $JDEV_HOME/jdeveloper/jdev/bin/jdev.boot.org
     cp $SCRIPTPATH/jdev.boot $JDEV_HOME/jdeveloper/jdev/bin/jdev.boot
+    #
+    echo copy $SCRIPTPATH/$JDEV_PROD_CONF to $JDEV_USR_HOME/$JDEV_PROD_CONF
+    envsubst < $SCRIPTPATH/$JDEV_PROD_CONF_TPL > $SCRIPTPATH/$JDEV_PROD_CONF
+    mkdir -p $JDEV_USR_HOME
+    mv $JDEV_USR_HOME/$JDEV_PROD_CONF $JDEV_USR_HOME/$JDEV_PROD_CONF.org
+    cp $SCRIPTPATH/$JDEV_PROD_CONF $JDEV_USR_HOME/$JDEV_PROD_CONF
+    #
     echo copy JDeveloper BPM QuickStart 12cR2 environment and start scripts to ~/bin
     mkdir -p ~/bin/
     cp $SCRIPTPATH/jdevbpm12c_env.sh ~/bin/ 
-    cp $SCRIPTPATH/jdevbpm12c.sh ~/bin/
+    cp $SCRIPTPATH/jdevbpm12c.sh ~/bin
   else
     echo $JDEV_INSTALL_JAR not available!.
   fi

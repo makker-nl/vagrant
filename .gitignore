@@ -7,7 +7,6 @@
 /ol75_wls12c/.vagrant
 /ol75_docker/.vagrant
 .vagrant
-/Stage/installBinaries
 /boxes
 /Stage/projects
 /Stage/installBinaries/Java/p30884160_180251_Linux-x86-64.zip

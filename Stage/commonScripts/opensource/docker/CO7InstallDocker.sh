@@ -10,11 +10,9 @@ function prop {
     grep "${1}" $SCRIPTPATH/makeDockerUser.properties|cut -d'=' -f2
 }
 #
-
-echo Docker User: $NEW_USER
-#
 DOCKER_USER=$(prop 'docker.user')
 DOCKER_GROUP=docker
+echo Docker User: $DOCKER_USER
 #
 echo 1. Install Docker Engine on CentOS
 echo . Add docker-ce repo
@@ -67,5 +65,6 @@ echo 5.4 Reload deamon
 sudo systemctl daemon-reload 
 echo 5.5 Start docker again
 sudo systemctl start docker
-
-
+echo 5.6 Enable docker as a systemd service
+#https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot
+sudo systemctl enable docker

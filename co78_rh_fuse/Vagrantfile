@@ -1,27 +1,35 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 #
+require 'yaml'
+#
 BOX_NAME="makker/CO78SwGUI"
 BOX_VERSION = "1"
 #BOX_URL="file://../boxes/CO78SwGUIv1.0.box"
-VM_MEMORY = 12288 # 12*1024 MB
-#VM_MEMORY = 8192 # 8*1024 MB
-#VM_MEMORY = 6144 # 6*1024 MB
-#VM_MEMORY = 6656 # 6,5*1024 MB
-VM_CPUS=4
-VM_GUI=false
-#VM_GUI=true
-#VMS_HOME="d:\\VirtualMachines\\VirtualBox"
-VMS_HOME="C:/Data/VirtualMachines/VirtualBox"
-VM_NAME="CO7U8_RH_FUSE"  
-VM_HOST_NAME="rhfuse.conclusion.local"
+#
+# https://stackoverflow.com/questions/13065576/override-vagrant-configuration-settings-locally-per-dev
+settings = YAML.load_file 'settings.yml'
+provisioners = YAML.load_file 'provisioners.yml'
+VM_NAME="CO7U8_RH_FUSE_GH_v1"  
+VM_HOST_NAME="rhfuse.makker.local"
 VM_MACHINE="rhfuse"
+VM_MEMORY = settings['environment']['vmMemory']
+VM_CPUS = settings['environment']['vmCpus']
+VM_GUI = settings['environment']['vmGui']
+VM_MONITOR_COUNT = settings['environment']['vmMonitorCount']
+VMS_HOME = settings['environment']['vmsHome']
 VM_STORAGE_CTRL="SATA"  
 VM_DISK2=VMS_HOME+"/"+VM_NAME+"/"+VM_NAME+".disk2.vdi"
-VM_DISK2_SIZE=1024 * 512
-# Stage folders
-STAGE_HOST_FOLDER="d:/Projects/vagrant/Stage"
-STAGE_GUEST_FOLDER="/media/sf_Stage"
+VM_DISK2_SIZE = settings['environment']['disks']['vmsDisk2Size']
+# Shared folders
+STAGE_HOST_FOLDER = settings['sharedFolders']['stageHostFolder']
+STAGE_GUEST_FOLDER = settings['sharedFolders']['stageGuestFolder']
+PROJECT_HOST_FOLDER = settings['sharedFolders']['projectHostFolder']
+PROJECT_GUEST_FOLDER = settings['sharedFolders']['projectGuestFolder']
+#
+LOCAL_COMMON_SCRIPTS = "../Stage/commonScripts"
+STAGE_COMMON_SCRIPTS = STAGE_GUEST_FOLDER+"/commonScripts"
+#
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -43,11 +51,13 @@ Vagrant.configure("2") do |config|
     vb.gui=VM_GUI
     vb.memory=VM_MEMORY
     vb.cpus=VM_CPUS
-	#Pre-allocate the memory when starting the guest.
-	#vb.customize ["setextradata", :id, "VBoxInternal/RamPreAlloc", 1]
+	  #Pre-allocate the memory when starting the guest.
+	  #vb.customize ["setextradata", :id, "VBoxInternal/RamPreAlloc", 1]
     # Set clipboard and drag&drop bidirectional
     vb.customize ["modifyvm", :id, "--clipboard-mode", "bidirectional"]
     vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
+    # Set number of monitors.
+    vb.customize ["modifyvm", :id, "--monitorcount", VM_MONITOR_COUNT]
     # Create a disk  
     unless File.exist?(VM_DISK2)
       vb.customize [ "createmedium", "disk", "--filename", VM_DISK2, "--format", "vdi", "--size", VM_DISK2_SIZE , "--variant", "Standard" ]
@@ -89,6 +99,7 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   config.vm.synced_folder STAGE_HOST_FOLDER, STAGE_GUEST_FOLDER
+  config.vm.synced_folder PROJECT_HOST_FOLDER, PROJECT_GUEST_FOLDER
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
@@ -114,82 +125,80 @@ Vagrant.configure("2") do |config|
     $SCRIPT_HOME/0.CO7PrepOEL.sh
     echo _______________________________________________________________________________
     echo 1. Create Filesystem
-    $SCRIPT_HOME/1.FileSystem.sh
+    $SCRIPT_HOME/1.CO7FileSystem.sh
     echo _______________________________________________________________________________
-    echo 2. Create RedHat User
+    echo 2. Create User 
+	echo . Create RedHat User
     $SCRIPT_HOME/2.CO7MakeRedHatUser.sh
   SCRIPT
   #
-  # Install Java 8 script
-  $installJava8Script = <<-SCRIPT
-    export SCRIPT_HOME=/media/sf_Stage/commonScripts/fmw/java/jdk8
-    echo _______________________________________________________________________________
-    echo Java SDK 8
-    CMD=${SCRIPT_HOME}/installJava8.sh
-    sudo runuser -l redhat -c $CMD
-  SCRIPT
+  RUN_AS_SCR=LOCAL_COMMON_SCRIPTS+'/runAs.sh'
   #
-  # Install Maven script
-  $installMavenScript = <<-SCRIPT
-    export SCRIPT_HOME=/media/sf_Stage/commonScripts/opensource/maven
-    echo _______________________________________________________________________________
-    echo Maven
-    CMD=${SCRIPT_HOME}/ol7InstallMaven.sh
-    sudo runuser -l redhat -c $CMD
-  SCRIPT
+  JAVA_RUN = provisioners['java11']['run']
   #
-  # Install Eclipse script
-  $installEclipseScript = <<-SCRIPT
-    export SCRIPT_HOME=/media/sf_Stage/commonScripts/opensource/Eclipse
-    echo _______________________________________________________________________________
-    echo Eclipse
-    CMD=${SCRIPT_HOME}/installEclipse.sh
-    sudo runuser -l redhat -c $CMD
-  SCRIPT
+  GIT_RUN = provisioners['git']['run']
   #
-  # Install RedHat CodeReadyStudio script
-  $installCodeReadyStudioScript = <<-SCRIPT
-    export SCRIPT_HOME=/media/sf_Stage/commonScripts/redhat/CodeReadyStudio
-    echo _______________________________________________________________________________
-    echo RedHat CodeReadyStudio
-    CMD=${SCRIPT_HOME}/installCodeReadyStudio.sh
-    sudo runuser -l redhat -c $CMD
-  SCRIPT
+  OJ8_USR = provisioners['oraclejava8']['user']
+  OJ8_RUN = provisioners['oraclejava8']['run']
+  OJ8_SCR=STAGE_COMMON_SCRIPTS+'/oracle/java/jdk8/installJava8.sh'
   #
-  # Install Camel script
-  $installCamelScript = <<-SCRIPT
-    export SCRIPT_HOME=/media/sf_Stage/commonScripts/opensource/Camel
-    echo _______________________________________________________________________________
-    echo Camel
-    CMD=${SCRIPT_HOME}/installCamel.sh
-    sudo runuser -l redhat -c $CMD
-  SCRIPT
+  MAVEN_USR = provisioners['maven']['user']
+  MAVEN_RUN = provisioners['maven']['run']
+  MAVEN_SCR=STAGE_COMMON_SCRIPTS+'/opensource/maven/ol7InstallMaven.sh'
   #
+  CRS_USR = provisioners['codereadystudio']['user']
+  CRS_RUN = provisioners['codereadystudio']['run']
+  CRS_SCR=STAGE_COMMON_SCRIPTS+'/redhat/CodeReadyStudio/installCodeReadyStudio.sh'
   #
-  # Install Docker script
-  $installDockerScript = <<-SCRIPT
-    export SCRIPT_HOME=/media/sf_Stage/commonScripts/opensource/docker
-	USER_PROPS=/vagrant/makeDockerUser.properties
-    echo _______________________________________________________________________________
-    echo Docker on CentOS
-	echo . copy $USER_PROPS to $SCRIPT_HOME
-	cp -rf $USER_PROPS $SCRIPT_HOME
-    CMD=${SCRIPT_HOME}/CO7InstallDocker.sh
-    sudo runuser -l redhat -c $CMD
-  SCRIPT
+  DCKR_USR = provisioners['docker']['user']
+  DCKR_RUN = provisioners['docker']['run']
+  DCKR_DOCKER_USR = provisioners['docker']['docker_user']
+  DCKR_DOCKER_PWD = provisioners['docker']['docker_password']
+  DCKR_SCR_HOME=STAGE_COMMON_SCRIPTS+'/opensource/docker'
   #
-  $installSoapUIScript = <<-SCRIPT
-    echo _______________________________________________________________________________
-    echo SoapUI
-    sudo runuser -l redhat -c '/media/sf_Stage/commonScripts/opensource/soapui/installSoapUI.sh'
-  SCRIPT
+  DCKRC_USR = provisioners['dockercompose']['user']
+  DCKRC_RUN = provisioners['dockercompose']['run']
+  DCKRC_SCR=STAGE_COMMON_SCRIPTS+'/opensource/docker/co7InstallDockerCompose.sh'  
+  #
+  AMQ_USR = provisioners['amq']['user']
+  AMQ_RUN = provisioners['amq']['run']
+  AMQ_START = provisioners['amq']['start']
+  AMQ_SCR=STAGE_COMMON_SCRIPTS+'/opensource/amq_artemis/installArtemis.sh'
+  AMQ_CRE_BKR_SCR=STAGE_COMMON_SCRIPTS+'/opensource/amq_artemis/createAMQBroker.sh'    
+  AMQ_START_SCR='/home/redhat/bin/startAMQBroker.sh'
+  AMQ_STOP_SCR='/home/redhat/bin/stopAMQBroker.sh'
+  #
+  SOAPUI_USR = provisioners['soapui']['user']
+  SOAPUI_RUN = provisioners['soapui']['run']
+  SOAPUI_SCR=STAGE_COMMON_SCRIPTS+'/opensource/soapui/installSoapUI.sh'
+  #
+  PMN_USR = provisioners['soapui']['user']
+  PMN_RUN = provisioners['soapui']['run']
+  PMN_SCR=STAGE_COMMON_SCRIPTS+'/opensource/postman/co7installPostman.sh'
+  #
+  # Oracle SOA QuickStart 12.2.1.4 (Tbv. XSD/WSDL/XSLT designers.
+  OSOAQS_USR = provisioners['osoaqs']['user']
+  OSOAQS_RUN = provisioners['osoaqs']['run']
+  OSOAQS_SCR=STAGE_COMMON_SCRIPTS+'/oracle/fmw/12.2.1.4/soaqs/installSoaQS.sh'
+  #
+  OC_USR = provisioners['oc']['user']
+  OC_RUN = provisioners['oc']['run']
+  OC_SCR=STAGE_COMMON_SCRIPTS+'/redhat/MiniShift/co7InstallOc.sh'
   #
   config.vm.provision "init", type: "shell", run: "once", inline: $initScript
-  config.vm.provision "installJava8", type: "shell", run: "once", inline: $installJava8Script
-  config.vm.provision "installMaven", type: "shell", run: "once", inline: $installMavenScript
-  config.vm.provision "installEclipse", type: "shell", run: "once", inline: $installEclipseScript
-  config.vm.provision "installCodeReadyStudio", type: "shell", run: "once", inline: $installCodeReadyStudioScript
-  config.vm.provision "installCamel", type: "shell", run: "once", inline: $installCamelScript
-  config.vm.provision "installDocker", type: "shell", run: "once", inline: $installDockerScript
-  config.vm.provision "installSoapUI", type: "shell", run: "once", inline: $installSoapUIScript  
-end
+  config.vm.provision "installJava11", type: "shell", run: JAVA_RUN, path: LOCAL_COMMON_SCRIPTS+'/opensource/java/installJava11.sh'
+  config.vm.provision "installGit", type: "shell", run: GIT_RUN, path: LOCAL_COMMON_SCRIPTS+'/opensource/git/co7InstallGit.sh'
+  config.vm.provision "installOJava8", type: "shell", run: OJ8_RUN, path: RUN_AS_SCR, args: ["Oracle JDK 8", OJ8_SCR, OJ8_USR]
+  config.vm.provision "installMaven", type: "shell", run: MAVEN_RUN, path: RUN_AS_SCR, args: ["Apache\ Maven", MAVEN_SCR, MAVEN_USR]
+  config.vm.provision "installCodeReadyStudio", type: "shell", run: CRS_RUN, path: RUN_AS_SCR, args: ["Red\ Hat\ CodeReadyStudio", CRS_SCR, CRS_USR]
+  config.vm.provision "installDocker", name: "installDocker", type: "shell", run: "never", run: DCKR_RUN, path: LOCAL_COMMON_SCRIPTS+'/opensource/docker/co7InstallDockerAs.sh', args: ["Docker", DCKR_SCR_HOME, DCKR_USR, DCKR_DOCKER_USR, DCKR_DOCKER_PWD]
+  config.vm.provision "installDockerCompose", type: "shell", run: DCKRC_RUN, path: RUN_AS_SCR, args: ["docker-compose", DCKRC_SCR, DCKRC_USR]
+  config.vm.provision "installAMQ", type: "shell", run: AMQ_RUN, path: RUN_AS_SCR, args: ["Apache\ Active\ MQ\ Artemis", AMQ_SCR, AMQ_USR]
+  config.vm.provision "createAMQBroker", type: "shell", run: AMQ_RUN, path: RUN_AS_SCR, args: ["Apache\ Active\ MQ\ Artemis", AMQ_CRE_BKR_SCR, AMQ_USR]  
+  config.vm.provision "startAMQBroker", type: "shell", run: AMQ_START, path: RUN_AS_SCR, args: ["Apache\ Active\ MQ\ Artemis", AMQ_START_SCR, AMQ_USR]
+  config.vm.provision "stopAMQBroker", type: "shell", run: "never", path: RUN_AS_SCR, args: ["Apache\ Active\ MQ\ Artemis", AMQ_STOP_SCR, AMQ_USR]
+  config.vm.provision "installSoapUI", type: "shell", run: SOAPUI_RUN, path: RUN_AS_SCR, args: ["SoapUI", SOAPUI_SCR, SOAPUI_USR]
+  config.vm.provision "installPostman", type: "shell", run: PMN_RUN, path: RUN_AS_SCR, args: ["Postman", PMN_SCR, PMN_USR]
+  config.vm.provision "installSoaQS", type: "shell", run: OSOAQS_RUN, path: RUN_AS_SCR, args: ["Oracle\ SOA\ QuickStart", OSOAQS_SCR, OSOAQS_USR]
+  config.vm.provision "installOc", type: "shell", run: OC_RUN, path: RUN_AS_SCR, args: ["Red Hat OpenShift CLI", OC_SCR, OC_USR]
+end 

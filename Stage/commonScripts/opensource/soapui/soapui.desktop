@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=SoapUI 5.5.0
+Exec=~/bin/soapui.sh
+Icon=/app/oracle/product/jdeveloper/12214_SOAQS/jdeveloper/jdev/bin/jdev_icon.gif
+Terminal=false
+Type=Application
+Categories=Development
+

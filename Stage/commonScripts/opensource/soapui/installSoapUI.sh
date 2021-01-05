@@ -31,6 +31,10 @@ if [ ! -f "$SOAPUI_HOME/bin/soapui.sh" ]; then
   echo Copy start script to user home
   mkdir -p ~/bin
   cp $SCRIPTPATH/soapui.sh ~/bin
+  cp $SCRIPTPATH/ssh_soapui.sh ~/bin
+  cp $SCRIPTPATH/soapui.ico $SOAPUI_HOME
+  cp $SCRIPTPATH/soapui.desktop ~/.local/share/applications
+  
 else
   echo SoapUI already installed
 fi

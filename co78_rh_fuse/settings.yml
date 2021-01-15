@@ -12,7 +12,7 @@ environment:
   disks:
     vmsDisk2Size: 524288 #1024 * 512
 sharedFolders:
-  stageHostFolder: c:/Data/git/VS/redhat-fuse/application-development/vagrant/Stage
+  stageHostFolder: c:/Data/git/makker/application-development/vagrant/Stage
   stageGuestFolder: /media/sf_Stage
-  projectHostFolder: c:/Data/git/VS/redhat-fuse/application-development
+  projectHostFolder: c:/Data/git/makker/application-development
   projectGuestFolder: /media/sf_Projects

@@ -1,0 +1,85 @@
+environment:
+    vmsHome: C:/Data/VirtualMachines/VirtualBox
+master:
+    machine: master
+    name: CO7U8_MASTER
+    hostname: "master.makker.local"
+    vmsHome: C:/Data/VirtualMachines/VirtualBox
+    #vmMemory: 12288 # 12*1024 MB 
+    #vmMemory: 8192 # 8*1024 MB
+    #vmMemory: 6144 # 6*1024 MB
+    vmMemory: 4096 # 4*1024 MB
+    vmCpus: 1
+    vmGui: false
+    #vmGui: true
+    vmMonitorCount: 1
+    #vmMonitorCount: 2    
+    ssh:
+        username: "vagrant"
+        password: "vagrant"
+    disks:
+        controller: SATA
+        disk2:
+            name: disk2
+            size: 524288 #1024 * 512
+    sharedFolders:
+        stage:
+            hostFolder: c:/Data/git/VS/redhat-fuse/application-development/vagrant/Stage
+            guestFolder: /media/sf_Stage
+        project:
+            hostFolder: c:/Data/git/VS/redhat-fuse/application-development
+            guestFolder: /media/sf_Projects
+#
+node1:
+    machine: node1
+    name: CO7U8_NODE1
+    hostname: "node1.makker.local"
+    vmsHome: C:/Data/VirtualMachines/VirtualBox
+    vmMemory: 4096 # 4*1024 MB
+    vmCpus: 1
+    vmGui: false
+    #vmGui: true
+    vmMonitorCount: 1
+    #vmMonitorCount: 2    
+    ssh:
+        username: "vagrant"
+        password: "vagrant"
+    disks:
+        controller: SATA
+        disk2:
+            name: disk2
+            size: 524288 #1024 * 512
+    sharedFolders:
+        stage:
+            hostFolder: c:/Data/git/VS/redhat-fuse/application-development/vagrant/Stage
+            guestFolder: /media/sf_Stage
+        project:
+            hostFolder: c:/Data/git/VS/redhat-fuse/application-development
+            guestFolder: /media/sf_Projects
+#
+node2:
+    machine: node2
+    name: CO7U8_NODE2
+    hostname: "node2.makker.local"
+    vmsHome: C:/Data/VirtualMachines/VirtualBox
+    vmMemory: 4096 # 4*1024 MB
+    vmCpus: 1
+    vmGui: false
+    #vmGui: true
+    vmMonitorCount: 1
+    #vmMonitorCount: 2    
+    ssh:
+        username: "vagrant"
+        password: "vagrant"
+    disks:
+        controller: SATA
+        disk2:
+            name: disk2
+            size: 524288 #1024 * 512
+    sharedFolders:
+        stage:
+            hostFolder: c:/Data/git/VS/redhat-fuse/application-development/vagrant/Stage
+            guestFolder: /media/sf_Stage
+        project:
+            hostFolder: c:/Data/git/VS/redhat-fuse/application-development
+            guestFolder: /media/sf_Projects

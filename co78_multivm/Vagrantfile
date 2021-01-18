@@ -103,5 +103,5 @@ Vagrant.configure("2") do |config|
   #
   # Global Provisioners
   #
-  config.vm.provision "init", type: "shell", run: "once", path: LOCAL_COMMON_SCRIPTS+'/linux/co7/generic_proviosioning.sh'
+  config.vm.provision "init", type: "shell", run: "once", path: LOCAL_COMMON_SCRIPTS+'/linux/co7/generic_provisioning.sh', args: [STAGE_COMMON_SCRIPTS+"/linux/co7"]
 end 

@@ -1,8 +1,7 @@
 #!/bin/bash
 #SCRIPTPATH=$(dirname $0)
-SCRIPT_HOME=/media/sf_Stage/commonScripts/linux/co7
+SCRIPT_HOME=$1
 #
-echo $SCRIPT_HOME
 echo _______________________________________________________________________________
 echo Prepare CentOS Linux
 $SCRIPT_HOME/0.PrepOEL.sh

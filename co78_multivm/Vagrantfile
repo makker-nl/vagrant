@@ -17,6 +17,7 @@ VM_NODE1_MACHINE=settings['node1']['machine']
 VM_NODE2_MACHINE=settings['node2']['machine']
 #
 LOCAL_COMMON_SCRIPTS = "../Stage/commonScripts"
+STAGE_COMMON_SCRIPTS = "/media/sf_Stage/commonScripts"
 #
 def shared_vm_config(vmconf, node)
   vmconf.vm.box = BOX_NAME
@@ -31,21 +32,21 @@ def add_shared_folder(vmconf, sharedfolder)
     vmconf.vm.synced_folder sharedfolder['hostFolder'], sharedfolder['guestFolder']
 end
 #
-def shared_vbx_config(vbx, node)
-  vbx.name=node['name']
-  vbx.memory=node['vmMemory']
-  vbx.cpus=node['vmCpus']
-  vbx.gui=node['vmGui']
+def shared_vbx_config(vbx, nodeSettings)
+  vbx.name=nodeSettings['name']
+  vbx.memory=nodeSettings['vmMemory']
+  vbx.cpus=nodeSettings['vmCpus']
+  vbx.gui=nodeSettings['vmGui']
   # Set clipboard and drag&drop bidirectional
   vbx.customize ["modifyvm", :id, "--clipboard-mode", "bidirectional"]
   vbx.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
   # Set number of monitors.
-  vbx.customize ["modifyvm", :id, "--monitorcount", node['vmMonitorCount']]
+  vbx.customize ["modifyvm", :id, "--monitorcount", nodeSettings['vmMonitorCount']]
 end
 #
-def add_vbx_shared_disk(vbx, node, disk)
-  storage_controller = node['disks']['controller']
-  vm_disk=VMS_HOME+"/"+node['name']+"/"+node['name']+"-"+disk['name']+".vdi"
+def add_vbx_shared_disk(vbx, nodeSettings, disk)
+  storage_controller = nodeSettings['disks']['controller']
+  vm_disk=VMS_HOME+"/"+nodeSettings['name']+"/"+nodeSettings['name']+"-"+disk['name']+".vdi"
   # Create a disk  
   unless File.exist?(vm_disk)
     vbx.customize [ "createmedium", "disk", "--filename", vm_disk, "--format", "vdi", "--size", disk['size'] , "--variant", "Standard" ]
@@ -54,63 +55,53 @@ def add_vbx_shared_disk(vbx, node, disk)
   vbx.customize [ "storageattach", :id , "--storagectl", storage_controller, "--port", "2", "--device", "0", "--type", "hdd", "--medium", vm_disk]
 end
 #
+def node_vm_config(vmconf, nodeSettings)
+  shared_vm_config(vmconf, nodeSettings) 
+  add_shared_folder(vmconf, nodeSettings['sharedFolders']['stage']) 
+  add_shared_folder(vmconf, nodeSettings['sharedFolders']['project']) 
+  #
+  vmconf.vm.provider :virtualbox do |vbxnode|
+    shared_vbx_config(vbxnode, nodeSettings)
+    # Create Disk 2
+    add_vbx_shared_disk(vbxnode, nodeSettings, nodeSettings['disks']['disk2'])
+  end
+end
+#
 Vagrant.configure("2") do |config|
   # Master configuration 
   config.vm.define VM_MSTR_MACHINE do |master|
-    node='master'
-    shared_vm_config(master, settings[node]) 
-    add_shared_folder(master, settings[node]['sharedFolders']['stage']) 
-    add_shared_folder(master, settings[node]['sharedFolders']['project']) 
-    #
-    master.vm.provider :virtualbox do |vbxmstr|
-      shared_vbx_config(vbxmstr, settings[node])
-      # Create Disk 2
-      add_vbx_shared_disk(vbxmstr, settings[node], settings[node]['disks']['disk2'])
-    end
+    nodeName='master'
+    node_vm_config(master, settings[nodeName])
     #
     # Provisioners
-    STAGE_GUEST_FOLDER = settings[node]['sharedFolders']['stage']['guestFolder']
+    STAGE_GUEST_FOLDER = settings[nodeName]['sharedFolders']['stage']['guestFolder']
     STAGE_COMMON_SCRIPTS = STAGE_GUEST_FOLDER+"/commonScripts"
-    master.vm.provision :shell, inline: "echo Master provisioning"
+    master.vm.provision :shell, inline: "echo Perform master provisioning"
   end 
   # Node 1 configuration 
   config.vm.define VM_NODE1_MACHINE do |node1|
-    node='node1'
-    shared_vm_config(node1, settings[node]) 
-    add_shared_folder(node1, settings[node]['sharedFolders']['stage']) 
-    add_shared_folder(node1, settings[node]['sharedFolders']['project']) 
-    #
-    node1.vm.provider :virtualbox do |vbxnode1|
-      shared_vbx_config(vbxnode1, settings[node])
-      # Create Disk 2
-      add_vbx_shared_disk(vbxnode1, settings[node], settings[node]['disks']['disk2'])
-    end
+    nodeName='node1'    
+    node_vm_config(node1, settings[nodeName])
     #
     # Provisioners
-    STAGE_GUEST_FOLDER = settings[node]['sharedFolders']['stage']['guestFolder']
+    STAGE_GUEST_FOLDER = settings[nodeName]['sharedFolders']['stage']['guestFolder']
     STAGE_COMMON_SCRIPTS = STAGE_GUEST_FOLDER+"/commonScripts"
-    node1.vm.provision :shell, inline: "echo Node2 provisioning"
+    node1.vm.provision :shell, inline: "echo Perform "+nodeName+" provisioning"
   end 
   # Node 2 configuration 
   config.vm.define VM_NODE2_MACHINE do |node2|
-    node='node2'
-    shared_vm_config(node2, settings[node]) 
-    add_shared_folder(node2, settings[node]['sharedFolders']['stage']) 
-    add_shared_folder(node2, settings[node]['sharedFolders']['project']) 
-    #
-    node2.vm.provider :virtualbox do |vbxnode2|
-      shared_vbx_config(vbxnode2, settings[node])
-      # Create Disk 2
-      add_vbx_shared_disk(vbxnode2, settings[node], settings[node]['disks']['disk2'])
-    end
+    nodeName='node2'
+    node_vm_config(node2, settings[nodeName])
     #
     # Provisioners
-    STAGE_GUEST_FOLDER = settings[node]['sharedFolders']['stage']['guestFolder']
+    STAGE_GUEST_FOLDER = settings[nodeName]['sharedFolders']['stage']['guestFolder']
     STAGE_COMMON_SCRIPTS = STAGE_GUEST_FOLDER+"/commonScripts"
-    node2.vm.provision :shell, inline: "echo Node2 provisioning"
+    node2.vm.provision :shell, inline: "echo Perform "+nodeName+" provisioning"
   end 
   config.vm.network "public_network"
   config.vm.provision :shell, inline: "echo Global provisioning"
   #
-  # Provisioners
+  # Global Provisioners
+  #
+  config.vm.provision "init", type: "shell", run: "once", path: LOCAL_COMMON_SCRIPTS+'/linux/co7/generic_proviosioning.sh'
 end 

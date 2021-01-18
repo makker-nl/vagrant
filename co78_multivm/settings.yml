@@ -24,10 +24,10 @@ master:
             size: 524288 #1024 * 512
     sharedFolders:
         stage:
-            hostFolder: c:/Data/git/VS/redhat-fuse/application-development/vagrant/Stage
+            hostFolder: c:/Data/git/makker/vagrant/Stage
             guestFolder: /media/sf_Stage
         project:
-            hostFolder: c:/Data/git/VS/redhat-fuse/application-development
+            hostFolder: c:/Data/git/makker
             guestFolder: /media/sf_Projects
 #
 node1:
@@ -51,10 +51,10 @@ node1:
             size: 524288 #1024 * 512
     sharedFolders:
         stage:
-            hostFolder: c:/Data/git/VS/redhat-fuse/application-development/vagrant/Stage
+            hostFolder: c:/Data/git/makker/vagrant/Stage
             guestFolder: /media/sf_Stage
         project:
-            hostFolder: c:/Data/git/VS/redhat-fuse/application-development
+            hostFolder: c:/Data/git/makker
             guestFolder: /media/sf_Projects
 #
 node2:
@@ -78,8 +78,8 @@ node2:
             size: 524288 #1024 * 512
     sharedFolders:
         stage:
-            hostFolder: c:/Data/git/VS/redhat-fuse/application-development/vagrant/Stage
+            hostFolder: c:/Data/git/makker/vagrant/Stage
             guestFolder: /media/sf_Stage
         project:
-            hostFolder: c:/Data/git/VS/redhat-fuse/application-development
+            hostFolder: c:/Data/git/makker
             guestFolder: /media/sf_Projects

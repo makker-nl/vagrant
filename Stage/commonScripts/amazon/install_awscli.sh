@@ -10,10 +10,7 @@ AWSCLI_ZIP=awscliv2.zip
 AWSCLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
 AWSCLI_INSTALL_HOME=$INSTALL_TMP_DIR/AWS_CLI
 AWSCLI_INSTALL_ZIP=$AWSCLI_INSTALL_HOME/$AWSCLI_ZIP
-AWSCLI_INSTALL_ZIP_DIR=$AWSCLI_INSTALL_HOME/confluent-5.0.0
-AWSCLI_HOME=$OS_BASE/confluent
 AWSCLI_BIN=/usr/local/aws-cli/v2/current/dist/aws
-#
 echo "Install AWS CLI"
 echo "Checking AWS CLI binary: "$AWSCLI_BIN
 if [ ! -f "$AWSCLI_BIN" ]; then

@@ -4,3 +4,9 @@ awscli:
   user: "redhat"
   run: "once"
   commonScript: "/amazon/install_awscli.sh"  
+terraform:
+  name: "installTerraform"
+  description: "Hashicorp Terraform"
+  user: "redhat"
+  run: "once"
+  commonScript: "opensource/terraform/install_terraform.sh"  

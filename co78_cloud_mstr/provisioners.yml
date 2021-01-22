@@ -10,3 +10,9 @@ terraform:
   user: "redhat"
   run: "once"
   commonScript: "opensource/terraform/install_terraform.sh"  
+ansible:
+  name: "installAnsible"
+  description: "Red Hat Ansible"
+  user: "redhat"
+  run: "once"
+  commonScript: "redhat/Ansible/installAnsible.sh"  

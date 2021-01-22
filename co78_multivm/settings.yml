@@ -4,7 +4,6 @@ master:
     machine: master
     name: CO7U8_MASTER
     hostname: "master.makker.local"
-    vmsHome: C:/Data/VirtualMachines/VirtualBox
     #vmMemory: 12288 # 12*1024 MB 
     #vmMemory: 8192 # 8*1024 MB
     #vmMemory: 6144 # 6*1024 MB
@@ -34,7 +33,6 @@ node1:
     machine: node1
     name: CO7U8_NODE1
     hostname: "node1.makker.local"
-    vmsHome: C:/Data/VirtualMachines/VirtualBox
     vmMemory: 4096 # 4*1024 MB
     vmCpus: 1
     vmGui: false
@@ -61,7 +59,6 @@ node2:
     machine: node2
     name: CO7U8_NODE2
     hostname: "node2.makker.local"
-    vmsHome: C:/Data/VirtualMachines/VirtualBox
     vmMemory: 4096 # 4*1024 MB
     vmCpus: 1
     vmGui: false

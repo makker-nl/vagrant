@@ -1,37 +1,6 @@
-oraclejava8:
+awscli:
+  name: "installAWSCLI"
+  description: "Amazon AWS Commandline interface"
   user: "redhat"
   run: "once"
-java11:
-  run: "once"
-git:
-  run: "once"
-maven:
-  user: "redhat"
-  run: "once"
-codereadystudio:
-  user: "redhat"
-  run: "once"
-docker:
-  user: "redhat"
-  run: "once"
-  docker_user: redhat
-  docker_password: welcome1
-dockercompose:
-  user: "redhat"
-  run: "once"
-amq:
-  user: "redhat"
-  run: "once"
-  start: "always"
-soapui:
-  user: "redhat"
-  run: "once"
-postman:
-  user: "redhat"
-  run: "once"
-osoaqs:
-  user: "redhat"
-  run: "once"
-oc:
-  user: "redhat"
-  run: "never"
+  commonScript: "/amazon/install_awscli.sh"  

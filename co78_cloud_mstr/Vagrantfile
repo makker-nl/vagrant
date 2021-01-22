@@ -10,14 +10,14 @@ BOX_VERSION = "1"
 # https://stackoverflow.com/questions/13065576/override-vagrant-configuration-settings-locally-per-dev
 settings = YAML.load_file 'settings.yml'
 provisioners = YAML.load_file 'provisioners.yml'
-VMS_HOME = settings['environment']['vmsHome']
 #
+VMS_HOME = settings['environment']['vmsHome']
+# Machines to configure:
 VM_MSTR_MACHINE=settings['master']['machine']
-VM_NODE1_MACHINE=settings['node1']['machine']
-VM_NODE2_MACHINE=settings['node2']['machine']
 #
 LOCAL_COMMON_SCRIPTS = "../Stage/commonScripts"
 STAGE_COMMON_SCRIPTS = "/media/sf_Stage/commonScripts"
+RUN_AS_SCR=LOCAL_COMMON_SCRIPTS+'/runAs.sh'
 #
 def shared_vm_config(vmconf, node)
   vmconf.vm.box = BOX_NAME
@@ -67,6 +67,21 @@ def node_vm_config(vmconf, nodeSettings)
   end
 end
 #
+# Provision generic.
+def provision(vmconf, provisioner)
+  provisionerName = provisioner['name']
+  description = provisioner['description']
+  runAsUser = provisioner['user']
+  runType = provisioner['run']
+  if provisioner['commonScript'] then
+    script = STAGE_COMMON_SCRIPTS+'/'+provisioner['commonScript']
+  elsif provisioner['absoluteScript'] then
+    script = provisioner['absoluteScript']
+  end  
+  vmconf.vm.provision provisionerName, type: "shell", run: runType, path: RUN_AS_SCR, args: [description, script, runAsUser]
+end
+#
+# Machines configuration
 Vagrant.configure("2") do |config|
   # Master configuration 
   config.vm.define VM_MSTR_MACHINE do |master|
@@ -84,4 +99,5 @@ Vagrant.configure("2") do |config|
   # Global Provisioners
   #
   config.vm.provision "init", type: "shell", run: "once", path: LOCAL_COMMON_SCRIPTS+'/linux/co7/generic_provisioning.sh', args: [STAGE_COMMON_SCRIPTS+"/linux/co7"]
+  provision(config, provisioners['awscli'])
 end 

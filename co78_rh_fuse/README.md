@@ -27,7 +27,7 @@ If you checked out the Vagrant GitLab in a different environment then prescribed
 + **OpenJDK 11** in /etc/alternatives/java_sdk -> /usr/lib/jvm/java-11-openjdk-11.0.8.10-0.el7_8.x86_64
 + **Git** [Check out post-provisioning configuration](../Stage/commonScripts/opensource/git/README.md).
 + **OracleJDK 8** in /app/oracle/product/jdk8 [Download Installer](../Stage/installBinaries/Oracle/Java).
-+ **Code Ready Studio v. 12.17** in /app/redhat/codereadystudio. [Download Installer](../Stage/installBinaries/RedHat).
++ **Code Ready Studio v. 12.18** in /app/redhat/codereadystudio. [Download Installer](../Stage/installBinaries/RedHat).
 + **Apache Maven 3.6.3** Maven home: /opt/maven
 + **Apache Active MQ Artemis 5.5.0** in /app/opensource/apache-artemis-2.15.0 and broker in /app/work/artemis/amqbroker. [Download Installer](../Stage/installBinaries/OpenSource/AMQ_Artemis).
 + **SoapUI 5.5.0** in /app/opensource/SoapUI-5.5.0. [Download Installer](../Stage/installBinaries/OpenSource/SoapUI).
@@ -56,6 +56,9 @@ The following provisioners are created.
 | installDockerCompose   | once          | Install docker-compose          |
 | installPostman         | once          | Install Postman (Latest)        |
 | installOc              | never         | Install Red Hat OpenShift CLI   |
+| installKubectl         | never         | Kubernetes commandline tool     |
+| installTektonCLI       | never         | Tekton cli                      |
+| installYq              | never         | yq yaml query                   |
 
 The [provisioners.yml](provisioners.yml) file allows for toggling the run property, to be able to pick&choose which provisioners should be run. Additional Provisioners can be added when needed, and using this file enabled or disabled. The some provisioners the user for which the provisioner will be run can be changed. In most cases this is the _redhat_ user and should not be changed.
 

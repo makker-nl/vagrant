@@ -1,37 +1,110 @@
 oraclejava8:
+  name: "installOJava8"
+  description: "Oracle JDK 8"
   user: "redhat"
   run: "once"
+  commonScript: "/oracle/java/jdk8/installJava8.sh"
 java11:
+  name: "installJava11"
+  description: "OpenJDK 11"
   run: "once"
+  vagrantScript: "/opensource/java/installJava11.sh"
 git:
+  name: "installGit"
+  description: "Git"
   run: "once"
+  vagrantScript: "/opensource/git/co7InstallGit.sh"
 maven:
+  name: "installMaven"
+  description: "Apache Maven"
   user: "redhat"
   run: "once"
+  commonScript: "/opensource/maven/ol7InstallMaven.sh"  
 codereadystudio:
+  name: "installCodeReadyStudio"
+  description: "Red Hat CodeReadyStudio"
   user: "redhat"
   run: "once"
+  commonScript: "/redhat/CodeReadyStudio/installCodeReadyStudio.sh"
 docker:
+  name: "installDocker"
+  description: "Docker"
   user: "redhat"
   run: "once"
   docker_user: redhat
   docker_password: welcome1
+  scriptHome: "/opensource/docker"
+  vagrantScript: "/opensource/docker/co7InstallDockerAs.sh"
 dockercompose:
+  name: "installDockerCompose"
+  description: "docker-compose"
   user: "redhat"
   run: "once"
+  commonScript: "/opensource/docker/co7InstallDockerCompose.sh"
 amq:
+  name: "installAMQ"
+  description: "Apache Active MQ Artemis"
   user: "redhat"
   run: "once"
-  start: "always"
-soapui:
+  commonScript: "/opensource/amq_artemis/installArtemis.sh"
+amqcreabrkr:
+  name: "createAMQBroker"
+  description: "Apache Active MQ Artemis"
   user: "redhat"
   run: "once"
-postman:
+  commonScript: "/opensource/amq_artemis/createAMQBroker.sh"
+amqstart:
+  name: "startAMQBroker"
+  description: "Apache Active MQ Artemis"
   user: "redhat"
-  run: "once"
-osoaqs:
-  user: "redhat"
-  run: "once"
-oc:
+  #run: "always"
+  run: "never"
+  absoluteScript: "/home/redhat/bin/startAMQBroker.sh"
+amqstop:
+  name: "stopAMQBroker"
+  description: "Apache Active MQ Artemis"
   user: "redhat"
   run: "never"
+  absoluteScript: "/home/redhat/bin/stopAMQBroker.sh"
+soapui:
+  name: "installSoapUI"
+  description: "SoapUI Open Source"
+  user: "redhat"
+  run: "once"
+  commonScript: "/opensource/soapui/installSoapUI.sh"    
+postman:
+  name: "installPostman"
+  description: "Postman"
+  user: "redhat"
+  run: "once"
+  commonScript: "/opensource/postman/co7installPostman.sh"    
+osoaqs:
+  name: "installSoaQS"
+  description: "Oracle SOA QuickStart"
+  user: "redhat"
+  run: "once"
+  commonScript: "/oracle/fmw/12.2.1.4/soaqs/installSoaQS.sh"  
+oc:
+  name: "installOc"
+  description: "Red Hat OpenShift CLI"
+  user: "redhat"
+  run: "never"
+  commonScript: "/redhat/MiniShift/co7InstallOc.sh"
+kubectl:
+  name: "installKubectl"
+  description: "Kubernetes commandline tool"
+  user: "redhat"
+  run: "never"
+  commonScript: "opensource/kubernetes/co7InstallKubectl.sh"
+tkncli:
+  name: "installTektonCLI"
+  description: "Tekton cli"
+  user: "redhat"
+  run: "never"
+  commonScript: "opensource/tekton/co7InstallTektonCli.sh"
+yq:
+  name: "installYq"
+  description: "yq yaml query"
+  user: "redhat"
+  run: "never"
+  commonScript: "opensource/yq/install_yq.sh"

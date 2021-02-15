@@ -5,8 +5,10 @@ SCRIPTPATH=$(dirname $0)
 . $SCRIPTPATH/../../install_env.sh
 #
 RHCRS_JAR_HOME=$STAGE_HOME/installBinaries/RedHat
-RHCRS_PREV_VERSION=12.16
-RHCRS_INSTALL_JAR=codereadystudio-12.17.0.GA-installer-standalone.jar
+#RHCRS_PREV_VERSION=12.16
+RHCRS_PREV_VERSION=12.17
+#RHCRS_INSTALL_JAR=codereadystudio-12.17.0.GA-installer-standalone.jar
+RHCRS_INSTALL_JAR=codereadystudio-12.18.0.GA-installer-standalone.jar
 RHCRS_HOME=$RH_BASE/codereadystudio
 RHCRS_PREV_VER_HOME=$RH_BASE/codereadystudio-$RHCRS_PREV_VERSION
 # Set Java Home to Oracle JDK 8

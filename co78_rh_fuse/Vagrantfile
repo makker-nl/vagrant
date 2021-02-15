@@ -29,6 +29,44 @@ PROJECT_GUEST_FOLDER = settings['sharedFolders']['projectGuestFolder']
 #
 LOCAL_COMMON_SCRIPTS = "../Stage/commonScripts"
 STAGE_COMMON_SCRIPTS = STAGE_GUEST_FOLDER+"/commonScripts"
+RUN_AS_SCR=LOCAL_COMMON_SCRIPTS+'/runAs.sh'
+#
+# Provision generic.
+def provision(vmconf, provisioner)
+  provisionerName = provisioner['name']
+  description = provisioner['description']
+  runAsUser = provisioner['user']
+  runType = provisioner['run']
+  if provisioner['commonScript'] then
+    script = STAGE_COMMON_SCRIPTS+'/'+provisioner['commonScript']
+  elsif provisioner['absoluteScript'] then
+    script = provisioner['absoluteScript']
+  end  
+  vmconf.vm.provision provisionerName, type: "shell", run: runType, path: RUN_AS_SCR, args: [description, script, runAsUser]
+end
+#
+# Provision as local script using Vagrant user
+def vagrantProvision(vmconf, provisioner)
+  provisionerName = provisioner['name']
+  description = provisioner['description']
+  runType = provisioner['run']
+  script = LOCAL_COMMON_SCRIPTS+provisioner['vagrantScript']
+  vmconf.vm.provision provisionerName, type: "shell", run: runType, path: script
+end
+#
+# Provision docker
+def vagrantProvisionDocker(vmconf, provisioner)
+  provisionerName = provisioner['name']
+  description = provisioner['description']
+  runType = provisioner['run']
+  runAsUser = provisioner['user']
+  runType = provisioner['run']
+  dockerUser = provisioner['docker_user']
+  dockerPassword = provisioner['docker_password']
+  scriptHome=STAGE_COMMON_SCRIPTS+'/opensource/docker' 
+  script = LOCAL_COMMON_SCRIPTS+provisioner['vagrantScript']
+  vmconf.vm.provision provisionerName, type: "shell", run: "never", run: runType, path: script, args: [description, scriptHome, runAsUser, dockerUser, dockerPassword]
+end
 #
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -132,73 +170,23 @@ Vagrant.configure("2") do |config|
     $SCRIPT_HOME/2.CO7MakeRedHatUser.sh
   SCRIPT
   #
-  RUN_AS_SCR=LOCAL_COMMON_SCRIPTS+'/runAs.sh'
-  #
-  JAVA_RUN = provisioners['java11']['run']
-  #
-  GIT_RUN = provisioners['git']['run']
-  #
-  OJ8_USR = provisioners['oraclejava8']['user']
-  OJ8_RUN = provisioners['oraclejava8']['run']
-  OJ8_SCR=STAGE_COMMON_SCRIPTS+'/oracle/java/jdk8/installJava8.sh'
-  #
-  MAVEN_USR = provisioners['maven']['user']
-  MAVEN_RUN = provisioners['maven']['run']
-  MAVEN_SCR=STAGE_COMMON_SCRIPTS+'/opensource/maven/ol7InstallMaven.sh'
-  #
-  CRS_USR = provisioners['codereadystudio']['user']
-  CRS_RUN = provisioners['codereadystudio']['run']
-  CRS_SCR=STAGE_COMMON_SCRIPTS+'/redhat/CodeReadyStudio/installCodeReadyStudio.sh'
-  #
-  DCKR_USR = provisioners['docker']['user']
-  DCKR_RUN = provisioners['docker']['run']
-  DCKR_DOCKER_USR = provisioners['docker']['docker_user']
-  DCKR_DOCKER_PWD = provisioners['docker']['docker_password']
-  DCKR_SCR_HOME=STAGE_COMMON_SCRIPTS+'/opensource/docker'
-  #
-  DCKRC_USR = provisioners['dockercompose']['user']
-  DCKRC_RUN = provisioners['dockercompose']['run']
-  DCKRC_SCR=STAGE_COMMON_SCRIPTS+'/opensource/docker/co7InstallDockerCompose.sh'  
-  #
-  AMQ_USR = provisioners['amq']['user']
-  AMQ_RUN = provisioners['amq']['run']
-  AMQ_START = provisioners['amq']['start']
-  AMQ_SCR=STAGE_COMMON_SCRIPTS+'/opensource/amq_artemis/installArtemis.sh'
-  AMQ_CRE_BKR_SCR=STAGE_COMMON_SCRIPTS+'/opensource/amq_artemis/createAMQBroker.sh'    
-  AMQ_START_SCR='/home/redhat/bin/startAMQBroker.sh'
-  AMQ_STOP_SCR='/home/redhat/bin/stopAMQBroker.sh'
-  #
-  SOAPUI_USR = provisioners['soapui']['user']
-  SOAPUI_RUN = provisioners['soapui']['run']
-  SOAPUI_SCR=STAGE_COMMON_SCRIPTS+'/opensource/soapui/installSoapUI.sh'
-  #
-  PMN_USR = provisioners['soapui']['user']
-  PMN_RUN = provisioners['soapui']['run']
-  PMN_SCR=STAGE_COMMON_SCRIPTS+'/opensource/postman/co7installPostman.sh'
-  #
-  # Oracle SOA QuickStart 12.2.1.4 (Tbv. XSD/WSDL/XSLT designers.
-  OSOAQS_USR = provisioners['osoaqs']['user']
-  OSOAQS_RUN = provisioners['osoaqs']['run']
-  OSOAQS_SCR=STAGE_COMMON_SCRIPTS+'/oracle/fmw/12.2.1.4/soaqs/installSoaQS.sh'
-  #
-  OC_USR = provisioners['oc']['user']
-  OC_RUN = provisioners['oc']['run']
-  OC_SCR=STAGE_COMMON_SCRIPTS+'/redhat/MiniShift/co7InstallOc.sh'
-  #
   config.vm.provision "init", type: "shell", run: "once", inline: $initScript
-  config.vm.provision "installJava11", type: "shell", run: JAVA_RUN, path: LOCAL_COMMON_SCRIPTS+'/opensource/java/installJava11.sh'
-  config.vm.provision "installGit", type: "shell", run: GIT_RUN, path: LOCAL_COMMON_SCRIPTS+'/opensource/git/co7InstallGit.sh'
-  config.vm.provision "installOJava8", type: "shell", run: OJ8_RUN, path: RUN_AS_SCR, args: ["Oracle JDK 8", OJ8_SCR, OJ8_USR]
-  config.vm.provision "installMaven", type: "shell", run: MAVEN_RUN, path: RUN_AS_SCR, args: ["Apache\ Maven", MAVEN_SCR, MAVEN_USR]
-  config.vm.provision "installCodeReadyStudio", type: "shell", run: CRS_RUN, path: RUN_AS_SCR, args: ["Red\ Hat\ CodeReadyStudio", CRS_SCR, CRS_USR]
-  config.vm.provision "installDocker", name: "installDocker", type: "shell", run: "never", run: DCKR_RUN, path: LOCAL_COMMON_SCRIPTS+'/opensource/docker/co7InstallDockerAs.sh', args: ["Docker", DCKR_SCR_HOME, DCKR_USR, DCKR_DOCKER_USR, DCKR_DOCKER_PWD]
-  config.vm.provision "installDockerCompose", type: "shell", run: DCKRC_RUN, path: RUN_AS_SCR, args: ["docker-compose", DCKRC_SCR, DCKRC_USR]
-  config.vm.provision "installAMQ", type: "shell", run: AMQ_RUN, path: RUN_AS_SCR, args: ["Apache\ Active\ MQ\ Artemis", AMQ_SCR, AMQ_USR]
-  config.vm.provision "createAMQBroker", type: "shell", run: AMQ_RUN, path: RUN_AS_SCR, args: ["Apache\ Active\ MQ\ Artemis", AMQ_CRE_BKR_SCR, AMQ_USR]  
-  config.vm.provision "startAMQBroker", type: "shell", run: AMQ_START, path: RUN_AS_SCR, args: ["Apache\ Active\ MQ\ Artemis", AMQ_START_SCR, AMQ_USR]
-  config.vm.provision "stopAMQBroker", type: "shell", run: "never", path: RUN_AS_SCR, args: ["Apache\ Active\ MQ\ Artemis", AMQ_STOP_SCR, AMQ_USR]
-  config.vm.provision "installSoapUI", type: "shell", run: SOAPUI_RUN, path: RUN_AS_SCR, args: ["SoapUI", SOAPUI_SCR, SOAPUI_USR]
-  config.vm.provision "installPostman", type: "shell", run: PMN_RUN, path: RUN_AS_SCR, args: ["Postman", PMN_SCR, PMN_USR]
-  config.vm.provision "installSoaQS", type: "shell", run: OSOAQS_RUN, path: RUN_AS_SCR, args: ["Oracle\ SOA\ QuickStart", OSOAQS_SCR, OSOAQS_USR]
-  config.vm.provision "installOc", type: "shell", run: OC_RUN, path: RUN_AS_SCR, args: ["Red Hat OpenShift CLI", OC_SCR, OC_USR]
+  vagrantProvision(config, provisioners['java11'])
+  vagrantProvision(config, provisioners['git'])
+  provision(config, provisioners['oraclejava8'])
+  provision(config, provisioners['maven'])
+  provision(config, provisioners['codereadystudio'])
+  vagrantProvisionDocker(config, provisioners['docker'])
+  provision(config, provisioners['dockercompose'])
+  provision(config, provisioners['amq'])
+  provision(config, provisioners['amqcreabrkr'])
+  provision(config, provisioners['amqstart'])
+  provision(config, provisioners['amqstop'])
+  provision(config, provisioners['soapui'])
+  provision(config, provisioners['postman'])
+  provision(config, provisioners['osoaqs'])
+  provision(config, provisioners['oc'])
+  provision(config, provisioners['kubectl'])
+  provision(config, provisioners['tkncli'])
+  provision(config, provisioners['yq'])  
 end 

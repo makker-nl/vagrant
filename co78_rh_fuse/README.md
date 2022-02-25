@@ -36,8 +36,8 @@ Several of the available provisioners are:
 + **Apache Maven 3.8.3** Maven home: /opt/maven
 + **Apache Active MQ Artemis 5.5.0** in /app/opensource/apache-artemis-2.15.0 and broker in /app/work/artemis/amqbroker. [Download Installer](../Stage/installBinaries/OpenSource/AMQ_Artemis).
 + **SoapUI 5.7.0** in /app/opensource/SoapUI-5.7.0. [Download Installer](../Stage/installBinaries/OpenSource/SoapUI).
-+ **Docker ** Including move of the Docker local storage folder to /app/docker/data
-+ **Docker Compose (docker-compose) ** 
++ **Docker** Including move of the Docker local storage folder to /app/docker/data
++ **Docker Compose (docker-compose)** 
 + **Postman Latest** from https://dl.pstmn.io/download/latest/linux64
 + **Red Hat OpenShift CLI (oc) version ** [Download Installer](../Stage/installBinaries/RedHat).
 

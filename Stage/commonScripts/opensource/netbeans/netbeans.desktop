@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Netbeans
+Exec=/app/opensource/netbeans/bin/netbeans
+Icon=/app/opensource/netbeans/nb/netbeans.png
+Terminal=false
+Type=Application
+Categories=Development
+

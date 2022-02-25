@@ -1,4 +1,5 @@
 # Red Hat CodeReadyStudio Installer
 At this location the following installer(s) are expected:
-+ **codereadystudio-12.18.0.GA-installer-standalone.jar** [Download here](https://developers.redhat.com/products/codeready-studio/download)
-+ **oc-3.11.286-linux.tar.gz** [Download here](https://github.com/openshift/origin/releases/tag/v3.11.0)
++ **codereadystudio-12.21.3.GA-installer-standalone.jar** [Download here](https://developers.redhat.com/content-gateway/file/codereadystudio-12.21.3.GA-installer-standalone.jar)
++ **codereadystudio-12.21.2.GA-installer-standalone.jar** [Download here](https://developers.redhat.com/content-gateway/file/codereadystudio-12.21.2.GA-installer-standalone.jar)
++ **oc.tar** Download here from your OpenShift environment, as described [here](https://developers.redhat.com/openshift/command-line-tools).

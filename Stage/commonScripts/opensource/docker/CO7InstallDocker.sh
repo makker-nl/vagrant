@@ -26,6 +26,8 @@ echo 2. Install curl
 sudo yum install -q -y  curl 
 #
 echo 3. Add  ${DOCKER_GROUP} group to ${DOCKER_USER}
+# https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket
+sudo groupadd ${DOCKER_GROUP} 
 sudo usermod -aG ${DOCKER_GROUP} ${DOCKER_USER}
 #
 echo 4. Check Docker install
@@ -34,31 +36,24 @@ sudo systemctl start docker
 sudo systemctl status docker
 #
 echo 5. Change docker default folder
-# According to oracle-base you should create a filesystem, preferably using BTRFS, for the container-home. https://oracle-base.com/articles/linux/docker-install-docker-on-oracle-linux-ol7. 
-# But let's stick with ext4.
-## Adapted from  https://sanenthusiast.com/change-default-image-container-location-docker/
-echo 5.1. Find Storage Driver
-GREP_STRG_DRVR=$(sudo docker info |grep "Storage Driver")
-DOCKER_STORAGE_DRVR=${GREP_STRG_DRVR#*": "}
-echo "Storage Driver: ${DOCKER_STORAGE_DRVR}"
-echo 5.2. Stop docker
+echo 5.1. Stop docker
 sudo systemctl stop docker
-echo 5.3. Add reference to data folders for storage.
+echo 5.2. Add reference to data folders for storage.
+# Taken from:
+# https://www.digitalocean.com/community/questions/how-to-move-the-default-var-lib-docker-to-another-directory-for-docker-on-linux
 DOCKER_DATA_HOME=/app/docker/data
+DOCKER_STRT_STMT="ExecStart=/usr/bin/dockerd"
+DOCKER_STRT_STMT_EXP="${DOCKER_STRT_STMT} -g ${DOCKER_DATA_HOME}"
+DOCKER_SVC_SCR=/lib/systemd/system/docker.service
 echo mkdir -p ${DOCKER_DATA_HOME}
 sudo mkdir -p ${DOCKER_DATA_HOME}
-#
-
-DOCKER_STORAGE_CFG=/etc/sysconfig/docker-storage
-echo Check $DOCKER_STORAGE_CFG for $DOCKER_STORAGE_DRVR
-if grep -Fq $DOCKER_STORAGE_DRVR $DOCKER_STORAGE_CFG
+if grep -Fq "$DOCKER_STRT_STMT_EXP" $DOCKER_SVC_SCR
 then
-  echo 'WARNING: '${DOCKER_STORAGE_DRVR}' already in '${DOCKER_STORAGE_CFG}
-  echo 'Skipping, please verify!'
+  echo "WARNING: ${DOCKER_STRT_STMT_EXP} already in ${DOCKER_SVC_SCR}"
+  echo "Skipping, please verify!"
 else
-  echo 'Adding '${DOCKER_STORAGE_DRVR}' to '${DOCKER_STORAGE_CFG}
-  
-  sudo sh -c "echo 'DOCKER_STORAGE_OPTIONS = --graph=\"${DOCKER_DATA_HOME}\" --storage-driver=${DOCKER_STORAGE_DRVR}' >> ${DOCKER_STORAGE_CFG}"
+  echo "Change  ${DOCKER_STRT_STMT} to ${DOCKER_STRT_STMT_EXP} to ${DOCKER_SVC_SCR}"
+  sudo sed -i "s|${DOCKER_STRT_STMT} |${DOCKER_STRT_STMT_EXP} |g" ${DOCKER_SVC_SCR}
 fi
 #
 echo 5.4 Reload deamon

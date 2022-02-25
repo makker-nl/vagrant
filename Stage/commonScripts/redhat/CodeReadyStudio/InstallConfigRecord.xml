@@ -3,7 +3,7 @@
     <com.jboss.devstudio.core.installer.HTMLInfoPanelWithRootWarning id="introduction"/>
     <com.izforge.izpack.panels.HTMLLicencePanel id="licence"/>
     <com.jboss.devstudio.core.installer.PathInputPanel id="target">
-        <installpath>/app/redhat/codereadystudio</installpath>
+        <installpath>/app/redhat/codereadystudio-12.21.3</installpath>
     </com.jboss.devstudio.core.installer.PathInputPanel>
     <com.jboss.devstudio.core.installer.JREPathPanel id="jre"/>
     <com.jboss.devstudio.core.installer.JBossAsSelectPanel id="as">
@@ -25,8 +25,8 @@
     </com.jboss.devstudio.core.installer.CreateLinkPanel>
     <com.izforge.izpack.panels.ShortcutPanel id="shortcut">
         <programGroup name=""/>
-        <shortcut KdeSubstUID="false" categories="Applications;Development;" commandLine="" createForAll="true" description="Runs the Red Hat CodeReady Studio 12.17.0.GA" encoding="UTF-8" group="true" icon="/app/redhat/codereadystudio/studio/48-studio.icon.png" iconIndex="0" initialState="1" mimetype="" name="Red Hat CodeReady Studio 12.17.0.GA" target="/app/redhat/codereadystudio/studio/codereadystudio" terminal="false" terminalOptions="" tryexec="" type="Application" url="" usertype="0" workingDirectory="/app/redhat/codereadystudio/studio"/>
-        <shortcut KdeSubstUID="false" categories="Applications;Development;" commandLine="-jar &quot;/app/redhat/codereadystudio/Uninstaller/uninstaller.jar&quot;" createForAll="true" description="Uninstall Red Hat CodeReady Studio 12.17.0.GA" encoding="UTF-8" group="true" icon="/app/redhat/codereadystudio/studio/48-uninstall.icon.png" iconIndex="0" initialState="1" mimetype="" name="Uninstall Red Hat CodeReady Studio 12.17.0.GA" target="java" terminal="false" terminalOptions="" tryexec="" type="Application" url="" usertype="0" workingDirectory="/app/redhat/codereadystudio/Uninstaller"/>
+        <shortcut KdeSubstUID="false" categories="Applications;Development;" commandLine="" createForAll="true" description="Runs the Red Hat CodeReady Studio 12.21.3.GA" encoding="UTF-8" group="true" icon="/app/redhat/codereadystudio-12.21.3/studio/48-studio.icon.png" iconIndex="0" initialState="1" mimetype="" name="Red Hat CodeReady Studio 12.21.3.GA" target="/app/redhat/codereadystudio-12.21.3/studio/codereadystudio" terminal="false" terminalOptions="" tryexec="" type="Application" url="" usertype="0" workingDirectory="/app/redhat/codereadystudio-12.21.3/studio"/>
+        <shortcut KdeSubstUID="false" categories="Applications;Development;" commandLine="-jar &quot;/app/redhat/codereadystudio-12.21.3/Uninstaller/uninstaller.jar&quot;" createForAll="true" description="Uninstall Red Hat CodeReady Studio 12.21.3.GA" encoding="UTF-8" group="true" icon="/app/redhat/codereadystudio-12.21.3/studio/48-uninstall.icon.png" iconIndex="0" initialState="1" mimetype="" name="Uninstall Red Hat CodeReady Studio 12.21.3.GA" target="java" terminal="false" terminalOptions="" tryexec="" type="Application" url="" usertype="0" workingDirectory="/app/redhat/codereadystudio-12.21.3/Uninstaller"/>
     </com.izforge.izpack.panels.ShortcutPanel>
     <com.jboss.devstudio.core.installer.ShortcutPanelPatch id="shortcutpatch"/>
     <com.izforge.izpack.panels.SimpleFinishPanel id="finish"/>

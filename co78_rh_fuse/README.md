@@ -56,8 +56,9 @@ The following provisioners are created.
 | installDockerCompose   | once          | Install docker-compose          |
 | installPostman         | once          | Install Postman (Latest)        |
 | installOc              | never         | Install Red Hat OpenShift CLI   |
-| installKubectl         | never         | Kubernetes commandline tool     |
-| installTektonCLI       | never         | Tekton cli                      |
+| installKubectl         | never         | Kubernetes Control CLI          |
+| installHelm            | never         | Helm commandline interface      |
+| installTektonCLI       | never         | Tekton CLI                      |
 | installYq              | never         | yq yaml query                   |
 
 The [provisioners.yml](provisioners.yml) file allows for toggling the run property, to be able to pick&choose which provisioners should be run. Additional Provisioners can be added when needed, and using this file enabled or disabled. The some provisioners the user for which the provisioner will be run can be changed. In most cases this is the _redhat_ user and should not be changed.
@@ -70,3 +71,22 @@ For example, to stop the AMQ broker:
 ```
 vagrant provision --provision-with stopAMQBroker
 ```
+
+# Hyper-V en Credential/Hypervisor security
+
+Op sommige VS Laptops staat de Windows Hyper Visor en/of de Credential Security en/of HyperVisor Security aan. Dit belemmert een succesfolle creatie en startup van de VM. Een workaround hiervoor is door ServiceDesk aangereikt. Voer het volgende uit:
+
++    Schakel Hyper-V volledig uit (bij Windows Features);
+    Ga naar: https://www.microsoft.com/en-us/download/details.aspx?id=53337 en download de tool (powershell script);
+
++    Ga met PowerShell naar de locatie van het gedownloade script (CD <locatie>), gevolgd door:
+    set-executionpolicy bypass -scope currentuser -force ;
+
++    Voer tenslotte het volgende in:
+    .\DG_Readiness_Tool_v3.6.ps1 -disable
+
++    Vervolgens krijg je de melding om opnieuw op te starten. Dat kan snel met:
+    > shutdown /r /t 0
+    Zodra je dit doet zal de BIOS je een of twee keer om een bevestiging vragen. Beantwoord met F3 en met enter (aka. the any-key.).
+
+Dit moet meestal na een herstart opnieuw gedaan worden. Mocht je tijd hebben om je laptop opnieuw in te richten dan kun je bij de ServiceDesk je laptop opnieuw laten inspoelen met een image waarin dit niet gebeurt.

@@ -1,0 +1,12 @@
+imagestream.image.openshift.io/fis-java-openshift created
+imagestream.image.openshift.io/jboss-fuse70-java-openshift created
+imagestream.image.openshift.io/fis-karaf-openshift created
+imagestream.image.openshift.io/jboss-fuse70-karaf-openshift created
+imagestream.image.openshift.io/jboss-fuse70-eap-openshift created
+imagestream.image.openshift.io/jboss-fuse70-console created
+imagestream.image.openshift.io/fuse7-java-openshift created
+imagestream.image.openshift.io/fuse7-karaf-openshift created
+imagestream.image.openshift.io/fuse7-eap-openshift created
+imagestream.image.openshift.io/fuse7-console created
+imagestream.image.openshift.io/apicurito-ui created
+imagestream.image.openshift.io/fuse-apicurito-generator created

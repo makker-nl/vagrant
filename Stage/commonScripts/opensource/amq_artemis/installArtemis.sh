@@ -20,6 +20,9 @@ if [ ! -d "$AMQ_HOME" ]; then
   #
   # Install Apache Active MQ Artemis
   echo Install Apache Active MQ Artemis
+  echo Create folder $INSTALL_TMP_DIR
+  sudo mkdir -p $INSTALL_TMP_DIR
+  sudo chmod a+w $INSTALL_TMP_DIR
   echo create folder $AMQ_INSTALL_TMP
   mkdir -p $AMQ_INSTALL_TMP
   echo create AMQ_HOME $AMQ_HOME

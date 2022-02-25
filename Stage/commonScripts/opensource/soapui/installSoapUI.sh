@@ -4,8 +4,9 @@ SCRIPTPATH=$(dirname $0)
 #
 . $SCRIPTPATH/../../install_env.sh
 #
+#SOAPUI_VER=5.5.0
 #SOAPUI_VER=5.6.0
-SOAPUI_VER=5.5.0
+SOAPUI_VER=5.7.0
 SOAPUI_ZIP_HOME=$STAGE_HOME/installBinaries/OpenSource/SoapUI
 SOAPUI_INSTALL_TMP=$INSTALL_TMP_DIR/soapui
 SOAPUI_INSTALL_TAR=SoapUI-${SOAPUI_VER}-linux-bin.tar.gz

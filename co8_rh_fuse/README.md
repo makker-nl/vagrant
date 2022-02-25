@@ -45,7 +45,7 @@ Several of the available provisioners are:
 + **Docker** Including move of the Docker local storage folder to /app/docker/data
 + **Docker Compose (docker-compose)** 
 + **Postman Latest** from https://dl.pstmn.io/download/latest/linux64
-+ **Red Hat OpenShift CLI (oc) version ** [Download Installer](../Stage/installBinaries/RedHat).
++ **Red Hat OpenShift CLI (oc) version** [Download Installer](../Stage/installBinaries/RedHat).
 
 This list is not complete, as provisioners can be added from time to time.
 

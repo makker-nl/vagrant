@@ -41,11 +41,11 @@ Several of the available provisioners are:
 + **Code Ready Studio v. 12.21** in /app/redhat/codereadystudio. [Download Installer](../Stage/installBinaries/RedHat).
 + **Apache Maven 3.8.3** Maven home: /opt/maven
 + **Apache Active MQ Artemis 5.5.0** in /app/opensource/apache-artemis-2.15.0 and broker in /app/work/artemis/amqbroker. [Download Installer](../Stage/installBinaries/OpenSource/AMQ_Artemis).
-+ **SoapUI 5.7.0** in /app/opensource/SoapUI-5.5.0. [Download Installer](../Stage/installBinaries/OpenSource/SoapUI).
++ **SoapUI 5.7.0** in /app/opensource/SoapUI-5.7.0. [Download Installer](../Stage/installBinaries/OpenSource/SoapUI).
 + **Docker ** Including move of the Docker local storage folder to /app/docker/data
 + **Docker Compose (docker-compose) ** 
 + **Postman Latest** from https://dl.pstmn.io/download/latest/linux64
-+ **Red Hat OpenShift CLI (oc) version 3.11.268** [Download Installer](../Stage/installBinaries/RedHat).
++ **Red Hat OpenShift CLI (oc) version ** [Download Installer](../Stage/installBinaries/RedHat).
 
 This list is not complete, as provisioners can be added from time to time.
 

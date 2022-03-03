@@ -15,7 +15,7 @@ DOCKER_GROUP=docker
 echo Docker User: $DOCKER_USER
 #
 echo 0. Remove old Docker related packages on CentOS 8
-. echo Remove docker packages
+echo . Remove docker packages
 sudo dnf remove docker \
                 docker-client \
                 docker-client-latest \
@@ -46,7 +46,7 @@ sudo usermod -aG ${DOCKER_GROUP} ${DOCKER_USER}
 echo 4. Check Docker install
 docker --version
 sudo systemctl start docker
-sudo systemctl status docker
+#sudo systemctl status docker
 #
 echo 5. Change docker default folder
 echo 5.1. Stop docker

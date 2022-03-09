@@ -15,10 +15,10 @@ VM_MACHINE_NAME="darwin-wls12c"
 VM_DISK2=VMS_HOME+"/"+VM_NAME+"/"+VM_NAME+".disk2.vdi"
 VM_DISK2_SIZE=1024 * 512
 # Stage folders
-STAGE_HOST_FOLDER="d:/Projects/vagrant/Stage"
+STAGE_HOST_FOLDER="c:/Data/git/makker/vagrant/Stage"
 STAGE_GUEST_FOLDER="/media/sf_Stage"
 # Project folders
-PROJECT_HOST_FOLDER="d:/Projects"
+PROJECT_HOST_FOLDER="c:/Data/git/makker"
 PROJECT_GUEST_FOLDER="/media/sf_Projects"
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -122,15 +122,13 @@ Vagrant.configure("2") do |config|
   $installJava8Script = <<-SCRIPT
     echo _______________________________________________________________________________
     echo Java SDK 8
-    export SCRIPT_HOME=/media/sf_Stage/commonScripts/fmw/java
-    CMD=${SCRIPT_HOME}/jdk8/installJava8.sh
-    sudo runuser -l oracle -c $CMD
+    sudo runuser -l oracle -c /media/sf_Stage/commonScripts/oracle/java/jdk8/installJava8.sh
   SCRIPT
   # Install Database
   $installDB121Script = <<-SCRIPT
     echo _______________________________________________________________________________
     echo Database 12c
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/12.1/installDB.sh'
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/oracle/db/12.1/installDB.sh'
   SCRIPT
   # Start Database  
   $startDBScript = <<-SCRIPT
@@ -142,22 +140,22 @@ Vagrant.configure("2") do |config|
   $installSqlDevScript = <<-SCRIPT
     # echo _______________________________________________________________________________
     # echo SQLCL and SQLDeveloper
-    # sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/sqldev/installSqlcl.sh'
+    # sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/oracle/db/sqldev/installSqlcl.sh'
     echo _______________________________________________________________________________
     echo SQLDeveloper
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/db/sqldev/installSqlDeveloper.sh'
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/oracle/db/sqldev/installSqlDeveloper.sh'
   SCRIPT
   # Install WLS12c
   $installWls12cScript = <<-SCRIPT
     echo ______________________________________________________________________________
     echo Install WLS 12c
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/wls/12.2.1.3//installWLS.sh'
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/oracle/fmw/wls/12.2.1.3//installWLS.sh'
   SCRIPT
   # Install JDeveloper
   $installJdev12cScript = <<-SCRIPT
 	  echo ______________________________________________________________________________
     echo Install Jdeveloper 12c
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/jdeveloper/12.2.1.3/installJdev.sh'
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/oracle/fmw/jdeveloper/12.2.1.3/installJdev.sh'
   SCRIPT
   # Install OpenDJ
   $installOpenDJScript = <<-SCRIPT
@@ -168,7 +166,7 @@ Vagrant.configure("2") do |config|
   $installJdev12cScript = <<-SCRIPT
 	  echo ______________________________________________________________________________
     echo Install SOA QuickStart 12cR2 (12.2.1.3)
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/jdeveloper/12.2.1.3/installJdev.sh'
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/oracle/fmw/jdeveloper/12.2.1.3/installJdev.sh'
   SCRIPT
   # Install Confluent Kafka
   $installKafkaScript = <<-SCRIPT
@@ -181,17 +179,17 @@ Vagrant.configure("2") do |config|
   $installFMWSOAQSScript = <<-SCRIPT
     echo _______________________________________________________________________________
     echo Fusion Middleware - SOA Quickstart
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/soaqs/installSOAQS.sh'
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/oracle/fmw/12.2.1.3/soaqs/installSOAQS.sh'
   SCRIPT
   #
   config.vm.provision "init", type: "shell", run: "once", inline: $initScript
   config.vm.provision "installJava8", type: "shell", run: "once", inline: $installJava8Script
   config.vm.provision "installDB12c", type: "shell", run: "once", inline: $installDB121Script
-  config.vm.provision "startDB", type: "shell", run: "always", inline: $startDBScript
-  config.vm.provision "installSQLDev", type: "shell", run: "once", inline: $installSqlDevScript
-  config.vm.provision "installWLS12c", type: "shell", run: "once", inline: $installWls12cScript  
-  config.vm.provision "installJdev12c", type: "shell", run: "once", inline: $installJdev12cScript
-  config.vm.provision "installOpenDJ", type: "shell", run: "once", inline: $installOpenDJScript
-  config.vm.provision "installKafka", type: "shell", run: "once", inline: $installKafkaScript
+  config.vm.provision "startDB", type: "shell", run: "once", inline: $startDBScript
+  config.vm.provision "installSQLDev", type: "shell", run: "never", inline: $installSqlDevScript
+  config.vm.provision "installWLS12c", type: "shell", run: "never", inline: $installWls12cScript  
+  config.vm.provision "installJdev12c", type: "shell", run: "never", inline: $installJdev12cScript
+  config.vm.provision "installOpenDJ", type: "shell", run: "never", inline: $installOpenDJScript
+  config.vm.provision "installKafka", type: "shell", run: "never", inline: $installKafkaScript
   config.vm.provision "installFMWSOAQS", type: "shell", run: "never", inline: $installFMWSOAQSScript
 end

@@ -15,8 +15,8 @@ The following is installed:
 ## Provisioners:
 The following provisioners are created.
 
-| Name                   | run           | Description                     | Install Script      | Install Binary |
-| ---------------------- | ------------- |---------------------------------| --------------------|----------------|
-| init                   | once          | Initialize VM                   |                     |                |
-| installOJava8          | once          | Install Oracle JDK 8            | [oracle/java/jdk8/installJava8.sh](../Stage/commonScripts/oracle/java/jdk8/installJava8.sh) | [installBinaries/Oracle/Java](../Stage/installBinaries/Oracle/Java/README.md) |
+| Name                   | run           | Description                     | Install Scripts     | Install Binaries |
+| ---------------------- | ------------- |---------------------------------| --------------------|------------------|
+| init                   | once          | Initialize VM                   |                     |                  |
+| installOJava8          | once          | Install Oracle JDK 8            | [oracle/java](../Stage/commonScripts/oracle/java/README.md) | [installBinaries/Oracle/Java](../Stage/installBinaries/Oracle/Java/README.md) |
 

@@ -20,3 +20,4 @@ The following provisioners are created.
 | init                   | once          | Initialize VM                   |                     |                  |
 | installOJava8          | once          | Install Oracle JDK 8            | [oracle/java](../Stage/commonScripts/oracle/java/README.md) | [installBinaries/Oracle/Java](../Stage/installBinaries/Oracle/Java/README.md) |
 
+| installDB12c          | once          | Install Oracle Database 12cR1    | [commonScripts/oracle/db/12.1](../Stage/commonScripts/commonScripts/oracle/db/12.1/README.md) | [installBinaries/Oracle/Java](../Stage/installBinaries/Oracle/Oracle/DB/12.1.0.2/x86_64/README.md) |

@@ -5,4 +5,3 @@ The script that installs SQL Developer is [installSqlDeveloper.sh](installSqlDev
 ## Intall Binary
 The script above expects the following installer(s):
 + **sqldeveloper-19.4.0.354.1759-no-jre.zip** [See](../../../../installBinaries/Oracle/DB/SQLDeveloper)
-

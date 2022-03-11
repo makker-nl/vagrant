@@ -4,5 +4,6 @@
 /Stage/Extracted
 /Stage/installBinaries/**/*/.rpm
 /Stage/installBinaries/**/*.jar
+/Stage/installBinaries/**/*.el8.x86_64.rpm
 /Stage/installBinaries/**/*.tar
 /Stage/installBinaries/**/*.zip

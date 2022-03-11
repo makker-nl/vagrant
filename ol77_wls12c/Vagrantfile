@@ -186,10 +186,10 @@ Vagrant.configure("2") do |config|
   config.vm.provision "installJava8", type: "shell", run: "once", inline: $installJava8Script
   config.vm.provision "installDB12c", type: "shell", run: "once", inline: $installDB121Script
   config.vm.provision "startDB", type: "shell", run: "once", inline: $startDBScript
-  config.vm.provision "installSQLDev", type: "shell", run: "never", inline: $installSqlDevScript
-  config.vm.provision "installWLS12c", type: "shell", run: "never", inline: $installWls12cScript  
-  config.vm.provision "installJdev12c", type: "shell", run: "never", inline: $installJdev12cScript
-  config.vm.provision "installOpenDJ", type: "shell", run: "never", inline: $installOpenDJScript
-  config.vm.provision "installKafka", type: "shell", run: "never", inline: $installKafkaScript
-  config.vm.provision "installFMWSOAQS", type: "shell", run: "never", inline: $installFMWSOAQSScript
+  config.vm.provision "installSQLDev", type: "shell", run: "once", inline: $installSqlDevScript
+  config.vm.provision "installWLS12c", type: "shell", run: "once", inline: $installWls12cScript  
+  #config.vm.provision "installJdev12c", type: "shell", run: "never", inline: $installJdev12cScript
+  config.vm.provision "installOpenDJ", type: "shell", run: "once", inline: $installOpenDJScript
+  #config.vm.provision "installKafka", type: "shell", run: "never", inline: $installKafkaScript
+  #config.vm.provision "installFMWSOAQS", type: "shell", run: "never", inline: $installFMWSOAQSScript
 end

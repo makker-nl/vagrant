@@ -6,11 +6,12 @@ SCRIPTPATH=$(dirname $0)
 #
 OPENDJ_ZIP_HOME=$INSTALL_HOME/OpenSource/OpenDJ
 OPENDJ_INSTALL_HOME=$INSTALL_TMP_DIR/OpenSource/OpenDJ
-OPENDJ_INSTALL_ZIP=OpenDJ-3.0.0.zip
+OPENDJ_VER=4.4.11
+OPENDJ_INSTALL_ZIP=opendj-$OPENDJ_VER.zip
 OPENDJ_INSTALL_ZIP_DIR=$OPENDJ_INSTALL_HOME/opendj
 OPENDJ_HOME=$OS_BASE/opendj
 #
-echo "Install OpenDJ 3.0.0"
+echo "Install OpenDJ ${OPENDJ_VER}"
 echo "Checking OpenDJ Home: "$OPENDJ_HOME
 if [ ! -f "$OPENDJ_HOME/bin/start-ds" ]; then
  #
@@ -28,5 +29,5 @@ if [ ! -f "$OPENDJ_HOME/bin/start-ds" ]; then
     echo OpenDJ ZIP File $OPENDJ_ZIP_HOME/$OPENDJ_INSTALL_ZIP does not exist!
   fi  
 else
-  echo OpenDJ already installed
+  echo OpenDJ ${$OPENDJ_VER} already installed
 fi

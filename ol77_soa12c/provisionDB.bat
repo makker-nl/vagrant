@@ -1,1 +1,0 @@
-vagrant provision --provision-with installDB12c

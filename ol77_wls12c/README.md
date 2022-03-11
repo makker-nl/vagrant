@@ -24,4 +24,4 @@ The following provisioners are created.
 | startDB                | always  | Start Oracle Database 12cR1      | [commonScripts/oracle/db/12.1](../Stage/commonScripts/oracle/db/12.1/README.md) |  |
 | installSQLDev          | once    | Oracle SQL Developer 19.4        | [commonScripts/oracle/db/sqldev](../Stage/commonScripts/oracle/db/sqldev/README.md) |  [installBinaries/Oracle/DB/SQLDeveloper](../Stage/installBinaries/Oracle/DB/SQLDeveloper/README.md) |
 | installWLS12c          | once    | Start Weblogic 12cR2 (12.2.1.3)  | [commonScripts/oracle/fmw/wls/12.2.1.3](../Stage/commonScripts/oracle/fmw/wls/12.2.1.3/README.md) | [installBinaries/Oracle/FMW/12.2.1.3/WLS](../Stage/installBinaries/Oracle/FMW/12.2.1.3/WLS/README.md) |
-| installOpenDJ          | once    | OpenDJ Community Edition 4.4.11  | [commonScripts/opensource/openDJ](../Stage/commonScripts/opensource/openDJ/README.md)          |                  | 
+| installOpenDJ          | once    | OpenDJ Community Edition 4.4.11  | [commonScripts/opensource/openDJ](../Stage/commonScripts/opensource/openDJ/README.md) |   [installBinaries/OpenSource/OpenDJ](../Stage/installBinaries/OpenSource/OpenDJ/README.md) |

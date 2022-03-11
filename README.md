@@ -6,5 +6,5 @@ Of course you can do a check out in a folder of your own liking. You may want to
 Current maintained projects (not complete):
 + [Red Hat Fuse Code Ready Studio on CentOS 7 update 8 (2003)](co78_rh_fuse/README.md)
 + [Red Hat Fuse Code Ready Studio on CentOS 8 Stream](co8_rh_fuse/README.md)
-+ [Oracle Weblogic 12c on Oracle Linux 7 Update 7](ol77_wls12c/README.md)
++ [Oracle Weblogic 12c on Oracle Linux 7](ol7_wls12c/README.md)
 

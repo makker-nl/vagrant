@@ -22,5 +22,5 @@ if [ ! -f "$KUBE_BIN" ]; then
 else
   echo kubectl already available as: $KUBE_BIN
 fi
-echo Get kubectl version:
-kubectl version
+# echo Get kubectl version:
+# kubectl version

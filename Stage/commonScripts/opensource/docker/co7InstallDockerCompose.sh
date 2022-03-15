@@ -18,5 +18,5 @@ if [ ! -f "$DCKRC_BIN" ]; then
 else
   echo Docker Compose already available as: $DCKRC_BIN
 fi
-echo Get docker-compose version:
-docker-compose --version
+# echo Get docker-compose version:
+# docker-compose --version

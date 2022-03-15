@@ -18,8 +18,8 @@ if [ ! -f "$HELM_BIN" ]; then
  #
   # Download/Setup helm
   echo Download/Setup helm
-  curl -L $HELM_URL -o $HELM_TAR
   mkdir -p $HELM_DIR
+  curl -L $HELM_URL -o $HELM_TAR
   tar -zxvf $HELM_TAR --directory $HELM_DIR
   sudo mv $HELM_DIR/linux-amd64/helm /usr/local/bin/helm
   rm -rf $HELM_DIR

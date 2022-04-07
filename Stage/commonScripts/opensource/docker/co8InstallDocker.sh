@@ -75,6 +75,6 @@ echo 5.5 Start docker again
 sudo systemctl start docker
 echo 5.6 Enable docker as a systemd service
 #https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot
-sudo systemctl enable dockerA
+sudo systemctl enable docker
 echo 5.7 Grant permission to connect the Docker deamon
 sudo chmod 666 /var/run/docker.sock

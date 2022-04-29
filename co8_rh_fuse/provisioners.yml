@@ -149,7 +149,7 @@ sqldeveloper:
   user: "redhat"
   run: "never"
 #  run: "once"
-  commonScript: "oracle/db/20c/installSqlDeveloper.sh"
+  commonScript: "oracle/db/sqldev/installSqlDeveloper.sh"
 mysqlconnj:
   name: "installMySQLConnectorJ"
   description: "MySQL Connect /J"

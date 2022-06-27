@@ -103,3 +103,10 @@ On some Laptops with Windows Professional the Windows Hyper Visor and/or Credent
     As soon as the laptop starts, the BIOS will ask you one or twice to confirm. Answer with F3 and enter (aka. the any-key.). You may also hit the F3 key several times, to speed through this process.
 
 You may repeat this after a restart or after a Windows update
+    
+Another solution could be:
+
++ bcdedit /set hypervisorlaunchtype off
++ DISM /Online /Disable-Feature:Microsoft-Hyper-V
+
+See this article about [How to fix VirtualBox session error: Call to NEMR0InitVMPart2 failed VERR_NEM_INIT_FAILED (VERR_NEM_VM_CREATE_FAILED) ](https://ourcodeworld.com/articles/read/1616/how-to-fix-virtualbox-session-error-call-to-nemr0initvmpart2-failed-verr-nem-init-failed-verr-nem-vm-create-failed)

@@ -182,6 +182,7 @@ Vagrant.configure("2") do |config|
   provision(config, provisioners['python3'])
   provision(config, provisioners['maven'])
   provision(config, provisioners['codereadystudio'])
+  provision(config, provisioners['eclipse'])
   vagrantProvisionDocker(config, provisioners['docker'])
   provision(config, provisioners['dockercompose'])
   provision(config, provisioners['amq'])

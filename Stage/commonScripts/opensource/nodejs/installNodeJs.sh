@@ -4,7 +4,8 @@
 SCRIPTPATH=$(dirname $0)
 #
 . $SCRIPTPATH/../../install_env.sh
-NJS_REPO_URL=https://rpm.nodesource.com/setup_10.x
+#NJS_REPO_URL=https://rpm.nodesource.com/setup_10.x
+NJS_REPO_URL=https://rpm.nodesource.com/setup_18.x
 CD=$(pwd)
 echo Install NodeJS 10
 if [ ! -d "${NBS_HOME}" ]; then

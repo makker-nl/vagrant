@@ -38,6 +38,7 @@ Several of the available provisioners are:
 + **Git** [Check out post-provisioning configuration](../Stage/commonScripts/opensource/git/README.md).
 + **OracleJDK 8** in /app/oracle/product/jdk8 [Download Installer](../Stage/installBinaries/Oracle/Java).
 + **OracleJDK 11** in /app/oracle/product/jdk11 [Download Installer](../Stage/installBinaries/Oracle/Java).
++ **Eclipse 2022**  [Download Installer](../Stage/installBinaries/opensource/eclipse).
 + **Code Ready Studio v. 12.21** in /app/redhat/codereadystudio. [Download Installer](../Stage/installBinaries/RedHat).
 + **Apache Maven 3.8.3** Maven home: /opt/maven
 + **Apache Active MQ Artemis 5.5.0** in /app/opensource/apache-artemis-2.15.0 and broker in /app/work/artemis/amqbroker. [Download Installer](../Stage/installBinaries/OpenSource/AMQ_Artemis).
@@ -58,7 +59,8 @@ The following provisioners are created.
 | installJava11          | once          | Install OpenJDK 11              |
 | installOJava8          | once          | Install Oracle JDK 8            |
 | installMaven           | once          | Install Apache Maven            |
-| installCodeReadyStudio | once          | Install RedHat CodeReady Studio |
+| installEclipse         | once          | Install Eclipse |
+| installCodeReadyStudio | never         | Install RedHat CodeReady Studio |
 | installAMQ             | never         | Install Active MQ               |
 | startAMQBroker         | never         | Start Active MQ Broker          |
 | stopAMQBroker          | never         | Stop Active MQ Broker           |

@@ -36,8 +36,14 @@ codereadystudio:
   name: "installCodeReadyStudio"
   description: "Red Hat CodeReadyStudio 12.21.3"
   user: "redhat"
-  run: "once"
+  run: "never"
   commonScript: "/redhat/CodeReadyStudio/installCodeReadyStudio-12.21.3.sh"
+eclipse:
+  name: "installEclipse"
+  description: "Eclipse 2022-06"
+  user: "redhat"
+  run: "once"
+  commonScript: "/opensource/eclipse/installEclipse.sh"
 docker:
   name: "installDocker"
   description: "Docker"

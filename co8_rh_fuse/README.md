@@ -38,7 +38,7 @@ Several of the available provisioners are:
 + **Git** [Check out post-provisioning configuration](../Stage/commonScripts/opensource/git/README.md).
 + **OracleJDK 8** in /app/oracle/product/jdk8 [Download Installer](../Stage/installBinaries/Oracle/Java).
 + **OracleJDK 11** in /app/oracle/product/jdk11 [Download Installer](../Stage/installBinaries/Oracle/Java).
-+ **Eclipse 2022**  [Download Installer](../Stage/installBinaries/opensource/eclipse).
++ **Eclipse 2022**  [Download Installer](../Stage/installBinaries/OpenSource/Eclipse/README.md).
 + **Code Ready Studio v. 12.21** in /app/redhat/codereadystudio. [Download Installer](../Stage/installBinaries/RedHat).
 + **Apache Maven 3.8.3** Maven home: /opt/maven
 + **Apache Active MQ Artemis 5.5.0** in /app/opensource/apache-artemis-2.15.0 and broker in /app/work/artemis/amqbroker. [Download Installer](../Stage/installBinaries/OpenSource/AMQ_Artemis).

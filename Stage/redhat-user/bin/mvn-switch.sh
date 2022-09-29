@@ -17,7 +17,7 @@ MVN_VS_GLOB_SET=$MVN_VS_HOME/$MVN_GLOB_SET_XML
 MVN_VS_LCL_REPO=$MVN_USER_CNF/repository-vs
 # NS Settings
 ENV_NS="NS"
-MVN_NS_HOME=~/git/NS/cci/cci-config-dev/maven
+MVN_NS_HOME=~/git/NS/CORTEX/cci/cci-config-dev/maven
 MVN_NS_USER_SET=$MVN_NS_HOME/$MVN_USER_SET_XML
 MVN_NS_GLOB_SET=$MVN_NS_HOME/$MVN_GLOB_SET_XML
 MVN_NS_LCL_REPO=$MVN_USER_CNF/repository-ns

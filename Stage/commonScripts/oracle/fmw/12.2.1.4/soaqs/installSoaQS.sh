@@ -70,8 +70,10 @@ if [ ! -d "$JDEV_HOME" ]; then
     #
     echo copy $SCRIPTPATH/$JDEV_PROD_CONF to $JDEV_USR_HOME/$JDEV_PROD_CONF
     envsubst < $SCRIPTPATH/$JDEV_PROD_CONF_TPL > $SCRIPTPATH/$JDEV_PROD_CONF
-    mv $JDEV_USR_HOME/$JDEV_PROD_CONF $JDEV_USR_HOME/$JDEV_PROD_CONF.org
     mkdir -p $JDEV_USR_HOME
+    if [ -f $JDEV_USR_HOME/$JDEV_PROD_CONF ]; then
+      mv $JDEV_USR_HOME/$JDEV_PROD_CONF $JDEV_USR_HOME/$JDEV_PROD_CONF.org
+    fi
     cp $SCRIPTPATH/$JDEV_PROD_CONF $JDEV_USR_HOME/$JDEV_PROD_CONF
     #
     echo copy JDeveloper SOA QuickStart 12cR2 environment and start scripts to ~/bin

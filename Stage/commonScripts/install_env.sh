@@ -9,3 +9,5 @@ export INSTALL_TMP_DIR=/app/tmp
 export ORACLE_BASE=/app/oracle
 export OS_BASE=/app/opensource
 export RH_BASE=/app/redhat
+export MENU_ENTRIES=~/.local/share/applications
+mkdir -p $MENU_ENTRIES

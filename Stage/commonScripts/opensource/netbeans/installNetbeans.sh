@@ -17,7 +17,8 @@ if [ ! -d "${NBS_HOME}" ]; then
   echo . Unzip $NBS_ZIP  to $OS_HOME
   unzip $INSTALL_TMP_DIR/${NBS_ZIP} -d $OS_HOME
   echo Add Netbeans to menu
-  cp $SCRIPTPATH/netbeans.desktop /usr/share/applications
+  #cp $SCRIPTPATH/netbeans.desktop /usr/share/applications
+  cp $SCRIPTPATH/netbeans.desktop $MENU_ENTRIES
   echo Add startscript to ~/bin
   cp $SCRIPTPATH/netbeans.sh ~/bin
   echo . Remove download

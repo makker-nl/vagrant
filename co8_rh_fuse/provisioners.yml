@@ -106,8 +106,8 @@ oc:
   name: "installOc"
   description: "Red Hat OpenShift CLI"
   user: "redhat"
-#  run: "never"
-  run: "once"
+  run: "never"
+#  run: "once"
   commonScript: "/redhat/OpenShift/co7InstallOc.sh"
 kubectl:
   name: "installKubectl"

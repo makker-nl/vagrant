@@ -110,13 +110,13 @@ Vagrant.configure("2") do |config|
     export SCRIPT_HOME=/media/sf_Stage/commonScripts/linux
     echo _______________________________________________________________________________
     echo 0. Prepare Oracle Linux
-    $SCRIPT_HOME/0.PrepOEL.sh
+    $SCRIPT_HOME/ol7/0.PrepOEL.sh
     echo _______________________________________________________________________________
     echo 1. Create Filesystem
-    $SCRIPT_HOME/1.FileSystem.sh
+    $SCRIPT_HOME/ol7/1.FileSystem.sh
     echo _______________________________________________________________________________
     echo 2. Create Oracle User
-    $SCRIPT_HOME/2.MakeOracleUser.sh
+    $SCRIPT_HOME/ol7/2.MakeOracleUser.sh
   SCRIPT
   # Install Java 8
   $installJava8Script = <<-SCRIPT

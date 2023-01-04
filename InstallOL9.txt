@@ -1,0 +1,100 @@
+Install Server with GUI
+. Create vagrant user, with password vagrant
+. Set Network adapter to auto connect!
+. Software package Server with GUI
+
+
+Tip: create a NAT Port forwarding for 2222->22 in the NAT adapter. To be able to do the following lines in  terminal emulator (like MobaXterm):
+
+As root (See adduser.sh script):
+
+# Add vagrant user /usr/sbin/groupadd vagrant
+# /usr/sbin/useradd vagrant -g vagrant -G wheel
+# echo "vagrant"|passwd --stdin vagrant
+# Add vagrant to sudoers
+echo "vagrant        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers.d/vagrant
+chmod 0440 /etc/sudoers.d/vagrant
+mkdir .ssh
+chmod 700  .ssh
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGn8m1kC2mHfPx0dno+HNNYfhgXUZHn8Rt7orIm2Hlc7g4JkvCN6bO7mrYhUbdN2qjy2TziPdlndTAI0E1HK2GbwRM8+N02CNzBg5zvJosMQhweU7EXsDZjYRNJ/SAgVlU5EqIPzmznFjp08uzvBAe2u+L4dZ9kIZ23z/GVWupNpTJmem6LsqS3xg/h0qKf2LFv55SqtLVLlC1sAxL4fvBi3fFIsR9+NLf0fxb+tV/xrprn3yYXT1GyRPVtYAbiOzE3gUOWLKQZVkCXN8R69JeY8P5YgPGx9gSLCiNyLLmqCdF4oLIBMg82lZ0a3/BXG7AoAHVxh7caOoWJrFAjVK9 vagrant" > .ssh/authorized_keys
+chmod 644 .ssh/authorized_keys
+
+As vagrant: 
+sudo dnf -y install epel-release
+sudo dnf -y install make gcc kernel-headers kernel-devel perl dkms bzip2 kernel-uek-devel-`uname -r`
+         
+sudo reboot
+
+
+
+
+
+
+
+
+The working of this is described in the Vagrant documentation about creating a base box under the chapter "vagrant" User. I think when I started with Vagrant, I did not fully grasped this part. Maybe the documentation changed. Basically you need to download the Vagrant insecure keypair from GitHub. Then  in the VM, you'll need to update the file authorized_keys in the .ssh folder of the vagrant user:
+
+# authorized_keys
+# [vagrant@localhost .ssh]$ pwd
+# /home/vagrant/.ssh
+# [vagrant@localhost .ssh]$
+
+# The contents look like:
+#   ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGn8m1kC2mHfPx0dno+HNNYfhgXUZHn8Rt7orIm2Hlc7g4JkvCN6bO7mrYhUbdN2qjy2TziPdlndTAI0E1HK2GbwRM8+N02CNzBg5zvJosMQhweU7EXsDZjYRNJ/SAgVlU5EqIPzmznFjp08uzvBAe2u+L4dZ9kIZ23z/GVWupNpTJmem6LsqS3xg/h0qKf2LFv55SqtLVLlC1sAxL4fvBi3fFIsR9+NLf0fxb+tV/xrprn3yYXT1GyRPVtYAbiOzE3gUOWLKQZVkCXN8R69JeY8P5YgPGx9gSLCiNyLLmqCdF4oLIBMg82lZ0a3/BXG7AoAHVxh7caOoWJrFAjVK9 vagrant
+
+
+# https://superuser.com/questions/215504/permissions-on-private-key-in-ssh-folder
+
+# .ssh directory: 700 (drwx------)
+# public key (.pub file): 644 (-rw-r--r--)
+# private key (id_rsa): 600 (-rw-------)
+# lastly your home directory should not be writeable by the group or others (at most 755 (drwxr-xr-x)).
+
+# Home directory on the server should not be writable by others: chmod go-w /home/$USER
+# SSH folder on the server needs 700 permissions: chmod 700 /home/$USER/.ssh
+# Authorized_keys file needs 644 permissions: chmod 644 /home/$USER/.ssh/authorized_keys
+# Make sure that user owns the files/folders and not root: chown user:user authorized_keys and chown user:user /home/$USER/.ssh
+# Put the generated public key (from ssh-keygen) in the user's authorized_keys file on the server
+# Make sure that user's home directory is set to what you expect it to be and that it contains the correct .ssh folder that you've been modifying. If not, use usermod -d /home/$USER $USER to fix the issue
+# Finally, restart ssh: service ssh restart
+# Then make sure client has the public key and private key files in the local user's .ssh folder and login: ssh user@host.com
+
+And just now I realized that the one thing I do differently with this box in stead of my OL7U5 box is the vagrant user ssh-key in stead of the password. So, I made sure that the vagrant user can logon using an ssh password. 
+For instance by reviewing the file _/etc/ssh/sshd_config_ and specifically the option PasswordAuthentication:
+...
+# To disable tunneled clear text passwords, change to no here!
+PasswordAuthentication yes
+#PermitEmptyPasswords no
+#PasswordAuthentication no
+
+#PasswordAuthentication no
+PubkeyAuthentication yes
+
+
+...
+Make sure it's set to yes.
+
+
+This I could solve using the support document 2314747.1. I have to add it to my provision scripts, but before packaging the box, you need to edit the file /etc/selinux/config:
+
+# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+# enforcing - SELinux security policy is enforced.
+# permissive - SELinux prints warnings instead of enforcing.
+# disabled - No SELinux policy is loaded.
+ 
+ 
+SELINUX=permissive
+ 
+# SELINUXTYPE= can take one of three two values:
+# targeted - Targeted processes are protected,
+# minimum - Modification of targeted policy. Only selected processes are protected.
+# mls - Multi Level Security protection.
+ 
+SELINUXTYPE=targeted
+
+The option SELINUX turned out to be set on enforcing.
+
+
+
+Mac address first network card: 080027ADD4B5

@@ -2,12 +2,9 @@
 SCRIPTPATH=$(dirname $0)
 #
 echo Installing packages required by the software
-sudo yum -q -y install compat-libcap1* compat-libstdc* libstdc* gcc-c++* ksh libaio-devel* dos2unix system-storage-manager motif-2.3.4-7
-echo install EPEL repository
-sudo yum search epel-release
-sudo yum info epel-release
-sudo yum -y install epel-release
-echo install Haveged from EPEL repository
+sudo yum -q -y install compat-libcap1* compat-libstdc* libstdc* gcc-c++* ksh libaio-devel* dos2unix system-storage-manager
+echo install Haveged from OL7 developer EPEL repository
+sudo yum-config-manager --enable ol7_developer_EPEL
 sudo yum -q -y install haveged
 #
 echo 'Adding entries into /etc/security/limits.conf for oracle user'
@@ -41,21 +38,3 @@ net.core.wmem_max = 4194304
 '>>/etc/sysctl.conf"
 /sbin/sysctl -p
 fi
-
-echo 'Changing /etc/hosts'
-if grep -Fq darlin-vce /etc/hosts
-then
-    echo 'WARNING: Skipping, please verify!'
-else
-    echo 'Adding'
-    sudo sh -c "echo '
-#Darlin-vce
-127.0.0.1 darlin-vce darlin-vce.darwin-it.local
-'>>/etc/hosts"
-fi
-
-echo 'Allow PasswordAuthhentication'
-sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.org
-sudo sed -i 's/PasswordAuthentication no/#PasswordAuthentication no/g' /etc/ssh/sshd_config
-sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/g' /etc/ssh/sshd_config
-sudo service sshd restart

@@ -1,23 +1,19 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-#
-BOX_NAME="ol75"
-BOX_URL="file://../boxes/OL75v1.0.box"
-#VM_MEMORY = 12288 # 12*1024 MB
-VM_MEMORY = 8192 # 12*1024 MB
+BOX_NAME="makker/OL8SwGUI"
+BOX_VERSION="7" # Oracle Linux 8 Update 7
+#BOX_URL="file://C:/data/Vagrant/boxes/OL8U7SwGUIv1.0.box"
+VM_MEMORY = 11264 # 11*1024 MB
 VM_CPUS=4
-VM_GUI=false
-#VMS_HOME="d:\\VirtualMachines\\VirtualBox"
-VMS_HOME="c:\\Data\\VirtualMachines\\VirtualBox"
-VM_NAME="OL7U5_SOA11g"    
+VMS_HOME="C:/data/VirtualMachines/VirtualBox"
+VM_NAME="OL8U7_Generic"
+VM_DOMAIN="oracle.local"
 VM_DISK2=VMS_HOME+"\\"+VM_NAME+"\\"+VM_NAME+".disk2.vdi"
 VM_DISK2_SIZE=1024 * 512
+VB_GUI=false
 # Stage folders
-STAGE_HOST_FOLDER="d:/Projects/vagrant/Stage"
+STAGE_HOST_FOLDER="C:/data/git/makker/vagrant/Stage"
 STAGE_GUEST_FOLDER="/media/sf_Stage"
-# Project folders
-PROJECT_HOST_FOLDER="d:/Projects"
-PROJECT_GUEST_FOLDER="/media/sf_Project"
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -30,11 +26,11 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = BOX_NAME
-  #config.vm.box_url=BOX_URL
-  config.vm.define "darwin"
+  config.vm.box_version = BOX_VERSION
+  config.vm.define VM_DOMAIN
   config.vm.provider :virtualbox do |vb|
     vb.name = VM_NAME
-    vb.gui = VM_GUI
+    vb.gui = 
     vb.memory = VM_MEMORY
     vb.cpus = VM_CPUS
     # Set clipboard and drag&drop bidirectional
@@ -46,12 +42,11 @@ Vagrant.configure("2") do |config|
     end
     # Add it to the VM.
     vb.customize [ "storageattach", :id , "--storagectl", "SATA", "--port", "2", "--device", "0", "--type", "hdd", "--medium", VM_DISK2]
-  end
-  #config.ssh.username="darwin"
-  config.ssh.username="vagrant"
-  config.ssh.password="vagrant"
-  #Base Mac address.
-  config.vm.base_mac="080027126D17"
+  end  
+  #config.ssh.username="vagrant"
+  #config.ssh.password="vagrant"
+  config.ssh.port=2222
+
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
@@ -81,8 +76,9 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
+  # config.vm.synced_folder "../data", "/vagrant_data"
   config.vm.synced_folder STAGE_HOST_FOLDER, STAGE_GUEST_FOLDER
-  config.vm.synced_folder PROJECT_HOST_FOLDER, PROJECT_GUEST_FOLDER
+
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
@@ -101,52 +97,21 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
+ 
   $initScript = <<-SCRIPT
     export SCRIPT_HOME=/media/sf_Stage/commonScripts/linux
     echo _______________________________________________________________________________
-    echo 0. Prepare Oracle Linux
-    $SCRIPT_HOME/ol7/0.PrepOEL.sh
+    echo Prepare Oracle Linux 8
+    $SCRIPT_HOME/ol8/0.PrepOEL.sh
     echo _______________________________________________________________________________
     echo 1. Create Filesystem
-    $SCRIPT_HOME/ol7/1.FileSystem.sh
+    $SCRIPT_HOME/ol8/1.FileSystem.sh
     echo _______________________________________________________________________________
-    echo 2. Create Oracle User
-    $SCRIPT_HOME/ol7/2.MakeOracleUser.sh
-  SCRIPT
-  #
-  $installJava7Script = <<-SCRIPT
-    export SCRIPT_HOME=/media/sf_Stage/commonScripts/fmw/java
-    echo _______________________________________________________________________________
-    echo Java SDK 7
-    CMD=${SCRIPT_HOME}/jdk7/installJava7.sh
-    sudo runuser -l oracle -c $CMD
-  SCRIPT
-  #
-  $installJava8Script = <<-SCRIPT
-    echo _______________________________________________________________________________
-    echo Java SDK 8
-    export SCRIPT_HOME=/media/sf_Stage/commonScripts/fmw/java
-    CMD=${SCRIPT_HOME}/jdk8/installJava8.sh
-    sudo runuser -l oracle -c $CMD
-  SCRIPT
-  #
-  $installJdev11gScript = <<-SCRIPT
-    echo _______________________________________________________________________________
-    echo JDeveloper 11g
-    export SCRIPT_HOME=/media/sf_Stage/commonScripts/fmw/jdeveloper
-    CMD=${SCRIPT_HOME}/11g/installJdev11g.sh
-    sudo runuser -l oracle -c $CMD
-  SCRIPT
-  # 
-  $installSoapUIScript = <<-SCRIPT
-    echo _______________________________________________________________________________
-    echo SoapUI
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/opensource/soapui/installSoapUI.sh'
+    echo 2. Create User 
+    echo . Create Oracle User
+    $SCRIPT_HOME/common/2.MakeOracleUser.sh
   SCRIPT
   #
   config.vm.provision "init", type: "shell", run: "once", inline: $initScript
-  config.vm.provision "installJava7", type: "shell", run: "once", inline: $installJava7Script
-  config.vm.provision "installJava8", type: "shell", run: "once", inline: $installJava8Script
-  config.vm.provision "installJdev11g", type: "shell", run: "once", inline: $installJdev11gScript
-  config.vm.provision "installSoapUI", type: "shell", run: "once", inline: $installSoapUIScript
+  #
 end

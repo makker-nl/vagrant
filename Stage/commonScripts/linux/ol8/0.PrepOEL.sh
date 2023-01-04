@@ -45,16 +45,16 @@ net.core.wmem_max = 4194304
 /sbin/sysctl -p
 fi
 echo set Hostname
-sudo hostnamectl set-hostname conclusion-vce.conclusion.local
+sudo hostnamectl set-hostname oracle-vde.oracle.local
 echo 'Changing /etc/hosts'
-if grep -Fq conclusion-vce /etc/hosts
+if grep -Fq oracle-vde /etc/hosts
 then
     echo 'WARNING: Skipping, please verify!'
 else
     echo 'Adding'
     sudo sh -c "echo '
-#conclusion-vce
-127.0.0.1 conclusion-vce conclusion-vce.conclusion.local
+#oracle-vde
+127.0.0.1 oracle-vde oracle-vde.oracle.local
 '>>/etc/hosts"
 fi
 

@@ -1,4 +1,4 @@
-# CentOS 8 Stream: Red Hat Fuse Development environment
+# Oracle Linux 8: Oracle Development environment
 This vagrant projec creates a VM with Red Hat Fuse development environment.
 
 ## Upgrade remarks
@@ -11,21 +11,21 @@ This vagrant projec creates a VM with Red Hat Fuse development environment.
 ## Users: 
 + root - vagrant
 + vagrant - vagrant
-+ redhat - welcome1
++ oracle - welcome1
 
 ## VM Settings:
 The main VM settings are abstracted into the [settings.yml](settings.yml) file. 
 
 | Property               | Default       | Description                                     |
 | ---------------------- | ------------- |  ---------------------------------------------- |
-| environment.vmMemory   | 16384         | Allocated memory for the VM. At least 8GB is recommended. Depending on the available host memory. |
-| environment.vmCpus     | 6             | Number of CPU's allocated to the VM. Don't exceed the available cores of the host. | 
+| environment.vmMemory   | 11264         | Allocated memory for the VM. At least 8GB is recommended. Depending on the available host memory. |
+| environment.vmCpus     | 4             | Number of CPU's allocated to the VM. Don't exceed the available cores of the host. | 
 | environment.vmGui      | false         | Toggle to denote if the Desktop is to be shown (true) or should run in head-less mode (false) |
 | environment.vmsHome               | C:/Data/VirtualMachines/VirtualBox | Location where VirtualBox will store the VM's. Change the VirtualBox preference to this value. Or vice versa. |
 | environment.disks.vmsDisk2Size    | 524288        | Size of the additional disk that will be created (1024 * 512 = 524288).|
-| sharedFolders.stageHostFolder     | c:/Data/makker/vagrant/Stage| Location of the Stage folder within the Vagrant project. Here the install scripts and install binaries are expected. |
+| sharedFolders.stageHostFolder     | c:/Data/git/makker/vagrant/Stage| Location of the Stage folder within the Vagrant project. Here the install scripts and install binaries are expected. |
 | sharedFolders.stageGuestFolder    | /media/sf_Stage | Local file mount refering to the STAGE_HOST_FOLDER. Don't change it |
-| sharedFolders.projectHostFolder   | c:/Data/git/VS/redhat-fuse/application-development | Location of the Projects folder, to use to store project files. For example to get to folder with local Git clones. |
+| sharedFolders.projectHostFolder   | c:/Data/projects | Location of the Projects folder, to use to store project files. For example to get to folder with local Git clones. |
 | sharedFolders.projectGuestFolder  | /media/sf_Projects | Local file mount refering to the STAGE_HOST_FOLDER. Don't change it |
 
 The settings expect that you checked out the vagrant project in _c:/Data/git/makker_. If you checked out the Vagrant GitHub project in a different environment then prescribed, you would need to change the _sharedFolders.stageHostFolder_ property accordingly.
@@ -39,15 +39,11 @@ Several of the available provisioners are:
 + **OracleJDK 8** in /app/oracle/product/jdk8 [Download Installer](../Stage/installBinaries/Oracle/Java).
 + **OracleJDK 11** in /app/oracle/product/jdk11 [Download Installer](../Stage/installBinaries/Oracle/Java).
 + **Eclipse 2022**  [Download Installer](../Stage/installBinaries/OpenSource/Eclipse/README.md).
-+ **Code Ready Studio v. 12.21** in /app/redhat/codereadystudio. [Download Installer](../Stage/installBinaries/RedHat).
 + **Apache Maven 3.8.3** Maven home: /opt/maven
-+ **Apache Active MQ Artemis 5.5.0** in /app/opensource/apache-artemis-2.15.0 and broker in /app/work/artemis/amqbroker. [Download Installer](../Stage/installBinaries/OpenSource/AMQ_Artemis).
 + **SoapUI 5.7.0** in /app/opensource/SoapUI-5.7.0. [Download Installer](../Stage/installBinaries/OpenSource/SoapUI).
 + **Docker** Including move of the Docker local storage folder to /app/docker/data
 + **Docker Compose (docker-compose)** 
 + **Postman Latest** from https://dl.pstmn.io/download/latest/linux64
-+ **Red Hat OpenShift CLI (oc) version** [Download Installer](../Stage/installBinaries/RedHat).
-
 This list is not complete, as provisioners can be added from time to time.
 
 ## Provisioners:
@@ -59,16 +55,11 @@ The following provisioners are created.
 | installJava11          | once          | Install OpenJDK 11              |
 | installOJava8          | once          | Install Oracle JDK 8            |
 | installMaven           | once          | Install Apache Maven            |
-| installEclipse         | once          | Install Eclipse |
-| installCodeReadyStudio | never         | Install RedHat CodeReady Studio |
-| installAMQ             | never         | Install Active MQ               |
-| startAMQBroker         | never         | Start Active MQ Broker          |
-| stopAMQBroker          | never         | Stop Active MQ Broker           |
+| installEclipse         | once          | Install Eclipse                 |
 | installSoapUI          | once          | Install SoapUI                  |
 | installDocker          | once          | Install Docker                  |
 | installDockerCompose   | once          | Install docker-compose          |
 | installPostman         | once          | Install Postman (Latest)        |
-| installOc              | never         | Install Red Hat OpenShift CLI   |
 | installKubectl         | never         | Kubernetes Control CLI          |
 | installHelm            | never         | Helm commandline interface      |
 | installTektonCLI       | never         | Tekton CLI                      |
@@ -80,33 +71,7 @@ To execute a specific provisioner, even after a VM is already provisioned execut
 ```
 vagrant provision --provision-with _provisioner-name_
 ```
-For example, to stop the AMQ broker:
-```
-vagrant provision --provision-with stopAMQBroker
-```
 
-# Hyper-V en Credential/Hypervisor security
-
-On some Laptops with Windows Professional the Windows Hyper Visor and/or Credential Security en/of HyperVisor Security are enabled. This obstructs the creation and startup of the VM. A workaround for this problem is as follows:
-
-+    Switch of Hyper-V completely (through Windows Features);
-    Navigate to: https://www.microsoft.com/en-us/download/details.aspx?id=53337 and download the tool (powershell script);
-
-+    Using PowerShell navigate to the downloaded script (CD <locatie>), followd by:
-    set-executionpolicy bypass -scope currentuser -force ;
-
-+    Lastly, execute the following:
-    .\DG_Readiness_Tool_v3.6.ps1 -disable
-
-+    This results in an allert to restart. To do this quickly, execute:
-    > shutdown /r /t 0
-    As soon as the laptop starts, the BIOS will ask you one or twice to confirm. Answer with F3 and enter (aka. the any-key.). You may also hit the F3 key several times, to speed through this process.
-
-You may repeat this after a restart or after a Windows update
-    
-Another solution could be:
-
-+ bcdedit /set hypervisorlaunchtype off
-+ DISM /Online /Disable-Feature:Microsoft-Hyper-V
-
-See this article about [How to fix VirtualBox session error: Call to NEMR0InitVMPart2 failed VERR_NEM_INIT_FAILED (VERR_NEM_VM_CREATE_FAILED) ](https://ourcodeworld.com/articles/read/1616/how-to-fix-virtualbox-session-error-call-to-nemr0initvmpart2-failed-verr-nem-init-failed-verr-nem-vm-create-failed)
+# Notes
+Some of the scripts are based on CentOS setups and have _co_ in the name. They might need to be replaced by an Oracle Linux variant.
+Especially the installDocker scripts, since they refer to a CentOS Repository.

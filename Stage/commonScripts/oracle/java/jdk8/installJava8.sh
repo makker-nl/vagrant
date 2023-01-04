@@ -12,8 +12,11 @@ SCRIPTPATH=$(dirname $0)
 JAVA_HOME=$ORACLE_BASE/product/jdk8
 JAVA_INSTALL_HOME=$INSTALL_HOME/Oracle/Java
 JAVA_INSTALL_TMP=$INSTALL_TMP_DIR/jdk
-JAVA_INSTALL_TAR=jdk-8u261-linux-x64.tar.gz
-JAVA_INSTALL_NAME=jdk1.8.0_261
+#JAVA_INSTALL_TAR=jdk-8u261-linux-x64.tar.gz
+#JAVA_INSTALL_NAME=jdk1.8.0_261
+JAVA_INSTALL_TAR=jdk-8u341-linux-x64.tar.gz
+JAVA_INSTALL_NAME=jdk1.8.0_341
+
 #
 echo "Checking Java Home: "$JAVA_HOME
 if [ ! -f "$JAVA_HOME/bin/java" ]; then

@@ -5,10 +5,13 @@ SCRIPTPATH=$(dirname $0)
 . $SCRIPTPATH/../../install_env.sh
 #
 ECLIPSE_ZIP_HOME=$STAGE_HOME/installBinaries/OpenSource/Eclipse
-ECLIPSE_INSTALL_NAME=Eclipse-2022-06
+#ECLIPSE_INSTALL_NAME=Eclipse-2022-06
+#ECLIPSE_INSTALL_NAME=Eclipse-2022-09
+ECLIPSE_INSTALL_NAME=Eclipse-2022-12
 ECLIPSE_INSTALL_TMP=$INSTALL_TMP_DIR/$ECLIPSE_INSTALL_NAME
-ECLIPSE_INSTALL_TAR=eclipse-jee-2022-06-R-linux-gtk-x86_64.tar.gz
-#ECLIPSE_INSTALL_TAR=eclipse-java-2020-06-R-linux-gtk-x86_64.tar.gz
+#ECLIPSE_INSTALL_TAR=eclipse-jee-2022-06-R-linux-gtk-x86_64.tar.gz
+#ECLIPSE_INSTALL_TAR=eclipse-jee-2022-09-R-linux-gtk-x86_64.tar.gz
+ECLIPSE_INSTALL_TAR=eclipse-jee-2022-12-R-linux-gtk-x86_64.tar.gz
 ECLIPSE_HOME=$OS_BASE/$ECLIPSE_INSTALL_NAME/eclipse
 
 #

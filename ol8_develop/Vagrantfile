@@ -3,15 +3,17 @@
 #
 require 'yaml'
 #
-BOX_NAME="makker/CO8SwGUI"
-BOX_VERSION = "1"
+BOX_NAME="makker/OL8SwGUI"
+#BOX_NAME="OL8SwGUI"
+BOX_VERSION="7" # Oracle Linux 8 Update 7
+#BOX_URL="file://c:/Data/Vagrant/boxes/OL8U7SwGUIv1.0.box"
 #
 # https://stackoverflow.com/questions/13065576/override-vagrant-configuration-settings-locally-per-dev
 settings = YAML.load_file 'settings.yml'
 provisioners = YAML.load_file 'provisioners.yml'
-VM_NAME="CO8_RH_FUSE_v1"  
-VM_HOST_NAME="rhfuse.conclusion.local"
-VM_MACHINE="rhfuse"
+VM_NAME="OL8_Develop_v1"  
+VM_HOST_NAME="oradevelop.oracle.local"
+VM_MACHINE="oradevelop"
 VM_MEMORY = settings['environment']['vmMemory']
 VM_CPUS = settings['environment']['vmCpus']
 VM_GUI = settings['environment']['vmGui']
@@ -45,15 +47,6 @@ def provision(vmconf, provisioner)
   vmconf.vm.provision provisionerName, type: "shell", run: runType, path: RUN_AS_SCR, args: [description, script, runAsUser]
 end
 #
-# Provision as local script using Vagrant user
-def vagrantProvision(vmconf, provisioner)
-  provisionerName = provisioner['name']
-  description = provisioner['description']
-  runType = provisioner['run']
-  script = LOCAL_COMMON_SCRIPTS+provisioner['vagrantScript']
-  vmconf.vm.provision provisionerName, type: "shell", run: runType, path: script
-end
-#
 # Provision docker
 def vagrantProvisionDocker(vmconf, provisioner)
   provisionerName = provisioner['name']
@@ -64,7 +57,7 @@ def vagrantProvisionDocker(vmconf, provisioner)
   dockerUser = provisioner['docker_user']
   dockerPassword = provisioner['docker_password']
   scriptHome=STAGE_COMMON_SCRIPTS+'/opensource/docker' 
-  script = LOCAL_COMMON_SCRIPTS+provisioner['vagrantScript']
+  script = LOCAL_COMMON_SCRIPTS+provisioner['commonScript']
   vmconf.vm.provision provisionerName, type: "shell", run: "never", run: runType, path: script, args: [description, scriptHome, runAsUser, dockerUser, dockerPassword]
 end
 #
@@ -81,7 +74,7 @@ Vagrant.configure("2") do |config|
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = BOX_NAME
   config.vm.box_version = BOX_VERSION
-  # config.vm.box_url=BOX_URL
+  #config.vm.box_url=BOX_URL
   config.vm.hostname=VM_HOST_NAME
   config.vm.define VM_MACHINE
   config.vm.provider :virtualbox do |vb|
@@ -160,39 +153,36 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  $initScript = <<-SCRIPT
-    export SCRIPT_HOME=/media/sf_Stage/commonScripts/linux
-    echo _______________________________________________________________________________
-    echo Prepare CentOS Linux
-    $SCRIPT_HOME/co8/0.PrepOEL.sh
-    echo _______________________________________________________________________________
-    echo 1. Create Filesystem
-    $SCRIPT_HOME/co8/1.FileSystem.sh
-    echo _______________________________________________________________________________
-    echo 2. Create User 
-    echo . Create RedHat User
-    $SCRIPT_HOME/common/2.MakeRedHatUser.sh
-  SCRIPT
-  #
-  config.vm.provision "init", type: "shell", run: "once", inline: $initScript
-  vagrantProvision(config, provisioners['java11'])
-  vagrantProvision(config, provisioners['git'])
+  # $initScript = <<-SCRIPT
+    # export SCRIPT_HOME=/media/sf_Stage/commonScripts/linux
+    # echo _______________________________________________________________________________
+    # echo Prepare Oracle Linux 8
+    # $SCRIPT_HOME/ol8/0.PrepOEL.sh
+    # echo _______________________________________________________________________________
+    # echo 1. Create Filesystem
+    # $SCRIPT_HOME/ol8/1.FileSystem.sh
+    # echo _______________________________________________________________________________
+    # echo 2. Create User 
+    # echo . Create Oracle User
+    # $SCRIPT_HOME/common/2.MakeOracleUser.sh
+  # SCRIPT
+  
+  # config.vm.provision "init", type: "shell", run: "once", inline: $initScript
+  provision(config, provisioners['preplinux'])
+  provision(config, provisioners['initfilesystem'])
+  provision(config, provisioners['addoracleuser'])
+  provision(config, provisioners['java11'])
+  provision(config, provisioners['git'])
   provision(config, provisioners['oraclejava8'])
   provision(config, provisioners['oraclejava11'])
   provision(config, provisioners['python3'])
   provision(config, provisioners['maven'])
-  provision(config, provisioners['codereadystudio'])
   provision(config, provisioners['eclipse'])
   vagrantProvisionDocker(config, provisioners['docker'])
   provision(config, provisioners['dockercompose'])
-  provision(config, provisioners['amq'])
-  provision(config, provisioners['amqcreabrkr'])
-  provision(config, provisioners['amqstart'])
-  provision(config, provisioners['amqstop'])
   provision(config, provisioners['soapui'])
   provision(config, provisioners['postman'])
   provision(config, provisioners['osoaqs'])
-  provision(config, provisioners['oc'])
   provision(config, provisioners['kubectl'])
   provision(config, provisioners['helm'])
   provision(config, provisioners['azurecli'])
@@ -200,6 +190,5 @@ Vagrant.configure("2") do |config|
   provision(config, provisioners['yq'])  
   provision(config, provisioners['netbeans'])
   provision(config, provisioners['sqldeveloper'])
-  provision(config, provisioners['mysqlconnj'])
   provision(config, provisioners['nodejs'])  
 end 

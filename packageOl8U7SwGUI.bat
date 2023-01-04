@@ -13,3 +13,6 @@ del %BOX_PATH%
 
 @echo Now package VM %VM_NAME% into Vagrant box %BOX_PATH%
 vagrant package --base %VM_NAME% --output %BOX_PATH%
+
+@echo Generate MD5 checksum for Vagrant box %BOX_PATH%
+certutil -hashfile %BOX_PATH% MD5

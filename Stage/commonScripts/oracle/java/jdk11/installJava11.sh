@@ -9,8 +9,10 @@ SCRIPTPATH=$(dirname $0)
 JAVA_HOME=$ORACLE_BASE/product/jdk11
 JAVA_INSTALL_HOME=$INSTALL_HOME/Oracle/Java
 JAVA_INSTALL_TMP=$INSTALL_TMP_DIR/jdk
-JAVA_INSTALL_TAR=jdk-11.0.10_linux-x64_bin.tar.gz
-JAVA_INSTALL_NAME=jdk-11.0.10
+#JAVA_INSTALL_TAR=jdk-11.0.10_linux-x64_bin.tar.gz
+#JAVA_INSTALL_NAME=jdk-11.0.10
+JAVA_INSTALL_TAR=jdk-11.0.16.1_linux-x64_bin.tar.gz
+JAVA_INSTALL_NAME=jdk-11.0.16.1
 #
 echo "Checking Java Home: "$JAVA_HOME
 if [ ! -f "$JAVA_HOME/bin/java" ]; then

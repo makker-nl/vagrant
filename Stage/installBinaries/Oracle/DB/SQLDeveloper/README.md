@@ -2,6 +2,7 @@
 
 ## Install Binary
 At this location the following installer(s) are expected:
++ **sqldeveloper-22.2.1.234.1810-no-jre.zip** [Download here](https://www.oracle.com/tools/downloads/sqldev-downloads.html)
 + **sqldeveloper-21.4.3.063.0100-no-jre.zip** [Download here](https://www.oracle.com/tools/downloads/sqldev-downloads.html)
 
 ## Install Script

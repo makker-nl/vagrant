@@ -1,0 +1,19 @@
+environment:
+  vmsHome: C:/Data/VirtualMachines/VirtualBox
+  #vmMemory: 16384 # 16*1024 MB 
+  vmMemory: 12288 # 12*1024 MB 
+  #vmMemory: 8192 # 8*1024 MB
+  #vmMemory: 6144 # 6*1024 MB
+  #vmMemory: 6656 # 6,5*1024 MB
+  vmCpus: 4
+  vmGui: false
+  #vmMonitorCount: 2
+  vmMonitorCount: 1
+  #vmGui=true
+  disks:
+    vmsDisk2Size: 524288 #1024 * 512
+sharedFolders:
+  stageHostFolder: c:/Data/git/makker/vagrant/Stage
+  stageGuestFolder: /media/sf_Stage
+  projectHostFolder: c:/Data/projects
+  projectGuestFolder: /media/sf_Projects

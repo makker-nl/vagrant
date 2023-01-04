@@ -4,11 +4,13 @@ SCRIPTPATH=$(dirname $0)
 echo Installing packages required by the software
 #Libraries compat-libcap1*, compat-libstdc* and motif-2 not available in OL8.
 #sudo dnf -q -y install compat-libcap1* compat-libstdc* libstdc* gcc-c++* ksh libaio-devel* dos2unix system-storage-manager motif-2.3.4-7
-sudo dnf -q -y install  libstdc* gcc-c++* ksh libaio-devel* dos2unix system-storage-manager
-echo Add OL8 developer EPEL repository
+sudo dnf -y upgrade
+sudo dnf -y install  libstdc* gcc-c++* ksh libaio-devel* dos2unix system-storage-manager
+#echo Add OL8 developer EPEL repository
+# 20230104, M. van den Akker: Oracle EPEL is Already in the repos.
 # https://techviewleo.com/how-to-enable-epel-repository-on-oracle-linux/
-sudo cp /media/sf_Stage/commonScripts/linux/ol8-epel.repo /etc/yum.repos.d
-sudo chmod -x /etc/yum.repos.d/ol8-epel.repo
+# sudo cp $SCRIPTPATH/ol8-epel.repo /etc/yum.repos.d
+# sudo chmod -x /etc/yum.repos.d/ol8-epel.repo
 sudo dnf makecache
 echo Install Haveged from 
 sudo dnf -q -y install haveged

@@ -4,6 +4,7 @@ Install Server with GUI
 . Software package Server with GUI
 
 
+
 Tip: create a NAT Port forwarding for 2222->22 in the NAT adapter. To be able to do the following lines in  terminal emulator (like MobaXterm):
 
 As root (See adduser.sh script):
@@ -22,6 +23,9 @@ chmod 644 .ssh/authorized_keys
 As vagrant: 
 sudo dnf -y install epel-release
 sudo dnf -y install make gcc kernel-headers kernel-devel perl dkms bzip2 kernel-uek-devel-`uname -r`
+# Extra for oracle installations.
+sudo dnf -y install  libstdc* gcc-c++* ksh libaio-devel* dos2unix system-storage-manager
+
          
 sudo reboot
 

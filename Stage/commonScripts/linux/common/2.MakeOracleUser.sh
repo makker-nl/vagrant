@@ -1,9 +1,10 @@
 #!/bin/bash
 #
 # Script to create a OS group and user
-# The script is using the file /home/root/oracle.properties to read the properties you can set, such as the password
+# The script is using the file /media/sf_Stage/commonScripts/linux/common/makeOracleUser.properties to read the properties you can set, such as the password
 #
 SCRIPTPATH=$(dirname $0)
+#SCRIPTPATH=/media/sf_Stage/commonScripts/linux/common
 
 ENV=${1:-dev}
 

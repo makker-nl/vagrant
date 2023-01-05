@@ -11,9 +11,9 @@ BOX_VERSION="7" # Oracle Linux 8 Update 7
 # https://stackoverflow.com/questions/13065576/override-vagrant-configuration-settings-locally-per-dev
 settings = YAML.load_file 'settings.yml'
 provisioners = YAML.load_file 'provisioners.yml'
-VM_NAME="OL8_Develop_v1"  
-VM_HOST_NAME="oradevelop.oracle.local"
-VM_MACHINE="oradevelop"
+VM_NAME="OL8_MFT_v1"  
+VM_HOST_NAME="oramft.oracle.local"
+VM_MACHINE="oramft"
 VM_MEMORY = settings['environment']['vmMemory']
 VM_CPUS = settings['environment']['vmCpus']
 VM_GUI = settings['environment']['vmGui']
@@ -45,20 +45,6 @@ def provision(vmconf, provisioner)
     script = provisioner['absoluteScript']
   end  
   vmconf.vm.provision provisionerName, type: "shell", run: runType, path: RUN_AS_SCR, args: [description, script, runAsUser]
-end
-#
-# Provision docker
-def vagrantProvisionDocker(vmconf, provisioner)
-  provisionerName = provisioner['name']
-  description = provisioner['description']
-  runType = provisioner['run']
-  runAsUser = provisioner['user']
-  runType = provisioner['run']
-  dockerUser = provisioner['docker_user']
-  dockerPassword = provisioner['docker_password']
-  scriptHome=STAGE_COMMON_SCRIPTS+'/opensource/docker' 
-  script = LOCAL_COMMON_SCRIPTS+provisioner['commonScript']
-  vmconf.vm.provision provisionerName, type: "shell", run: "never", run: runType, path: script, args: [description, scriptHome, runAsUser, dockerUser, dockerPassword]
 end
 #
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
@@ -157,24 +143,6 @@ Vagrant.configure("2") do |config|
   provision(config, provisioners['preplinux'])
   provision(config, provisioners['initfilesystem'])
   provision(config, provisioners['addoracleuser'])
-  provision(config, provisioners['java11'])
-  provision(config, provisioners['git'])
   provision(config, provisioners['oraclejava8'])
-  provision(config, provisioners['oraclejava11'])
-  provision(config, provisioners['python3'])
-  provision(config, provisioners['maven'])
-  provision(config, provisioners['eclipse'])
-  vagrantProvisionDocker(config, provisioners['docker'])
-  provision(config, provisioners['dockercompose'])
-  provision(config, provisioners['soapui'])
-  provision(config, provisioners['postman'])
-  provision(config, provisioners['osoaqs'])
-  provision(config, provisioners['kubectl'])
-  provision(config, provisioners['helm'])
-  provision(config, provisioners['azurecli'])
-  provision(config, provisioners['tkncli'])
-  provision(config, provisioners['yq'])  
-  provision(config, provisioners['netbeans'])
-  provision(config, provisioners['sqldeveloper'])
-  provision(config, provisioners['nodejs'])  
-end 
+  provision(config, provisioners['oracledb21'])
+end

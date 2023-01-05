@@ -1,5 +1,5 @@
 #!/bin/bash
-. db18c_env.sh
+. db21c_env.sh
 
 echo "Stopping Oracle Database and Listener ..."
 $ORACLE_HOME/bin/sqlplus "/ as sysdba" <<EOF

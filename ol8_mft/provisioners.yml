@@ -1,0 +1,30 @@
+preplinux:
+  name: "prepLinux"
+  description: "Prepare linux"
+  user: "vagrant"
+  run: "once"
+  commonScript: "/linux/ol8/0.PrepOL.sh"
+initfilesystem:
+  name: "initFileSystem"
+  description: "Initialize Filesystem on disk 2"
+  user: "vagrant"
+  run: "once"
+  commonScript:  "/linux/ol8/1.FileSystem.sh"
+addoracleuser:
+  name: "addOracleUser"
+  description: "Add Oracle User."
+  user: "vagrant"
+  run: "once"
+  commonScript: "/linux/common/2.MakeOracleUser.sh"
+oraclejava8:
+  name: "installOJava8"
+  description: "Oracle JDK 8"
+  user: "oracle"
+  run: "never"
+  commonScript: "/oracle/java/jdk8/installJava8.sh"
+oracledb21:
+  name: "installODB21c"
+  description: "Oracle Database 21.3"
+  user: "oracle"
+  run: "once"
+  commonScript: "/oracle/db/21.3/installDB.sh"

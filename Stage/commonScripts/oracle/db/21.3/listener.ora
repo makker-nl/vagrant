@@ -4,7 +4,7 @@
 LISTENER =
   (DESCRIPTION_LIST =
     (DESCRIPTION =
-      (ADDRESS = (PROTOCOL = TCP)(HOST = darlin-vce.darwin-it.local)(PORT = 1521))
+      (ADDRESS = (PROTOCOL = TCP)(HOST = oracle-vde.oracle.local)(PORT = 1521))
       (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521))
     )
   )

@@ -1,5 +1,5 @@
 #!/bin/bash
-. db18c_env.sh
+. db21c_env.sh
 #
 lsnr_num=`ps -ef|grep tnslsnr |grep -v grep |awk 'END{print NR}'`
 

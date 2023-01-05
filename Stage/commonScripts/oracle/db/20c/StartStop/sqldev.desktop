@@ -1,9 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=SqlDeveloper 20.4
-Exec=/app/oracle/product/sqldeveloper/sqldeveloper.sh
-Icon=/app/oracle/product/sqldeveloper/icon.png
-Terminal=false
-Type=Application
-Categories=Development
-

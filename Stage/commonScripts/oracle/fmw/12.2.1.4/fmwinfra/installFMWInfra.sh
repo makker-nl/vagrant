@@ -4,9 +4,6 @@ SCRIPTPATH=$(dirname $0)
 . $SCRIPTPATH/../../../../install_env.sh
 . $SCRIPTPATH/../fmw12c_env.sh
 #
-FMW_ZIP_HOME=$INSTALL_BIN_HOME/Oracle/FMW/$FMW_VER
-FMW_EXTRACT_HOME=$EXTRACT_HOME/Oracle/FMW/$FMW_VER
-#
 export FMW_ZIP_HOME=$FMW_ZIP_HOME/FMW
 export FMW_INSTALL_HOME=$FMW_EXTRACT_HOME/FMW
 export FMW_INSTALL_JAR=fmw_12.2.1.4.0_infrastructure.jar

@@ -1,21 +1,35 @@
 #!/bin/bash
+#######################
+#
+# Install Database 21c
+# @author: Martien van den Akker, Oracle Nederland B.V.
+#
+#######################
 SCRIPTPATH=$(dirname $0)
 #
 . $SCRIPTPATH/../../../install_env.sh
 . $SCRIPTPATH/db21c_install_env.sh
+#
+function prop {
+    grep "${1}" $SCRIPTPATH/oracle.properties|cut -d'=' -f2
+}
 #
 DB_ZIP_HOME=$DB_STAGE_HOME
 DB_INSTALL_HOME=$ORACLE_HOME
 DB_INSTALL_RSP=db21c_software.rsp
 DB_INSTALL_RSP_TPL=$DB_INSTALL_RSP.tpl
 DB_INSTALL_ZIP1=V1011496-01.zip
+DB_LSNR_ORA=listener.ora
+DB_LSNR_ORA_TPL=$DB_LSNR_ORA.tpl
+DB_TNSNM_ORA=tnsnames.ora
+DB_TNSNM_ORA_TPL=$DB_TNSNM_ORA.tpl
+export DB_HOST=$(hostname)
+export DB_PORT=1521
+export ORACLE_SID=$(prop 'sid') 
+export DB_CONNECT_STR=$DB_HOST:$DB_PORT:${ORACLE_SID}
+export PDB_NAME=$(prop 'pdb.name') 
 #
 STARTSTOP_HOME=$SCRIPTPATH/StartStop
-#
-function prop {
-    grep "${1}" $SCRIPTPATH/oracle.properties|cut -d'=' -f2
-}
-
 #
 echo Install required packages
 sudo dnf -y install bc libstdc* gcc-c++* ksh libaio-devel* binutils  glibc libaio libgcc libstdc++ make sysstat libnsl
@@ -64,27 +78,38 @@ if [ ! -f "$ORACLE_HOME/bin/oraping" ]; then
     sudo $INVENTORY_DIRECTORY/orainstRoot.sh
     sudo $ORACLE_HOME/root.sh
     echo "Now run the Database Configuration Assistent."
-    $ORACLE_HOME/bin/dbca -silent -createDatabase -templateName General_Purpose.dbc  \
+    $ORACLE_HOME/bin/dbca -silent -createDatabase \
+      -templateName General_Purpose.dbc  \
       -gdbname $(prop 'global.db.name') \
       -sid $(prop 'sid') \
       -responseFile NO_VALUE \
       -characterSet AL32UTF8 \
+      -createAsContainerDatabase true \
+      -numberOfPDBs 1 \
+      -pdbName $(prop 'pdb.name') \ \
+      -pdbAdminPassword $(prop 'system.password') \
       -totalMemory $(prop 'memory.total') \
       -emConfiguration LOCAL \
       -SysPassword $(prop 'sys.password') \
       -SystemPassword $(prop 'system.password') \
       -databaseConfigType SINGLE \
       -databaseType MULTIPURPOSE \
-      -datafileDestination  $ORACLE_BASE/oradata/$(prop 'sid')
-    #  
+      -memoryMgmtType auto_sga \
+      -datafileDestination  $ORACLE_BASE/oradata/$(prop 'sid') \
+      -redoLogFileSize 50 \
+      -ignorePreReqs
+    #
+    echo Expand and copy $DB_LSNR_ORA and $DB_TNSNM_ORA
+    envsubst < $SCRIPTPATH/$DB_LSNR_ORA_TPL > $SCRIPTPATH/$DB_LSNR_ORA
+    envsubst < $SCRIPTPATH/$DB_TNSNM_ORA_TPL > $SCRIPTPATH/$DB_TNSNM_ORA
     echo Copy listener.ora and tnsnames.ora to $ORACLE_HOME/network/admin
     cp $SCRIPTPATH/*.ora $ORACLE_HOME/network/admin/
   else
     echo $DB_INSTALL_HOME/database/runInstaller does not exist.
   fi
- else
-   echo Database already installed
- fi
+else
+  echo Database already installed
+fi
 echo Copy StartStop scripts to ~/bin
 mkdir -p ~/bin
 cp $STARTSTOP_HOME/* ~/bin

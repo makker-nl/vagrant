@@ -13,3 +13,7 @@ export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib;
 export CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib;
 export TMP=/tmp
 export TMPDIR=$TMP
+export DB_HOST=$(hostname)
+export DB_PORT=1521
+export ORACLE_SID=orcl
+export DB_CONNECT_STR=$DB_HOST:$DB_PORT:${ORACLE_SID}

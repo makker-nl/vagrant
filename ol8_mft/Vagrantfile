@@ -153,5 +153,7 @@ Vagrant.configure("2") do |config|
   provision(config, provisioners['installfmwinfra12c'])
   provision(config, provisioners['installmft12c'])
   provision(config, provisioners['runrcu12c'])
+  provision(config, provisioners['modifyfmwnodemanager12c'])
+  provision(config, provisioners['createfmwnodemanagersvc12c'])  
   provision(config, provisioners['runcopyfmwstartstop12c'])
 end

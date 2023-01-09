@@ -232,7 +232,7 @@ def main():
     createNmServiceScript(nodeMgr1SvcName, javaHome, fmwHome, domainHome, nodeMgr1Home)
     #
     # Section 2 Modify Nodemanager 2
-    if server2Enabled == 'true':
+    if host2Enabled == 'true':
       print ('2. Modify Nodemanager 2 for NodeManager Home '+nodeMgr2Home)
       print ('2.1. Backup Nodemanager Properties')
       print (lineSeperator)
@@ -244,7 +244,7 @@ def main():
       print (lineSeperator)
       createNmServiceScript(nodeMgr2SvcName, javaHome, fmwHome, domainHome, nodeMgr2Home)
     else:
-      print ('2. Skip Nodemanager 2 as server2Enabled=false')    
+      print ('2. Skip Nodemanager 2 as host2Enabled=false')    
     #
     print ('\nFinished')
     #

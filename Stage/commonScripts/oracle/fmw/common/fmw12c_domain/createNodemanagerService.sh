@@ -1,7 +1,7 @@
 #!/bin/bash
 SCRIPTPATH=$(dirname $0)
 #
-. $SCRIPTPATH/fmw12c_env.sh
+. $SCRIPTPATH/../startStop/fmw12c_env.sh
 echo
 echo Create Nodemanager service for: $NODEMGR_HOME
 echo

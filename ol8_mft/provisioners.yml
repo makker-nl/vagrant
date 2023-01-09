@@ -79,6 +79,22 @@ runrcu12c:
   run: "once"
   #run: "never"
   commonScript: "oracle/fmw/12.2.1.4/rcu/rcuMFT.sh"
+modifyfmwnodemanager12c:
+  name: "modifyFMWNodeManager12c"
+  description: "Modify FMW 12c NodeManager"
+  user: "oracle"
+  # Run Only after creating FMW Domain
+  #run: "once"
+  run: "never"
+  commonScript: "oracle/fmw/common/fmw12c_domain/modifyNodeManagerMFT.sh"
+createfmwnodemanagersvc12c:
+  name: "createFMWNodeMgrSvc12c"
+  description: "Create FMW 12c NodeManager service"
+  user: "oracle"
+  # Run Only after creating FMW Domain
+  #run: "once"
+  run: "never"
+  commonScript: "oracle/fmw/common/fmw12c_domain/createNodemanagerServiceMFT.sh" 
 runcopyfmwstartstop12c:
   name: "copyFMWStartStop12c"
   description: "Copy FMW 12c Start Stop Scripts"

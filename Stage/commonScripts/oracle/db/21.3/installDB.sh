@@ -9,6 +9,7 @@ SCRIPTPATH=$(dirname $0)
 #
 . $SCRIPTPATH/../../../install_env.sh
 . $SCRIPTPATH/db21c_install_env.sh
+
 #
 function prop {
     grep "${1}" $SCRIPTPATH/oracle.properties|cut -d'=' -f2
@@ -111,5 +112,5 @@ else
   echo Database already installed
 fi
 echo Copy StartStop scripts to ~/bin
-mkdir -p ~/bin
-cp $STARTSTOP_HOME/* ~/bin
+mkdir -p $SCR_DIR
+cp $STARTSTOP_HOME/* $SCR_DIR

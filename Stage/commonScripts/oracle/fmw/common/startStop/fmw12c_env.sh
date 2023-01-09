@@ -8,6 +8,7 @@ export DOMAIN_NAME=soa12c_domain
 export DOMAIN_HOME=$SHARED_CONFIG_DIR/domains/$DOMAIN_NAME
 export APPLICATIONS_HOME=$SHARED_CONFIG_DIR/applications/$DOMAIN_NAME
 export NODEMGR_HOME=$DOMAIN_HOME/nodemanager
+export SCR_DIR=$ORACLE_BASE/scripts
 #
 if [ -f "$WL_HOME/server/bin/setWLSEnv.sh" ]; then
   echo call setWLSEnv.sh

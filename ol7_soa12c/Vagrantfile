@@ -214,7 +214,7 @@ Vagrant.configure("2") do |config|
     sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/fmw/12.2.1.3/soabpm1221_domain/createNodemanagerService.sh'
     echo _______________________________________________________________________________
     echo Fusion Middleware - Configuration - 4. Copy Start Stop Scripts
-    sudo runuser -l oracle -c 'cp -R /media/sf_Stage/commonScripts/fmw/12.2.1.3/startStop/* ~/bin'
+    sudo runuser -l oracle -c 'cp -R /media/sf_Stage/commonScripts/fmw/startStop/* ~/bin'
     echo _______________________________________________________________________________
     echo Fusion Middleware - Configuration - 5. StartAdmin Server
     sudo runuser -l oracle -c '~/bin/startAdmin.sh'

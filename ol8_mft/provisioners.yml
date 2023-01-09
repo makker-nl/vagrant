@@ -39,8 +39,8 @@ startdb21:
   name: "startDB21c"
   description: "Start Oracle Database 21.3"
   user: "oracle"
-  #run: "always"
-  run: "once"
+  #run: "once"
+  run: "always"
   #run: "never"
   commonScript: "/oracle/db/21.3/StartStop/startDB.sh"
 stopdb21:
@@ -79,3 +79,10 @@ runrcu12c:
   run: "once"
   #run: "never"
   commonScript: "oracle/fmw/12.2.1.4/rcu/rcuMFT.sh"
+runcopyfmwstartstop12c:
+  name: "copyFMWStartStop12c"
+  description: "Copy FMW 12c Start Stop Scripts"
+  user: "oracle"
+  run: "once"
+  #run: "never"
+  commonScript: "oracle/fmw/common/copyStartStopScripts.sh"

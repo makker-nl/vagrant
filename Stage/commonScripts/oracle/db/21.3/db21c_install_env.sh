@@ -9,3 +9,4 @@ export ORACLE_HOSTNAME=dbhost
 export INVENTORY_DIRECTORY=/app/oracle/oraInventory
 export DB_VER=21.3.0.0.0/x86_64
 export DB_STAGE_HOME=$INSTALL_HOME/Oracle/DB/$DB_VER
+export SCR_DIR=$ORACLE_BASE/scripts

@@ -133,8 +133,8 @@ Vagrant.configure("2") do |config|
   $installJdev11gScript = <<-SCRIPT
     echo _______________________________________________________________________________
     echo JDeveloper 11g
-    export SCRIPT_HOME=/media/sf_Stage/commonScripts/fmw/jdeveloper
-    CMD=${SCRIPT_HOME}/11g/installJdev11g.sh
+    export SCRIPT_HOME=/media/sf_Stage/commonScripts/fmw
+    CMD=${SCRIPT_HOME}/11g/jdeveloper/installJdev11g.sh
     sudo runuser -l oracle -c $CMD
   SCRIPT
   # 

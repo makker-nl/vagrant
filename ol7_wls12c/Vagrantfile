@@ -149,24 +149,19 @@ Vagrant.configure("2") do |config|
   $installWls12cScript = <<-SCRIPT
     echo ______________________________________________________________________________
     echo Install WLS 12c
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/oracle/fmw/wls/12.2.1.3//installWLS.sh'
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/oracle/fmw/12.2.1.3/wls/installWLS.sh'
   SCRIPT
   # Install JDeveloper
   $installJdev12cScript = <<-SCRIPT
 	  echo ______________________________________________________________________________
     echo Install Jdeveloper 12c
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/oracle/fmw/jdeveloper/12.2.1.3/installJdev.sh'
+    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/oracle/fmw/12.2.1.3/jdeveloper/installJdev.sh'
   SCRIPT
   # Install OpenDJ
   $installOpenDJScript = <<-SCRIPT
     echo ______________________________________________________________________________
     echo "Install OpenDJ 3.0.0 (For WLS12c Advanced Admin training)"
     sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/opensource/OpenDJ/installOpenDJ.sh'
-  SCRIPT
-  $installJdev12cScript = <<-SCRIPT
-	  echo ______________________________________________________________________________
-    echo Install SOA QuickStart 12cR2 (12.2.1.3)
-    sudo runuser -l oracle -c '/media/sf_Stage/commonScripts/oracle/fmw/jdeveloper/12.2.1.3/installJdev.sh'
   SCRIPT
   # Install Confluent Kafka
   $installKafkaScript = <<-SCRIPT

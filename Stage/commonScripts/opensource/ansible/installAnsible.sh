@@ -9,6 +9,7 @@ SCRIPTPATH=$(dirname $0)
 CD=$(pwd)
 ANSIBLE_HOSTS=hosts
 ANSIBLE_PATH=/etc/ansible
+ANSIBLE_CFG=/etc/ansible/ansible.cfg
 HOSTS_TPL=hosts.tpl
 export HOST_IP=$(hostname)
 echo Install Ansible
@@ -21,3 +22,7 @@ echo Copy Ansible hosts
 envsubst < $SCRIPTPATH/$HOSTS_TPL > $SCRIPTPATH/$ANSIBLE_HOSTS
 sudo mkdir -p $ANSIBLE_PATH
 sudo mv $SCRIPTPATH/$ANSIBLE_HOSTS $ANSIBLE_PATH
+echo Add "host_key_checking = False" to $ANSIBLE_CFG
+sudo sed -ie '/^\[defaults\]/a host_key_checking = False' $ANSIBLE_CFG
+echo Add "deprecation_warnings=False" to $ANSIBLE_CFG
+sudo sed -ie '/^\[defaults\]/a deprecation_warnings=False' $ANSIBLE_CFG

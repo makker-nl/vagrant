@@ -24,6 +24,8 @@ VM_DISK2_SIZE = settings['environment']['disks']['vmsDisk2Size']
 # Shared folders
 STAGE_HOST_FOLDER = settings['sharedFolders']['stageHostFolder']
 STAGE_GUEST_FOLDER = settings['sharedFolders']['stageGuestFolder']
+ANSIBLE_HOST_FOLDER = settings['sharedFolders']['ansibleHostFolder']
+ANSIBLE_GUEST_FOLDER = settings['sharedFolders']['ansibleGuestFolder']
 PROJECT_HOST_FOLDER = settings['sharedFolders']['projectHostFolder']
 PROJECT_GUEST_FOLDER = settings['sharedFolders']['projectGuestFolder']
 #
@@ -119,6 +121,7 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   config.vm.synced_folder STAGE_HOST_FOLDER, STAGE_GUEST_FOLDER
+  config.vm.synced_folder ANSIBLE_HOST_FOLDER, ANSIBLE_GUEST_FOLDER
   config.vm.synced_folder PROJECT_HOST_FOLDER, PROJECT_GUEST_FOLDER
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.

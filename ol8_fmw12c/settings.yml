@@ -16,5 +16,7 @@ environment:
 sharedFolders:
   stageHostFolder: c:/Data/git/makker/vagrant/Stage
   stageGuestFolder: /media/sf_Stage
+  ansibleHostFolder: c:/Data/git/makker/ansible
+  ansibleGuestFolder: /media/sf_Ansible
   projectHostFolder: c:/Data/projects
   projectGuestFolder: /media/sf_Projects

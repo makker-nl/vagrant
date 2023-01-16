@@ -1,6 +1,7 @@
 #!/bin/bash
-. db12c_env.sh
-
+SCRIPTPATH=$(dirname $0)
+. $SCRIPTPATH/db12c_env.sh
+#
 echo "Stopping Oracle Database and Listener ..."
 $ORACLE_HOME/bin/sqlplus "/ as sysdba" <<EOF
 #connect sys/welcome1 as sysdba

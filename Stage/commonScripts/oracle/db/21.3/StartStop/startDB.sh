@@ -1,5 +1,6 @@
 #!/bin/bash
-. db21c_env.sh
+SCRIPTPATH=$(dirname $0)
+. $SCRIPTPATH/db21c_env.sh
 #
 lsnr_num=`ps -ef|grep tnslsnr |grep -v grep |awk 'END{print NR}'`
 

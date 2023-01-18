@@ -84,13 +84,13 @@ Vagrant.configure("2") do |config|
     vb.cpus=VM_CPUS
 	  #Pre-allocate the memory when starting the guest.
 	  #vb.customize ["setextradata", :id, "VBoxInternal/RamPreAlloc", 1]
-    # Set clipboard and drag&drop bidirectional
-    vb.customize ["modifyvm", :id, "--clipboard-mode", "bidirectional"]
-    vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
+	  # Set clipboard and drag&drop bidirectional
+	  vb.customize ["modifyvm", :id, "--clipboard-mode", "bidirectional"]
+	  vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
     vb.customize ["modifyvm", :id, "--paravirtprovider", "default"] # none|default|legacy|minimal|hyperv|kvm
-     vb.customize ["modifyvm", :id, "--hwvirtex", "on"] # on|off: Enables and disables the use of hardware virtualization extensions, such as Intel VT-x or AMD-V, in the processor of your host system.
-     vb.customize ["modifyvm", :id, "--nestedpaging", "on"] #  on|off: If hardware virtualization is enabled, this additional setting enables or disables the use of the nested paging feature in the processor of your host system. See Hardware vs. Software Virtualization and CVE-2018-3646. 
-     vb.customize ["modifyvm", :id, "--largepages", "on"] #   on|off: If hardware virtualization and nested paging are enabled, for Intel VT-x only, an additional performance improvement of up to 5% can be obtained by enabling this setting. This causes the hypervisor to use large pages to reduce TLB use and overhead.
+    vb.customize ["modifyvm", :id, "--hwvirtex", "on"] # on|off: Enables and disables the use of hardware virtualization extensions, such as Intel VT-x or AMD-V, in the processor of your host system.
+    vb.customize ["modifyvm", :id, "--nestedpaging", "on"] #  on|off: If hardware virtualization is enabled, this additional setting enables or disables the use of the nested paging feature in the processor of your host system. See Hardware vs. Software Virtualization and CVE-2018-3646. 
+    vb.customize ["modifyvm", :id, "--largepages", "on"] #   on|off: If hardware virtualization and nested paging are enabled, for Intel VT-x only, an additional performance improvement of up to 5% can be obtained by enabling this setting. This causes the hypervisor to use large pages to reduce TLB use and overhead.
     # Set number of monitors.
     vb.customize ["modifyvm", :id, "--monitorcount", VM_MONITOR_COUNT]
     # Create a disk  
@@ -127,7 +127,7 @@ Vagrant.configure("2") do |config|
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
-  config.vm.network "public_network"
+  # config.vm.network "public_network"
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is

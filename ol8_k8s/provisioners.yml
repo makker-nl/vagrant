@@ -16,6 +16,12 @@ addoracleuser:
   user: "vagrant"
   run: "once"
   commonScript: "/linux/common/2.MakeOracleUser.sh"
+setupbridgedtraffic:
+  name: "setupBridgedTraffic"
+  description: "Setup BridgedTrafic."
+  user: "vagrant"
+  run: "once"
+  absoluteScript: "/vagrant/scripts/setup-bridged-traffic.sh"
 docker:
   name: "installDocker"
   description: "Docker"
@@ -25,3 +31,10 @@ docker:
   docker_password: welcome1
   scriptHome: "/opensource/docker"
   commonScript: "/opensource/docker/co8InstallDockerAs.sh"
+  
+cri-docker:
+  name: "installCRIDocker"
+  description: "CRI-Docker."
+  user: "vagrant"
+  run: "once"
+  absoluteScript: "/vagrant/scripts/install-cri-docker.sh" 

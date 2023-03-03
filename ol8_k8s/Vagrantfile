@@ -116,7 +116,9 @@ Vagrant.configure("2") do |config|
         provision(config, provisioners['preplinux'])
         provision(config, provisioners['initfilesystem'])
         provision(config, provisioners['addoracleuser'])
+        provision(config, provisioners['setupbridgedtraffic'])
         vagrantProvisionDocker(config, provisioners['docker'])
+        provision(config, provisioners['cri-docker'])
       end
   end
   # Provision Worker Nodes
@@ -152,7 +154,9 @@ Vagrant.configure("2") do |config|
         provision(config, provisioners['preplinux'])
         provision(config, provisioners['initfilesystem'])
         provision(config, provisioners['addoracleuser'])
+        provision(config, provisioners['setupbridgedtraffic'])
         vagrantProvisionDocker(config, provisioners['docker'])
+        provision(config, provisioners['cri-docker'])
     end
   end
   

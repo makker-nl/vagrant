@@ -38,9 +38,6 @@ worker:
     hostname: "kubeworker"
     vmMemory: 4096 # 4*1024 MB
     vmCpus: 2
-    ssh:
-        username: "vagrant"
-        password: "vagrant"
     disks:
         controller: SATA
         disk2:

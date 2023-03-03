@@ -20,6 +20,10 @@ MASTER_SSH_PORT_START = settings['master']['sshPortStart']
 NODE_IP_START = settings['worker']['ipStart']
 NODE_SSH_PORT_START = settings['worker']['sshPortStart']
 
+# Add a shared folder based on a setting
+def add_shared_folder(vmconf, sharedfolder)   
+    vmconf.vm.synced_folder sharedfolder['hostFolder'], sharedfolder['guestFolder']
+end
 
 Vagrant.configure("2") do |config|
   config.vm.box = "oraclebase/oracle-8"
@@ -42,6 +46,9 @@ Vagrant.configure("2") do |config|
         node.vm.network :private_network, ip: IP_NW + "#{MASTER_IP_START + i}"
         node.vm.network "forwarded_port", guest: 22, host: "#{MASTER_SSH_PORT_START + i}"
 
+        add_shared_folder(node, settings['master']['sharedFolders']['stage']) 
+        add_shared_folder(node, settings['master']['sharedFolders']['project']) 
+
         node.vm.provision "setup-hosts", :type => "shell", :path => "scripts/setup-hosts.sh" do |s|
           s.args = ["eth1"]
         end
@@ -61,6 +68,9 @@ Vagrant.configure("2") do |config|
         node.vm.hostname = settings['worker']['hostname']+"-#{i}" 
         node.vm.network :private_network, ip: IP_NW + "#{NODE_IP_START + i}"
         node.vm.network "forwarded_port", guest: 22, host: "#{NODE_SSH_PORT_START + i}"
+
+        add_shared_folder(node, settings['worker']['sharedFolders']['stage']) 
+        add_shared_folder(node, settings['worker']['sharedFolders']['project']) 
 
         node.vm.provision "setup-hosts", :type => "shell", :path => "scripts/setup-hosts.sh" do |s|
           s.args = ["eth1"]

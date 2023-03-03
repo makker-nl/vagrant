@@ -1,37 +1,27 @@
-oraclejava8:
-  user: "redhat"
+preplinux:
+  name: "prepLinux"
+  description: "Prepare linux"
+  user: "vagrant"
   run: "once"
-java11:
+  commonScript: "/linux/ol8/0.PrepOL.sh"
+initfilesystem:
+  name: "initFileSystem"
+  description: "Initialize Filesystem on disk 2"
+  user: "vagrant"
   run: "once"
-git:
+  commonScript:  "/linux/ol8/1.FileSystem.sh"
+addoracleuser:
+  name: "addOracleUser"
+  description: "Add Oracle User."
+  user: "vagrant"
   run: "once"
-maven:
-  user: "redhat"
-  run: "once"
-codereadystudio:
-  user: "redhat"
-  run: "once"
+  commonScript: "/linux/common/2.MakeOracleUser.sh"
 docker:
-  user: "redhat"
+  name: "installDocker"
+  description: "Docker"
+  user: "oracle"
   run: "once"
-  docker_user: redhat
+  docker_user: oracle
   docker_password: welcome1
-dockercompose:
-  user: "redhat"
-  run: "once"
-amq:
-  user: "redhat"
-  run: "once"
-  start: "always"
-soapui:
-  user: "redhat"
-  run: "once"
-postman:
-  user: "redhat"
-  run: "once"
-osoaqs:
-  user: "redhat"
-  run: "once"
-oc:
-  user: "redhat"
-  run: "never"
+  scriptHome: "/opensource/docker"
+  commonScript: "/opensource/docker/co8InstallDockerAs.sh"

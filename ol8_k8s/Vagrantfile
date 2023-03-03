@@ -12,7 +12,9 @@ settings = YAML.load_file 'settings.yml'
 provisioners = YAML.load_file 'provisioners.yml'
 # Environment settings
 VMS_HOME = settings['environment']['vmsHome']
-
+LOCAL_COMMON_SCRIPTS = "../Stage/commonScripts"
+RUN_AS_SCR=LOCAL_COMMON_SCRIPTS+'/runAs.sh'
+#
 # Define the number of master and worker nodes
 # If this number is changed, remember to update setup-hosts.sh script with the new hosts IP details in /etc/hosts of each VM.
 NUM_MASTER_NODE = settings['master']['numOfNodes']
@@ -30,15 +32,45 @@ def add_shared_folder(vmconf, sharedfolder)
 end
 #
 # Add a disk to VirtualBox VM
-def add_vbx_shared_disk(vbx, nodeSettings, disk)
+def add_vbx_shared_disk(vbx, vbName, diskProperty, nodeSettings)
   storage_controller = nodeSettings['disks']['controller']
-  vm_disk=VMS_HOME+"/"+nodeSettings['name']+"/"+nodeSettings['name']+"-"+disk['name']+".vdi"
+  disk = nodeSettings['disks'][diskProperty]
+  vm_disk=VMS_HOME+"/"+vbName+"/"+vbName+"-"+disk['name']+".vdi"
   # Create a disk  
   unless File.exist?(vm_disk)
     vbx.customize [ "createmedium", "disk", "--filename", vm_disk, "--format", "vdi", "--size", disk['size'] , "--variant", "Standard" ]
   end
   # Add it to the VM.
   vbx.customize [ "storageattach", :id , "--storagectl", storage_controller, "--port", "2", "--device", "0", "--type", "hdd", "--medium", vm_disk]
+end
+#
+# Provision generic.
+def provision(vmconf, provisioner)
+  keys =  provisioner.keys
+  provisionerName = provisioner['name']
+  description = provisioner['description']
+  runAsUser = provisioner['user']
+  runType = provisioner['run']
+  if provisioner['commonScript'] then
+    script = STAGE_COMMON_SCRIPTS+'/'+provisioner['commonScript']
+  elsif provisioner['absoluteScript'] then
+    script = provisioner['absoluteScript']
+  end  
+  vmconf.vm.provision provisionerName, type: "shell", run: runType, path: RUN_AS_SCR, args: [description, script, runAsUser]
+end
+#
+# Provision docker
+def vagrantProvisionDocker(vmconf, provisioner)
+  provisionerName = provisioner['name']
+  description = provisioner['description']
+  runType = provisioner['run']
+  runAsUser = provisioner['user']
+  runType = provisioner['run']
+  dockerUser = provisioner['docker_user']
+  dockerPassword = provisioner['docker_password']
+  scriptHome=STAGE_COMMON_SCRIPTS+'/opensource/docker' 
+  script = LOCAL_COMMON_SCRIPTS+provisioner['commonScript']
+  vmconf.vm.provision provisionerName, type: "shell", run: "never", run: runType, path: script, args: [description, scriptHome, runAsUser, dockerUser, dockerPassword]
 end
 #
 # Configure VMs
@@ -56,11 +88,12 @@ Vagrant.configure("2") do |config|
         nodeSettings=settings['master']
         # VirtualBox settings
         node.vm.provider "virtualbox" do |vb|
-            vb.name = nodeSettings['name']+"-#{i}"
+            vbName  = nodeSettings['name']+"-#{i}"
+            vb.name = vbName
             vb.memory = nodeSettings['vmMemory']
             vb.cpus = nodeSettings['vmCpus']
             # Add second disk
-            add_vbx_shared_disk(vb, nodeSettings, nodeSettings['disks']['disk2'])
+            add_vbx_shared_disk(vb, vbName, 'disk2', nodeSettings)
         end
         # Node Config settings
         node.vm.hostname = nodeSettings['hostname']+"-#{i}"
@@ -73,9 +106,17 @@ Vagrant.configure("2") do |config|
         node.vm.provision "setup-hosts", :type => "shell", :path => "scripts/setup-hosts.sh" do |s|
           s.args = ["eth1"]
         end
-
         node.vm.provision "update-dns", type: "shell", :path => "scripts/update-dns.sh"
-
+        #
+        STAGE_GUEST_FOLDER=nodeSettings['sharedFolders']['stage']['guestFolder']
+        STAGE_COMMON_SCRIPTS = STAGE_GUEST_FOLDER+"/commonScripts"
+        #
+        # Common Provisioners
+        #
+        provision(config, provisioners['preplinux'])
+        provision(config, provisioners['initfilesystem'])
+        provision(config, provisioners['addoracleuser'])
+        vagrantProvisionDocker(config, provisioners['docker'])
       end
   end
   # Provision Worker Nodes
@@ -84,11 +125,12 @@ Vagrant.configure("2") do |config|
         nodeSettings=settings['worker']
         # VirtualBox settings
         node.vm.provider "virtualbox" do |vb|
-            vb.name = nodeSettings['name']+"-#{i}"
+            vbName  = nodeSettings['name']+"-#{i}"
+            vb.name = vbName
             vb.memory = nodeSettings['vmMemory']
             vb.cpus = nodeSettings['vmCpus']
             # Add second disk
-            add_vbx_shared_disk(vb, nodeSettings, nodeSettings['disks']['disk2'])
+            add_vbx_shared_disk(vb, vbName, 'disk2', nodeSettings)
         end
         # Node Config settings
         node.vm.hostname = nodeSettings['hostname']+"-#{i}" 
@@ -102,6 +144,15 @@ Vagrant.configure("2") do |config|
           s.args = ["eth1"]
         end
         node.vm.provision "update-dns", type: "shell", :path => "scripts/update-dns.sh"
+        #
+        STAGE_GUEST_FOLDER=nodeSettings['sharedFolders']['stage']['guestFolder']
+        STAGE_COMMON_SCRIPTS = STAGE_GUEST_FOLDER+"/commonScripts"
+        #
+        # Common Provisioners
+        provision(config, provisioners['preplinux'])
+        provision(config, provisioners['initfilesystem'])
+        provision(config, provisioners['addoracleuser'])
+        vagrantProvisionDocker(config, provisioners['docker'])
     end
   end
   

@@ -31,10 +31,15 @@ docker:
   docker_password: welcome1
   scriptHome: "/opensource/docker"
   commonScript: "/opensource/docker/co8InstallDockerAs.sh"
-  
 cri-docker:
   name: "installCRIDocker"
   description: "CRI-Docker."
   user: "vagrant"
   run: "once"
   absoluteScript: "/vagrant/scripts/install-cri-docker.sh" 
+installkubeclis:
+  name: "installKubeCLIs"
+  description: "Kubernetes CLIs"
+  user: "vagrant"
+  run: "once"
+  absoluteScript: "/vagrant/scripts/install-kube-clis.sh" 

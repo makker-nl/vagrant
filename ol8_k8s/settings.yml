@@ -4,7 +4,7 @@ environment:
 #
 master:
     numOfNodes: 1
-    ipStart: 1
+    ipStart: 10
     sshPortStart: 2710
     #
     machine: "kubemaster"
@@ -31,7 +31,7 @@ master:
 #
 worker:
     numOfNodes: 2
-    ipStart: 2
+    ipStart: 20
     sshPortStart: 2720
     machine: "kubeworker"
     name: "kubeworker"

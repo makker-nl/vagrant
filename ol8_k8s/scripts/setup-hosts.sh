@@ -1,4 +1,5 @@
 #!/bin/bash
+# Taken from https://github.com/kodekloudhub/certified-kubernetes-administrator-course/blob/master/ubuntu/vagrant/setup-hosts.sh
 echo Set up hosts file
 set -e
 IFNAME=$1
@@ -10,9 +11,9 @@ sed -e "s/^.*${HOSTNAME}.*/${ADDRESS} ${HOSTNAME} ${HOSTNAME}.local/" -i /etc/ho
 
 # Update /etc/hosts about other hosts
 cat >> /etc/hosts <<EOF
-192.168.5.11  master-1
-192.168.5.12  master-2
-192.168.5.21  worker-1
-192.168.5.22  worker-2
-192.168.5.30  lb
+192.168.56.11  kubemaster-1
+192.168.56.12  kubemaster-2
+192.168.56.21  kubeworker-1
+192.168.56.22  kubeworker-2
+192.168.56.30  lb
 EOF

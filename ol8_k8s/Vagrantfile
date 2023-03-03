@@ -3,30 +3,47 @@
 
 # 20230302 - M. van den Akker: Taken from https://github.com/kodekloudhub/certified-kubernetes-administrator-course/blob/master/Vagrantfile.
 # See also: https://developer.hashicorp.com/vagrant/docs/multi-machine
-
+#
+# Generic settings
+BOX_NAME = "oraclebase/oracle-8"
+#
 # https://stackoverflow.com/questions/13065576/override-vagrant-configuration-settings-locally-per-dev
 settings = YAML.load_file 'settings.yml'
 provisioners = YAML.load_file 'provisioners.yml'
-
+# Environment settings
+VMS_HOME = settings['environment']['vmsHome']
 
 # Define the number of master and worker nodes
 # If this number is changed, remember to update setup-hosts.sh script with the new hosts IP details in /etc/hosts of each VM.
 NUM_MASTER_NODE = settings['master']['numOfNodes']
 NUM_WORKER_NODE = settings['worker']['numOfNodes']
-
+# Network Settings
 IP_NW = settings['environment']['ipNetwork']
 MASTER_IP_START = settings['master']['ipStart']
 MASTER_SSH_PORT_START = settings['master']['sshPortStart']
 NODE_IP_START = settings['worker']['ipStart']
 NODE_SSH_PORT_START = settings['worker']['sshPortStart']
-
+#
 # Add a shared folder based on a setting
 def add_shared_folder(vmconf, sharedfolder)   
     vmconf.vm.synced_folder sharedfolder['hostFolder'], sharedfolder['guestFolder']
 end
-
+#
+# Add a disk to VirtualBox VM
+def add_vbx_shared_disk(vbx, nodeSettings, disk)
+  storage_controller = nodeSettings['disks']['controller']
+  vm_disk=VMS_HOME+"/"+nodeSettings['name']+"/"+nodeSettings['name']+"-"+disk['name']+".vdi"
+  # Create a disk  
+  unless File.exist?(vm_disk)
+    vbx.customize [ "createmedium", "disk", "--filename", vm_disk, "--format", "vdi", "--size", disk['size'] , "--variant", "Standard" ]
+  end
+  # Add it to the VM.
+  vbx.customize [ "storageattach", :id , "--storagectl", storage_controller, "--port", "2", "--device", "0", "--type", "hdd", "--medium", vm_disk]
+end
+#
+# Configure VMs
 Vagrant.configure("2") do |config|
-  config.vm.box = "oraclebase/oracle-8"
+  config.vm.box = BOX_NAME
   
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -36,19 +53,23 @@ Vagrant.configure("2") do |config|
   # Provision Master Nodes
   (1..NUM_MASTER_NODE).each do |i|
       config.vm.define settings['master']['machine']+"-#{i}" do |node|
-        # Name shown in the GUI
+        nodeSettings=settings['master']
+        # VirtualBox settings
         node.vm.provider "virtualbox" do |vb|
-            vb.name = settings['master']['name']+"-#{i}"
-            vb.memory = settings['master']['vmMemory']
-            vb.cpus = settings['master']['vmCpus']
+            vb.name = nodeSettings['name']+"-#{i}"
+            vb.memory = nodeSettings['vmMemory']
+            vb.cpus = nodeSettings['vmCpus']
+            # Add second disk
+            add_vbx_shared_disk(vb, nodeSettings, nodeSettings['disks']['disk2'])
         end
-        node.vm.hostname = settings['master']['hostname']+"-#{i}"
+        # Node Config settings
+        node.vm.hostname = nodeSettings['hostname']+"-#{i}"
         node.vm.network :private_network, ip: IP_NW + "#{MASTER_IP_START + i}"
         node.vm.network "forwarded_port", guest: 22, host: "#{MASTER_SSH_PORT_START + i}"
-
-        add_shared_folder(node, settings['master']['sharedFolders']['stage']) 
-        add_shared_folder(node, settings['master']['sharedFolders']['project']) 
-
+        # Add Shared Folders
+        add_shared_folder(node, nodeSettings['sharedFolders']['stage']) 
+        add_shared_folder(node, nodeSettings['sharedFolders']['project']) 
+        # Provisioners
         node.vm.provision "setup-hosts", :type => "shell", :path => "scripts/setup-hosts.sh" do |s|
           s.args = ["eth1"]
         end
@@ -60,22 +81,26 @@ Vagrant.configure("2") do |config|
   # Provision Worker Nodes
   (1..NUM_WORKER_NODE).each do |i|
      config.vm.define settings['worker']['machine']+"-#{i}" do |node|
+        nodeSettings=settings['worker']
+        # VirtualBox settings
         node.vm.provider "virtualbox" do |vb|
-            vb.name = settings['worker']['name']+"-#{i}"
-            vb.memory = settings['worker']['vmMemory']
-            vb.cpus = settings['worker']['vmCpus']
+            vb.name = nodeSettings['name']+"-#{i}"
+            vb.memory = nodeSettings['vmMemory']
+            vb.cpus = nodeSettings['vmCpus']
+            # Add second disk
+            add_vbx_shared_disk(vb, nodeSettings, nodeSettings['disks']['disk2'])
         end
-        node.vm.hostname = settings['worker']['hostname']+"-#{i}" 
+        # Node Config settings
+        node.vm.hostname = nodeSettings['hostname']+"-#{i}" 
         node.vm.network :private_network, ip: IP_NW + "#{NODE_IP_START + i}"
         node.vm.network "forwarded_port", guest: 22, host: "#{NODE_SSH_PORT_START + i}"
-
-        add_shared_folder(node, settings['worker']['sharedFolders']['stage']) 
-        add_shared_folder(node, settings['worker']['sharedFolders']['project']) 
-
+        # Add Shared Folders
+        add_shared_folder(node, nodeSettings['sharedFolders']['stage']) 
+        add_shared_folder(node, nodeSettings['sharedFolders']['project']) 
+        # Provisioners
         node.vm.provision "setup-hosts", :type => "shell", :path => "scripts/setup-hosts.sh" do |s|
           s.args = ["eth1"]
         end
-
         node.vm.provision "update-dns", type: "shell", :path => "scripts/update-dns.sh"
     end
   end

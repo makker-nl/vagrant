@@ -1,0 +1,55 @@
+environment:
+    vmsHome: C:/Data/VirtualMachines/VirtualBox
+    ipNetwork: "192.168.56."
+#
+master:
+    numOfNodes: 1
+    ipStart: 1
+    sshPortStart: 2710
+    #
+    machine: "kubemaster"
+    name: "kubemaster"
+    hostname: "kubemaster"
+    #vmMemory: 12288 # 12*1024 MB 
+    #vmMemory: 8192 # 8*1024 MB
+    #vmMemory: 6144 # 6*1024 MB
+    #vmMemory: 4096 # 4*1024 MB
+    vmMemory: 2048 # 2*1024 MB
+    vmCpus: 2
+    disks:
+        controller: SATA
+        disk2:
+            name: disk2
+            size: 524288 #1024 * 512
+    sharedFolders:
+        stage:
+            hostFolder: c:/Data/git/makker/vagrant/Stage
+            guestFolder: /media/sf_Stage
+        project:
+            hostFolder: c:/Data/git/makker
+            guestFolder: /media/sf_Projects
+#
+worker:
+    numOfNodes: 2
+    ipStart: 2
+    sshPortStart: 2720
+    machine: "kubeworker"
+    name: "kubeworker"
+    hostname: "kubeworker"
+    vmMemory: 4096 # 4*1024 MB
+    vmCpus: 2
+    ssh:
+        username: "vagrant"
+        password: "vagrant"
+    disks:
+        controller: SATA
+        disk2:
+            name: disk2
+            size: 524288 #1024 * 512
+    sharedFolders:
+        stage:
+            hostFolder: c:/Data/git/makker/vagrant/Stage
+            guestFolder: /media/sf_Stage
+        project:
+            hostFolder: c:/Data/git/makker
+            guestFolder: /media/sf_Projects

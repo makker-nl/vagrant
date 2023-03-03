@@ -1,0 +1,73 @@
+# -*- mode: ruby -*-
+# vi:set ft=ruby sw=2 ts=2 sts=2:
+
+# 20230302 - M. van den Akker: Taken from https://github.com/kodekloudhub/certified-kubernetes-administrator-course/blob/master/Vagrantfile.
+# See also: https://developer.hashicorp.com/vagrant/docs/multi-machine
+
+# https://stackoverflow.com/questions/13065576/override-vagrant-configuration-settings-locally-per-dev
+settings = YAML.load_file 'settings.yml'
+provisioners = YAML.load_file 'provisioners.yml'
+
+
+# Define the number of master and worker nodes
+# If this number is changed, remember to update setup-hosts.sh script with the new hosts IP details in /etc/hosts of each VM.
+NUM_MASTER_NODE = settings['master']['numOfNodes']
+NUM_WORKER_NODE = settings['worker']['numOfNodes']
+
+IP_NW = settings['environment']['ipNetwork']
+MASTER_IP_START = settings['master']['ipStart']
+MASTER_SSH_PORT_START = settings['master']['sshPortStart']
+NODE_IP_START = settings['worker']['ipStart']
+NODE_SSH_PORT_START = settings['worker']['sshPortStart']
+
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "oraclebase/oracle-8"
+  
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # `vagrant box outdated`. This is not recommended.
+  config.vm.box_check_update = false
+  
+  # Provision Master Nodes
+  (1..NUM_MASTER_NODE).each do |i|
+      config.vm.define settings['master']['machine']+"-#{i}" do |node|
+        # Name shown in the GUI
+        node.vm.provider "virtualbox" do |vb|
+            vb.name = settings['master']['name']+"-#{i}"
+            vb.memory = settings['master']['vmMemory']
+            vb.cpus = settings['master']['vmCpus']
+        end
+        node.vm.hostname = settings['master']['hostname']+"-#{i}"
+        node.vm.network :private_network, ip: IP_NW + "#{MASTER_IP_START + i}"
+        node.vm.network "forwarded_port", guest: 22, host: "#{MASTER_SSH_PORT_START + i}"
+
+        #node.vm.provision "setup-hosts", :type => "shell", :path => "ubuntu/vagrant/setup-hosts.sh" do |s|
+        #  s.args = ["enp0s8"]
+        #end
+
+        #node.vm.provision "setup-dns", type: "shell", :path => "ubuntu/update-dns.sh"
+
+      end
+  end
+  # Provision Worker Nodes
+  (1..NUM_WORKER_NODE).each do |i|
+     config.vm.define settings['worker']['machine']+"-#{i}" do |node|
+        node.vm.provider "virtualbox" do |vb|
+            vb.name = settings['worker']['name']+"-#{i}"
+            vb.memory = settings['worker']['vmMemory']
+            vb.cpus = settings['worker']['vmCpus']
+        end
+        node.vm.hostname = settings['worker']['hostname']+"-#{i}" 
+        node.vm.network :private_network, ip: IP_NW + "#{NODE_IP_START + i}"
+        node.vm.network "forwarded_port", guest: 22, host: "#{NODE_SSH_PORT_START + i}"
+
+        #node.vm.provision "setup-hosts", :type => "shell", :path => "ubuntu/vagrant/setup-hosts.sh" do |s|
+        #  s.args = ["enp0s8"]
+        #end
+
+        #node.vm.provision "setup-dns", type: "shell", :path => "ubuntu/update-dns.sh"
+    end
+  end
+  
+end

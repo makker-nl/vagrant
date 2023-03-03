@@ -1,0 +1,123 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+BOX_NAME="makker/CO9SwGUI" # CentOS 9
+BOX_VERSION="1" 
+VM_MEMORY = 11264 # 11*1024 MB
+VM_CPUS=4
+VMS_HOME="C:/data/VirtualMachines/VirtualBox"
+VM_NAME="CO9_Generic"
+VM_DOMAIN="oracle.local"
+VM_DISK2=VMS_HOME+"\\"+VM_NAME+"\\"+VM_NAME+".disk2.vdi"
+VM_DISK2_SIZE=1024 * 512
+VB_GUI=false
+# Stage folders
+STAGE_HOST_FOLDER="C:/data/git/makker/vagrant/Stage"
+STAGE_GUEST_FOLDER="/media/sf_Stage"
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box = BOX_NAME
+  config.vm.box_version = BOX_VERSION
+  config.vm.define VM_DOMAIN
+  config.vm.provider :virtualbox do |vb|
+    vb.name = VM_NAME
+    vb.gui = 
+    vb.memory = VM_MEMORY
+    vb.cpus = VM_CPUS
+    # Set clipboard and drag&drop bidirectional
+    vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+    vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
+    # 2023-01-18: Prevent "RETBleed WARNING Spectre v2 mitigation leaves CPU vulnerable to RETBleed attacks"
+    # See https://forums.virtualbox.org/viewtopic.php?f=7&t=107103.
+    vb.customize ["modifyvm", :id, "--spec-ctrl", "on"]
+    # 2023-01-18: To prevent: "Unmaintained hardware is detected e1000:100E:8086"
+    # See: https://stackoverflow.com/questions/12249200/vagrant-error-vt-x-amd-v-hardware-acceleration-is-missing    
+    #vb.customize ["modifyvm", :id, "--hwvirtex", "off"]
+    #
+    # Create a disk  
+    unless File.exist?(VM_DISK2)
+      vb.customize [ "createmedium", "disk", "--filename", VM_DISK2, "--format", "vdi", "--size", VM_DISK2_SIZE , "--variant", "Standard" ]
+    end
+    # Add it to the VM.
+    vb.customize [ "storageattach", :id , "--storagectl", "SATA", "--port", "2", "--device", "0", "--type", "hdd", "--medium", VM_DISK2]
+  end  
+  #config.ssh.username="vagrant"
+  #config.ssh.password="vagrant"
+  config.ssh.port=2222
+
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # `vagrant box outdated`. This is not recommended.
+  # config.vm.box_check_update = false
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  # NOTE: This will enable public access to the opened port
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine and only allow access
+  # via 127.0.0.1 to disable public access
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  # config.vm.network "private_network", ip: "192.168.33.10"
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  # config.vm.network "public_network"
+
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  # config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.synced_folder STAGE_HOST_FOLDER, STAGE_GUEST_FOLDER
+
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+  # config.vm.provider "virtualbox" do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+  #   vb.gui = true
+  #
+  #   # Customize the amount of memory on the VM:
+  #   vb.memory = "1024"
+  # end
+  #
+  # View the documentation for the provider you are using for more
+  # information on available options.
+
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+ 
+  $initScript = <<-SCRIPT
+    export SCRIPT_HOME=/media/sf_Stage/commonScripts/linux
+    echo _______________________________________________________________________________
+    echo Prepare CentOS 9
+    $SCRIPT_HOME/co8/0.PrepOL.sh
+    echo _______________________________________________________________________________
+    echo 1. Create Filesystem
+    $SCRIPT_HOME/co8/1.FileSystem.sh
+    echo _______________________________________________________________________________
+    echo 2. Create User 
+    echo . Create RedHat User
+    $SCRIPT_HOME/common/2.MakeRedHatUser.sh
+  SCRIPT
+  #
+  config.vm.provision "init", type: "shell", run: "once", inline: $initScript
+  #
+end

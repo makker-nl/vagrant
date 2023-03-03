@@ -106,6 +106,12 @@ helm:
 #  run: "never"
   run: "once"
   commonScript: "opensource/kubernetes/co7InstallHelm.sh"
+oracleocicli:
+  name: "installOCICLI"
+  description: "Oracle OCI CLI"
+  user: "oracle"
+  run: "never"
+  commonScript: "/oracle/oci/install_ocicli-OL8.sh"
 azurecli:
   name: "installAzCLI"
   description: "Azure commandline interface"

@@ -158,4 +158,22 @@ Vagrant.configure("2") do |config|
   provision(config, provisioners['modifyfmwnodemanager12c'])
   provision(config, provisioners['createfmwnodemanagersvc12c'])  
   provision(config, provisioners['runcopyfmwstartstop12c'])
+  
+  # config.vm.provision "ansible_local" do |ansible|
+    # ansible.playbook = "/media/sf_Ansible/fmw/java/installOJava8.yml"
+     # ansible.host_vars = {
+      # "infraserver1" => {"ssh_port" => 22,
+                  # "maxRequestsPerChild" => 808}
+                 # }
+    # ansible.install_mode = :default
+  # end
+  
+  config.vm.provision  "playInstallOJDK8", type:'ansible_local' do |ansible|
+      # ansible.config_file = '/etc/ansible/ansible.cfg'
+      ansible.playbook = "/media/sf_Ansible/fmw/java/installOJava8.yml"
+      #ansible.become = "oracle"
+      #ansible.inventory_path = '/etc/ansible/hosts'
+      # ansible.host_key_checking = false
+    end
+  
 end

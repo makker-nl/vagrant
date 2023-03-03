@@ -171,10 +171,12 @@ Vagrant.configure("2") do |config|
   provision(config, provisioners['osoaqs'])
   provision(config, provisioners['kubectl'])
   provision(config, provisioners['helm'])
+  provision(config, provisioners['oracleocicli']) 
   provision(config, provisioners['azurecli'])
   provision(config, provisioners['tkncli'])
   provision(config, provisioners['yq'])  
   provision(config, provisioners['netbeans'])
   provision(config, provisioners['sqldeveloper'])
   provision(config, provisioners['nodejs'])  
+  
 end 

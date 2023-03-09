@@ -56,8 +56,8 @@ echo 5.2. Add reference to data folders for storage.
 # https://www.digitalocean.com/community/questions/how-to-move-the-default-var-lib-docker-to-another-directory-for-docker-on-linux
 DOCKER_DATA_HOME=/app/docker/data
 DOCKER_STRT_STMT="ExecStart=/usr/bin/dockerd"
-DOCKER_STRT_STMT_EXP="${DOCKER_STRT_STMT} -g ${DOCKER_DATA_HOME}"
-DOCKER_SVC_SCR=/lib/systemd/system/docker.service
+DOCKER_STRT_STMT_EXP="${DOCKER_STRT_STMT} --data-root ${DOCKER_DATA_HOME}"
+DOCKER_SVC_SCR=/etc/systemd/system/docker.service
 echo mkdir -p ${DOCKER_DATA_HOME}
 sudo mkdir -p ${DOCKER_DATA_HOME}
 if grep -Fq "$DOCKER_STRT_STMT_EXP" $DOCKER_SVC_SCR

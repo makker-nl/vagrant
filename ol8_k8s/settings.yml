@@ -13,8 +13,8 @@ master:
     #vmMemory: 12288 # 12*1024 MB 
     #vmMemory: 8192 # 8*1024 MB
     #vmMemory: 6144 # 6*1024 MB
-    #vmMemory: 4096 # 4*1024 MB
-    vmMemory: 2048 # 2*1024 MB
+    vmMemory: 4096 # 4*1024 MB
+    #vmMemory: 2048 # 2*1024 MB
     vmCpus: 2
     disks:
         controller: SATA Controller

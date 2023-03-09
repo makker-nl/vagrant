@@ -27,25 +27,19 @@ echo Configure systemd
 sudo wget https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.service
 sudo wget https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.socket
 sudo mv cri-docker.socket cri-docker.service /etc/systemd/system/
-#sudo sed -i -e 's,/usr/bin/cri-dockerd,/usr/local/bin/cri-dockerd,' /etc/systemd/system/cri-docker.service
-
-DOCKER_DATA_HOME=/app/docker/data
-DOCKER_STRT_STMT="ExecStart=/usr/bin/cri-dockerd"
-DOCKER_STRT_STMT_EXP="ExecStart=/usr/local/bin/cri-dockerd -g ${DOCKER_DATA_HOME} --exec-opt native.cgroupdriver=systemd"
-DOCKER_SVC_SCR=/etc/systemd/system/cri-docker.service
-echo mkdir -p ${DOCKER_DATA_HOME}
-sudo mkdir -p ${DOCKER_DATA_HOME}
-if grep -Fq "$DOCKER_STRT_STMT_EXP" $DOCKER_SVC_SCR
+#
+CRI_DCKR_STRT_STMT="ExecStart=/usr/bin/cri-dockerd"
+CRI_DCKR_STRT_STMT_EXP="/usr/local/bin/cri-dockerd"
+CRI_DCKR_SVC_SCR=/etc/systemd/system/cri-docker.service
+#
+if grep -Fq "$CRI_DCKR_STRT_STMT_EXP" $DOCKER_SVC_SCR
 then
-  echo "WARNING: ${DOCKER_STRT_STMT_EXP} already in ${DOCKER_SVC_SCR}"
+  echo "WARNING: ${CRI_DCKR_STRT_STMT_EXP} already in ${DOCKER_SVC_SCR}"
   echo "Skipping, please verify!"
 else
-  echo "Change  ${DOCKER_STRT_STMT} to ${DOCKER_STRT_STMT_EXP} to ${DOCKER_SVC_SCR}"
-  sudo sed -i "s|${DOCKER_STRT_STMT} |${DOCKER_STRT_STMT_EXP} |g" ${DOCKER_SVC_SCR}
+  echo "Change  ${CRI_DCKR_STRT_STMT} to ${CRI_DCKR_STRT_STMT_EXP} to ${DOCKER_SVC_SCR}"
+  sudo sed -i -e 's,${CRI_DCKR_STRT_STMT},${CRI_DCKR_STRT_STMT_EXP},' ${DOCKER_SVC_SCR}
 fi
-
-
-
 
 echo Start the service with cri-dockerd enabled
 sudo systemctl daemon-reload

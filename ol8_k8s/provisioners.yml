@@ -34,12 +34,24 @@ docker:
 cri-docker:
   name: "installCRIDocker"
   description: "CRI-Docker."
-  user: "vagrant"
+  user: "oracle"
   run: "once"
   absoluteScript: "/vagrant/scripts/install-cri-docker.sh" 
 installkubeclis:
   name: "installKubeCLIs"
   description: "Kubernetes CLIs"
-  user: "vagrant"
+  user: "oracle"
   run: "once"
-  absoluteScript: "/vagrant/scripts/install-kube-clis.sh" 
+  absoluteScript: "/vagrant/scripts/install-kube-clis.sh"
+kubeadminInit:
+  name: "kubeadmInit"
+  description: "Kubeadm Init"
+  user: "oracle"
+  run: "once"
+  absoluteScript: "/vagrant/scripts/kubeadm-init.sh"
+weavenet:
+  name: "installWeave"
+  description: "Install latest Weave"
+  user: "oracle"
+  run: "once"
+  absoluteScript: "/vagrant/scripts/install-weave.sh"

@@ -4,15 +4,12 @@ SCRIPTPATH=$(dirname $0)
 #
 . $SCRIPTPATH/../../install_env.sh
 #
-#SOAPUI_VER=5.5.0
-#SOAPUI_VER=5.6.0
 SOAPUI_VER=5.7.0
 SOAPUI_ZIP_HOME=$STAGE_HOME/installBinaries/OpenSource/SoapUI
 SOAPUI_INSTALL_TMP=$INSTALL_TMP_DIR/soapui
 SOAPUI_INSTALL_TAR=SoapUI-${SOAPUI_VER}-linux-bin.tar.gz
 SOAPUI_INSTALL_NAME=SoapUI-${SOAPUI_VER}
 SOAPUI_HOME=$OS_BASE/$SOAPUI_INSTALL_NAME
-
 #
 echo "Checking SoapUI Home: "$SOAPUI_HOME
 if [ ! -f "$SOAPUI_HOME/bin/soapui.sh" ]; then
@@ -35,7 +32,6 @@ if [ ! -f "$SOAPUI_HOME/bin/soapui.sh" ]; then
   cp $SCRIPTPATH/ssh_soapui.sh ~/bin
   cp $SCRIPTPATH/soapui.ico $SOAPUI_HOME
   cp $SCRIPTPATH/soapui.desktop $MENU_ENTRIES
-  
 else
   echo SoapUI already installed
 fi

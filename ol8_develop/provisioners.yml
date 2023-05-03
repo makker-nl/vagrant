@@ -46,7 +46,7 @@ python3:
   description: "Python 3"
   user: "oracle"
   run: "once"
-  commonScript: "/opensource/python/co7InstallPython3.sh"
+  commonScript: "/opensource/python/ol8InstallPython3.sh"
 maven:
   name: "installMaven"
   description: "Apache Maven"
@@ -96,15 +96,15 @@ kubectl:
   name: "installKubectl"
   description: "Kubernetes Control commandline interface"
   user: "oracle"
-#  run: "never"
-  run: "once"
+  run: "never"
+#  run: "once"
   commonScript: "opensource/kubernetes/co7InstallKubectl.sh"
 helm:
   name: "installHelm"
   description: "Helm commandline interface"
   user: "oracle"
-#  run: "never"
-  run: "once"
+  run: "never"
+#  run: "once"
   commonScript: "opensource/kubernetes/co7InstallHelm.sh"
 oracleocicli:
   name: "installOCICLI"

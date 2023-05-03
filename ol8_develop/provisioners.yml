@@ -118,7 +118,7 @@ azurecli:
   user: "oracle"
   run: "never"
 #  run: "once"
-  commonScript: "azure/co7InstallAzCLI.sh"
+  commonScript: "microsoft/azure/co7InstallAzCLI.sh"
 tkncli:
   name: "installTektonCLI"
   description: "Tekton cli"
@@ -151,3 +151,10 @@ nodejs:
   user: "oracle"
   run: "never"
   commonScript: "opensource/nodejs/installNodeJs.sh"
+vscode:
+  name: "installVSCode"
+  description: "Visual Studio Code"
+  user: "oracle"
+  run: "never"
+#  run: "once"
+  commonScript: "microsoft/vscode/co7InstallVSCode.sh"

@@ -123,7 +123,7 @@ azurecli:
   user: "redhat"
 #  run: "never"
   run: "once"
-  commonScript: "azure/co7InstallAzCLI.sh"
+  commonScript: "microsoft/azure/co7InstallAzCLI.sh"
 tkncli:
   name: "installTektonCLI"
   description: "Tekton cli"

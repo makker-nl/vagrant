@@ -177,6 +177,6 @@ Vagrant.configure("2") do |config|
   provision(config, provisioners['yq'])  
   provision(config, provisioners['netbeans'])
   provision(config, provisioners['sqldeveloper'])
-  provision(config, provisioners['nodejs'])  
-  
+  provision(config, provisioners['nodejs'])
+  provision(config, provisioners['vscode'])
 end 

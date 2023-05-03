@@ -9,7 +9,7 @@ export DCKR_PWD=$5
 USER_PROPS=$SCRIPT_HOME/makeDockerUser.properties
 USER_PROPS_TPL=$USER_PROPS.tpl
 echo _______________________________________________________________________________
-echo Install $PROD on CentOS as $USR, with Docker User: $DCKR_USR
+echo Install $PROD on Oracle Linux 7 as $USR, with Docker User: $DCKR_USR
 echo . Expand $USER_PROPS to $SCRIPT_HOME
 envsubst < $USER_PROPS_TPL > $USER_PROPS
 echo . Run script $SCRIPT

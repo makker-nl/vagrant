@@ -1,5 +1,8 @@
 #!/bin/bash
 SCRIPTPATH=$(dirname $0)
-ECLIPSE_HOME=/app/opensource/Eclipse-2022-06/eclipse/
-echo start Eclipse
+OS_HOME=/app/opensource
+ECLIPSE_VERSION=2023-03
+ECLIPSE_INSTALL_NAME=Eclipse-${ECLIPSE_VERSION}
+ECLIPSE_HOME=$OS_HOME/$ECLIPSE_INSTALL_NAME/eclipse
+echo start Eclipse ${ECLIPSE_VERSION}
 $ECLIPSE_HOME/eclipse > $SCRIPTPATH/eclipse.out 2>&1 & 

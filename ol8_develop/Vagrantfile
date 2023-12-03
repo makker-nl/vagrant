@@ -158,6 +158,7 @@ Vagrant.configure("2") do |config|
   provision(config, provisioners['initfilesystem'])
   provision(config, provisioners['addoracleuser'])
   provision(config, provisioners['java11'])
+  provision(config, provisioners['installg++'])
   provision(config, provisioners['git'])
   provision(config, provisioners['oraclejava8'])
   provision(config, provisioners['oraclejava11'])

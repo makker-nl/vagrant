@@ -23,6 +23,12 @@ java11:
   user: "vagrant"
   run: "once"
   commonScript:  "/opensource/java/installJava11.sh"
+installg++:
+  name: "install-g++"
+  description: "Install GNU c++ compiler"
+  user: "oracle"
+  run: "once"
+  commonScript:  "/linux/ol8/ol8Install-g++.sh"
 git:
   name: "installGit"
   description: "Git"
@@ -57,7 +63,7 @@ eclipse:
   name: "installEclipse"
   description: "Eclipse 2022-06"
   user: "oracle"
-  run: "once"
+  run: "never"
   commonScript: "/opensource/eclipse/installEclipse.sh"
 docker:
   name: "installDocker"
@@ -155,6 +161,6 @@ vscode:
   name: "installVSCode"
   description: "Visual Studio Code"
   user: "oracle"
-  run: "never"
-#  run: "once"
+#  run: "never"
+  run: "once"
   commonScript: "microsoft/vscode/co7InstallVSCode.sh"

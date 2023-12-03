@@ -1,13 +1,16 @@
 #!/bin/bash
 SCRIPTPATH=$(dirname $0)
 # 20230104, M. van den Akker: Oracle EPEL is already in the repos.
-if [ ! -f "/etc/yum.repos.d/ol8-epel.repo" ]; then
+# 20230924, M. van den Akker: Check if there is a repo file that contains the OL8 EPEL
+EPEL=`sudo grep -i -r --include="*.repo" "/OracleLinux/OL8/developer/EPEL/" /etc/yum.repos.d |wc|awk '{print $1}'`
+if [ $EPEL -gt 0 ]
+then 
+  echo OL8 developer EPEL repository already added.
+else
 # https://techviewleo.com/how-to-enable-epel-repository-on-oracle-linux/
   echo First add OL8 developer EPEL repository
   sudo cp $SCRIPTPATH/ol8-epel.repo /etc/yum.repos.d
   sudo chmod -x /etc/yum.repos.d/ol8-epel.repo
-else
-  echo OL8 developer EPEL repository already added.
 fi
 #
 echo Installing packages required by the software

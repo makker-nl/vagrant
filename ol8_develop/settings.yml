@@ -14,7 +14,7 @@ environment:
   disks:
     vmsDisk2Size: 524288 #1024 * 512
 sharedFolders:
-  stageHostFolder: d:/Data/git/makker-nl/vagrant/Stage
+  stageHostFolder: c:/Data/git/makker/vagrant/Stage
   stageGuestFolder: /media/sf_Stage
-  projectHostFolder: d:/Data/projects
+  projectHostFolder:  c:/Data/projects
   projectGuestFolder: /media/sf_Projects

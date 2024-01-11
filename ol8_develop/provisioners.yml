@@ -104,14 +104,14 @@ kubectl:
   user: "oracle"
   run: "never"
 #  run: "once"
-  commonScript: "opensource/kubernetes/co7InstallKubectl.sh"
+  commonScript: "opensource/kubernetes/installKubectl.sh"
 helm:
   name: "installHelm"
   description: "Helm commandline interface"
   user: "oracle"
   run: "never"
 #  run: "once"
-  commonScript: "opensource/kubernetes/co7InstallHelm.sh"
+  commonScript: "opensource/kubernetes/installHelm.sh"
 oracleocicli:
   name: "installOCICLI"
   description: "Oracle OCI CLI"
@@ -124,7 +124,7 @@ azurecli:
   user: "oracle"
   run: "never"
 #  run: "once"
-  commonScript: "microsoft/azure/co7InstallAzCLI.sh"
+  commonScript: "microsoft/azure/installAzCLI.sh"
 tkncli:
   name: "installTektonCLI"
   description: "Tekton cli"
@@ -163,4 +163,4 @@ vscode:
   user: "oracle"
 #  run: "never"
   run: "once"
-  commonScript: "microsoft/vscode/co7InstallVSCode.sh"
+  commonScript: "microsoft/vscode/installVSCode.sh"

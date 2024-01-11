@@ -1,1 +1,0 @@
-vagrant package --base ol77_default_1575298630482_71883 --output d:\Projects\vagrant\boxes\OL77SwGUIv1.0.box

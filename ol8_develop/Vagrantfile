@@ -14,23 +14,30 @@ provisioners = YAML.load_file 'provisioners.yml'
 VM_NAME="OL8_Develop_v1"  
 VM_HOST_NAME="oradevelop.oracle.local"
 VM_MACHINE="oradevelop"
-VM_MEMORY = settings['environment']['vmMemory']
-VM_CPUS = settings['environment']['vmCpus']
-VM_GUI = settings['environment']['vmGui']
-VM_MONITOR_COUNT = settings['environment']['vmMonitorCount']
-VMS_HOME = settings['environment']['vmsHome']
+environment=settings['environment']
+VM_MEMORY = environment['vmMemory']
+VM_CPUS = environment['vmCpus']
+VM_GUI = environment['vmGui']
+VM_MONITOR_COUNT = environment['vmMonitorCount']
+VMS_HOME = environment['vmsHome']
 VM_STORAGE_CTRL="SATA"  
 VM_DISK2=VMS_HOME+"/"+VM_NAME+"/"+VM_NAME+".disk2.vdi"
-VM_DISK2_SIZE = settings['environment']['disks']['vmsDisk2Size']
+VM_DISK2_SIZE = environment['disks']['vmsDisk2Size']
 # Shared folders
-STAGE_HOST_FOLDER = settings['sharedFolders']['stageHostFolder']
-STAGE_GUEST_FOLDER = settings['sharedFolders']['stageGuestFolder']
-PROJECT_HOST_FOLDER = settings['sharedFolders']['projectHostFolder']
-PROJECT_GUEST_FOLDER = settings['sharedFolders']['projectGuestFolder']
+sharedFolders = settings['sharedFolders']
+STAGE_GUEST_FOLDER = sharedFolders['stage']['guest']
 #
 LOCAL_COMMON_SCRIPTS = "../Stage/commonScripts"
 STAGE_COMMON_SCRIPTS = STAGE_GUEST_FOLDER+"/commonScripts"
 RUN_AS_SCR=LOCAL_COMMON_SCRIPTS+'/runAs.sh'
+#
+# Add Shared Folder
+def addSharedFolder(vmconf, sharedFolder)
+  hostFolder = sharedFolder['host']
+  guestFolder = sharedFolder['guest']
+  puts 'Add shared folder: '+guestFolder+' mounted to '+hostFolder
+  vmconf.vm.synced_folder hostFolder, guestFolder
+end
 #
 # Provision generic.
 def provision(vmconf, provisioner)
@@ -105,14 +112,15 @@ Vagrant.configure("2") do |config|
   config.ssh.username="vagrant"
   config.ssh.password="vagrant"
   # Add stage and project folders
-  config.vm.synced_folder STAGE_HOST_FOLDER, STAGE_GUEST_FOLDER
-  config.vm.synced_folder PROJECT_HOST_FOLDER, PROJECT_GUEST_FOLDER
+  sharedFolders.each do |sharedFolderKey, sharedFolderData|
+    addSharedFolder(config, sharedFolders[sharedFolderKey])
+  end
   # Add provioners  
-  provisioners.each do |provisioner, provisionerdata|
-	if provisioner=='docker' then
-	  vagrantProvisionDocker(config, provisioners[provisioner])
-	else 
-	  provision(config, provisioners[provisioner])
-	end
-end
+  provisioners.each do |provisionerKey, provisionerData|
+  if provisionerKey=='docker' then
+	    vagrantProvisionDocker(config, provisioners[provisionerKey])
+	  else 
+	    provision(config, provisioners[provisionerKey])
+	  end
+  end
 end 

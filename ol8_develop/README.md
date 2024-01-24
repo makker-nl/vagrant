@@ -23,15 +23,29 @@ The main VM settings are abstracted into the [settings.yml](settings.yml) file.
 | environment.vmGui      | false         | Toggle to denote if the Desktop is to be shown (true) or should run in head-less mode (false) |
 | environment.vmsHome               | C:/Data/VirtualMachines/VirtualBox | Location where VirtualBox will store the VM's. Make sure it reflects the setting in VirtualBox Preferences -> _General_ -> *Default Machine Folder*. Or vice versa. |
 | environment.disks.vmsDisk2Size    | 524288        | Size of the additional disk that will be created (1024 * 512 = 524288).|
-| sharedFolders.stageHostFolder     | c:/Data/git/makker/vagrant/Stage | Location of the Stage folder within the Vagrant project. Here the install scripts and install binaries are expected. It's based on the folder of the vagrant project eg. _c:/Data/git/makker_. Change it accordingly. |
-| sharedFolders.stageGuestFolder    | /media/sf_Stage | Local file mount refering to the STAGE_HOST_FOLDER. Don't change it |
-| sharedFolders.projectHostFolder   | c:/Data/projects | Location of the Projects folder, to use to store project files. For example to get to folder with local Git clones. |
-| sharedFolders.projectGuestFolder  | /media/sf_Projects | Local file mount refering to the STAGE_HOST_FOLDER. Don't change it |
+| sharedFolders.stage.host     | c:/Data/git/makker/vagrant/Stage | Location of the Stage folder within the Vagrant project. Here the install scripts and install binaries are expected. It's based on the folder of the vagrant project eg. _c:/Data/git/makker_. Change it accordingly. |
+| sharedFolders.stage.guest    | /media/sf_Stage | Local file mount refering to the STAGE_HOST_FOLDER. Don't change it |
+| sharedFolders.project.host   | c:/Data/projects | Location of the Projects folder, to use to store project files. For example to get to folder with local Git clones. |
+| sharedFolders.project.guest  | /media/sf_Projects | Local file mount refering to the STAGE_HOST_FOLDER. Don't change it |
 
 Check the following setting for your environment:
 * environment.vmsHome
-* sharedFolders.stageHostFolder
-* sharedFolders.projectHostFolder
+* sharedFolders.stage.host
+* sharedFolders.project.host
+
+The sharedFolder _stage_ is mandatory, since the provisioners rely on it. The shared folder _project_ is an example. You can modify, replace, or even delete it.
+You can add as many shared folders as you like. To add a shared folder, add an extra node under sharedFolders, with a host and a guest attribute. Like:
+````
+sharedFolders:
+  stage:
+    host: c:/Data/git/makker/vagrant/Stage
+    guest: /media/sf_Stage
+  ....
+  mySharedFolder:
+    host: c:/Data/mySharedFolder
+    guest: /media/sf_MySharedFolder
+````
+
 
 ## Provisioners:
 The following provisioners are created.

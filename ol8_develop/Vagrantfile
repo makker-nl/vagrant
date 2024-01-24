@@ -43,10 +43,10 @@ end
 def provision(vmconf, provisioner)
   # keys =  provisioner.keys # Holds the names of the properties of a provisioner.
   provisionerName = provisioner['name']
-  puts 'Add provisioner: '+provisionerName
   description = provisioner['description']
   runAsUser = provisioner['user']
   runType = provisioner['run']
+  puts 'Add provisioner: ' + provisionerName + " - "+description + " - Run type: " + runType
   if provisioner['commonScript'] then
     script = STAGE_COMMON_SCRIPTS+'/'+provisioner['commonScript']
   elsif provisioner['absoluteScript'] then
@@ -58,13 +58,13 @@ end
 # Provision docker
 def vagrantProvisionDocker(vmconf, provisioner)
   provisionerName = provisioner['name']
-  puts 'Add provisioner: '+provisionerName
   description = provisioner['description']
   runType = provisioner['run']
   runAsUser = provisioner['user']
   runType = provisioner['run']
   dockerUser = provisioner['docker_user']
   dockerPassword = provisioner['docker_password']
+  puts 'Add provisioner: ' + provisionerName + " - "+description + " - Run type: " + runType
   scriptHome=STAGE_COMMON_SCRIPTS+'/opensource/docker' 
   script = LOCAL_COMMON_SCRIPTS+provisioner['commonScript']
   vmconf.vm.provision provisionerName, type: "shell", run: "never", run: runType, path: script, args: [description, scriptHome, runAsUser, dockerUser, dockerPassword]

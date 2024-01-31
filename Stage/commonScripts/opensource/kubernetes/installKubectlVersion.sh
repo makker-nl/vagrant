@@ -6,8 +6,8 @@ SCRIPTPATH=$(dirname $0)
 # 
 # Taken from: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 #
-KUBE_VER=$(curl -L -s https://dl.k8s.io/release/stable.txt)
-echo "Latest kubectl version: $KUBE_VER"
+KUBE_VER=$1
+echo "Requested kubectl version: $KUBE_VER"
 KUBE_URL="https://dl.k8s.io/release/$KUBE_VER/bin/linux/amd64/kubectl"
 DOWNLOAD_DIR=~/Downloads
 BIN_DIR=/usr/local/bin
@@ -19,10 +19,10 @@ if [ -f "$KUBE_BIN_PATH" ]; then
   KUBECTL_CUR_VER=$($KUBE_BIN version | grep "Client Version" | cut -d':' -f 2 | tr -d ' ')
   echo "$KUBE_BIN already available. Current version is: $KUBECTL_CUR_VER"
   if [ "$KUBE_VER" = "$KUBECTL_CUR_VER" ]; then
-    echo "Current version ($KUBECTL_CUR_VER) is the latest ($KUBE_VER)."
+    echo "Current version ($KUBECTL_CUR_VER) is requested ($KUBE_VER)."
   else
     KUBE_BCK_PATH=${KUBE_BIN_PATH}-${KUBECTL_CUR_VER}
-    echo "Current version ($KUBECTL_CUR_VER) is not the latest ($KUBE_VER). Backup $KUBE_BIN_PATH to $KUBE_BCK_PATH"
+    echo "Current version ($KUBECTL_CUR_VER) is not the requested ($KUBE_VER). Backup $KUBE_BIN_PATH to $KUBE_BCK_PATH"
     sudo mv $KUBE_BIN_PATH $KUBE_BCK_PATH
   fi
 else

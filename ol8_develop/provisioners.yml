@@ -112,6 +112,13 @@ helm:
   run: "never"
 #  run: "once"
   commonScript: "opensource/kubernetes/installHelm.sh"
+istioctl:
+  name: "installIstioctl"
+  description: "Istio commandline interface"
+  user: "oracle"
+  run: "never"
+#  run: "once"
+  commonScript: "opensource/kubernetes/installIstioctl.sh"
 oracleocicli:
   name: "installOCICLI"
   description: "Oracle OCI CLI"

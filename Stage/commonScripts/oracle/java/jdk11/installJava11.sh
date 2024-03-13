@@ -25,7 +25,7 @@ if [ ! -f "$JAVA_HOME/bin/java" ]; then
 	  mkdir -p $JAVA_HOME
 	  echo Untar $JAVA_INSTALL_HOME/$JAVA_INSTALL_TAR to $JAVA_INSTALL_TMP
 	  tar -xf $JAVA_INSTALL_HOME/$JAVA_INSTALL_TAR -C $JAVA_INSTALL_TMP
-    JAVA_INSTALL_NAME=$(find $JAVA_INSTALL_TMP -type d -name $JDK_BASE_NAME | awk -F"/" '{print $NF}' | sort -r | head -1)
+    JAVA_INSTALL_NAME=$(find $JAVA_INSTALL_TMP/* -maxdepth 0 -type d  | awk -F"/" '{print $NF}' | sort -r | head -1)
     echo Move $JAVA_INSTALL_TMP/$JAVA_INSTALL_NAME/* to $JAVA_HOME
 	  mv  $JAVA_INSTALL_TMP/$JAVA_INSTALL_NAME/* $JAVA_HOME
 	  echo Cleanup $INSTALL_TMP_DIR

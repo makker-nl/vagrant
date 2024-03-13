@@ -171,3 +171,9 @@ vscode:
 #  run: "never"
   run: "once"
   commonScript: "microsoft/vscode/installVSCode.sh"
+lensdesktop:
+  name: "installLensDesktop"
+  description: "Lens desktop"
+  user: "oracle"
+  run: "never"
+  commonScript: "/opensource/lens/ol_installLens.sh"

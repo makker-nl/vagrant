@@ -2,7 +2,7 @@
 SCRIPTPATH=$(dirname $0)
 #
 # Install kubectl.
-# @author: Martien van den Akker, VirtualSciences.
+# @author: Martien van den Akker, Oracle Consulting
 # 
 # Taken from: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 #

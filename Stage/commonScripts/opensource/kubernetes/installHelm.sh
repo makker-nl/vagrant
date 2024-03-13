@@ -2,7 +2,7 @@
 SCRIPTPATH=$(dirname $0)
 #
 # Install helm.
-# @author: Martien van den Akker, VirtualSciences.
+# @author: Martien van den Akker, Oracle Consulting.
 # 
 # Taken from: https://helm.sh/docs/intro/install/
 #

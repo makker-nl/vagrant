@@ -2,7 +2,7 @@
 SCRIPTPATH=$(dirname $0)
 #
 # Install istioctl.
-# @author: Martien van den Akker, VirtualSciences.
+# @author: Martien van den Akker, Oracle Consulting
 # 
 # Taken from: https://istio.io/latest/docs/setup/getting-started/#download
 #

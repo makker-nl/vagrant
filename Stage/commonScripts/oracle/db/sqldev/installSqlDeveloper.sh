@@ -9,11 +9,8 @@ export SQLDEV_HOME=$ORACLE_BASE/product/sqldeveloper
 #
 SQLDEV_ZIP_HOME=$INSTALL_HOME/Oracle/DB/SQLDeveloper
 SQLDEV_INSTALL_HOME=$EXTRACT_HOME/Oracle/DB/SQLDeveloper
-#SQLDEV_INSTALL_ZIP=sqldeveloper-21.4.3.063.0100-no-jre.zip
-#SQLDEV_INSTALL_ZIP=sqldeveloper-22.2.1.234.1810-no-jre.zip
 SQLDEV_BASE_NAME=sqldeveloper-*
-SQLDEV_INSTALL_ZIP=$(find $SQLDEV_ZIP_HOME -type f -name $SQLDEV_BASE_NAME | awk -F"/" '{print $NF}' | sort -r | head -1)
-#SQLDEV_INSTALL_FLDR=sqldeveloper
+SQLDEV_INSTALL_ZIP=$(find $SQLDEV_ZIP_HOME -type f -name $SQLDEV_BASE_NAME | awk -F"/" '{print $NF}' | sort -r | head -1)#SQLDEV_INSTALL_FLDR=sqldeveloper
 #
 echo SQLDEV_HOME=$SQLDEV_HOME
 #

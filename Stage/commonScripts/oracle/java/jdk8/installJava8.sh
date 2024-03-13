@@ -1,9 +1,6 @@
 #!/bin/bash
 #
-#Download a zip with tar.gz containing complete JDK
-#On MOS: Search for Doc ID 1439822.1
-#Download latest 1.8 (public) patch, eg.:
-#27412872 	Oracle JDK 8 Update 172 (complete JDK, incl. jmc, jvisualvm)
+# Download the Linux X64 Compressed Archive from https://www.oracle.com/java/technologies/downloads/#java8
 #
 SCRIPTPATH=$(dirname $0)
 #
@@ -12,32 +9,32 @@ SCRIPTPATH=$(dirname $0)
 JAVA_HOME=$ORACLE_BASE/product/jdk8
 JAVA_INSTALL_HOME=$INSTALL_HOME/Oracle/Java
 JAVA_INSTALL_TMP=$INSTALL_TMP_DIR/jdk
-#JAVA_INSTALL_TAR=jdk-8u261-linux-x64.tar.gz
-#JAVA_INSTALL_NAME=jdk1.8.0_261
-JAVA_INSTALL_TAR=jdk-8u341-linux-x64.tar.gz
-JAVA_INSTALL_NAME=jdk1.8.0_341
-
+JDK_BASE_NAME=jdk-8*
+JDK_BASE_INSTALL_NAME=jdk*
+JAVA_INSTALL_TAR=$(find $JAVA_INSTALL_HOME -type f -name $JDK_BASE_NAME  | awk -F"/" '{print $NF}' | sort -r | head -1)
 #
 echo "Checking Java Home: "$JAVA_HOME
 if [ ! -f "$JAVA_HOME/bin/java" ]; then
- #
-  #Unzip Java
-  if [ -f "$JAVA_INSTALL_HOME/$JAVA_INSTALL_TAR" ]; then
-	  # Install jdk
-	  echo Install jdk 
+  if [[ -z "$JAVA_INSTALL_TAR" ]]; then
+    echo There is no $JDK_BASE_NAME*.tgz file in $JAVA_INSTALL_HOME.
+  else
+	  # Install and unzip jdk 
+    echo Try to install Jdk8 from $JAVA_INSTALL_HOME/$JAVA_INSTALL_TAR
 	  echo create folder $JAVA_INSTALL_TMP
 	  mkdir -p $JAVA_INSTALL_TMP
 	  echo create JAVA_HOME $JAVA_HOME
 	  mkdir -p $JAVA_HOME
 	  echo Untar $JAVA_ZIP_HOME/$JAVA_INSTALL_TAR to $JAVA_INSTALL_TMP
 	  tar -xf $JAVA_INSTALL_HOME/$JAVA_INSTALL_TAR -C $JAVA_INSTALL_TMP
+    JAVA_INSTALL_NAME=$(find $JAVA_INSTALL_TMP -type d -name $JDK_BASE_INSTALL_NAME | awk -F"/" '{print $NF}' | sort -r | head -1)
 	  echo Move $JAVA_INSTALL_TMP/$JAVA_INSTALL_NAME/* to $JAVA_HOME
 	  mv  $JAVA_INSTALL_TMP/$JAVA_INSTALL_NAME/* $JAVA_HOME
 	  echo Cleanup $INSTALL_TMP_DIR
 	  rm -rf $INSTALL_TMP_DIR
-  else
-    echo $JAVA_INSTALL_HOME/$JAVA_INSTALL_TAR does not exist.
   fi
 else
   echo jdk 1.8 already installed
+fi
+if [ -f "$JAVA_HOME/bin/java" ]; then
+  $JAVA_HOME/bin/java -version
 fi

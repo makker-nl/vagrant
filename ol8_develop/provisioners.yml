@@ -47,6 +47,12 @@ oraclejava11:
   user: "oracle"
   run: "never"
   commonScript: "/oracle/java/jdk11/installJava11.sh"
+oraclejava17:
+  name: "installOJava17"
+  description: "Oracle JDK 17"
+  user: "oracle"
+  run: "never"
+  commonScript: "/oracle/java/jdk17/installJava17.sh"
 python3:
   name: "installPython3"
   description: "Python 3"

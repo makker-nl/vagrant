@@ -9,3 +9,4 @@
 /Stage/installBinaries/**/*.tar
 /Stage/installBinaries/**/*.zip
 /Stage/commonScripts/oracle/**/runInstaller.out
+*.qcow

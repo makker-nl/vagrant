@@ -32,7 +32,7 @@ installg++:
 git:
   name: "installGit"
   description: "Git"
-  user: "vagrant"
+  user: "oracle"
   run: "once"
   commonScript:  "/opensource/git/co7InstallGit.sh"
 oraclejava8:
@@ -183,3 +183,9 @@ lensdesktop:
   user: "oracle"
   run: "never"
   commonScript: "/opensource/lens/ol_installLens.sh"
+podman:
+  name: "installPodman"
+  description: "Install Podman"
+  user: "vagrant"
+  run: "never"
+  commonScript:  "/opensource/podman/ol8InstallPodman.sh"

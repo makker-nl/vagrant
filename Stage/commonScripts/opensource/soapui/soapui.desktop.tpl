@@ -1,8 +1,8 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=SoapUI 5.7.0
+Name=SoapUI $SOAPUI_VER
 Exec=~/bin/soapui.sh
-Icon=/app/opensource/SoapUI-5.7.0/soapui.ico
+Icon=/app/opensource/SoapUI-$SOAPUI_VER/soapui.ico
 Terminal=false
 Type=Application
 Categories=Development

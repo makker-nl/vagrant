@@ -1,1 +1,0 @@
-oclogin.sh admin

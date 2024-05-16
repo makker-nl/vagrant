@@ -1,0 +1,36 @@
+---
+- hosts: dbserver1
+  become: true
+  remote_user: oracle
+  vars:
+    version: "21.3.0.0.0"
+    stage_home: "/media/sf_Stage"
+    oracle_base: "/app/oracle"
+    oracle_home: "{{ oracle_base }}/product/database/dbhome_1"
+    db_install_bin_home: "{{ stage_home }}/installBinaries/Oracle/DB/{{ version }}/x86_64"
+    db_install_zip: "V1011496-01.zip"   
+  tasks:
+  - name: "Create ORACLE_HOME {{ oracle_home }}"
+    file:
+        path: "{{ oracle_home }}"
+        state: directory 
+        owner: oracle
+        group: oinstall
+        mode: 0775
+  - name: "Unpack Oracle DB update {{ version }} from tar file {{ db_install_zip }}"
+    unarchive:
+      src: "{{ db_install_bin_home }}/{{ db_install_zip }}"
+      remote_src: true
+      dest: "{{ oracle_home }}"
+      owner: oracle
+      group: oinstall
+  - name: fix permissions
+    file:
+      path: "{{ oracle_home }}"
+      owner: oracle
+      group: oinstall
+      recurse: yes
+  - name: Provide dbca response file
+    template:
+    src: ../templates/db21c_software.rsp.j2
+    dest: {{ oracle_home }}/db21c_software.rsp

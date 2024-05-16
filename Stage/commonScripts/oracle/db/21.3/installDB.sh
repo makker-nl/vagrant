@@ -46,7 +46,7 @@ else
 fi
 #
 if [ ! -f "$ORACLE_HOME/bin/oraping" ]; then
-  #Unzip DB
+  # Unzip DB
   echo check $DB_INSTALL_HOME/runInstaller
   if [ ! -f "$DB_INSTALL_HOME/runInstaller" ]; then
     if [[ -f "$DB_ZIP_HOME/$DB_INSTALL_ZIP1" ]]; then
@@ -61,7 +61,7 @@ if [ ! -f "$ORACLE_HOME/bin/oraping" ]; then
     echo $DB_ZIP_HOME/$DB_INSTALL_ZIP1 unzipped into $DB_INSTALL_HOME
   fi
   if [ -f "$DB_INSTALL_HOME/runInstaller" ]; then
-    Install Database
+    # Install Database
     echo Install Database 
     echo Substitute $SCRIPTPATH/$DB_INSTALL_RSP_TPL to $SCRIPTPATH/$DB_INSTALL_RSP
     envsubst < $SCRIPTPATH/$DB_INSTALL_RSP_TPL > $SCRIPTPATH/$DB_INSTALL_RSP
@@ -76,7 +76,8 @@ if [ ! -f "$ORACLE_HOME/bin/oraping" ]; then
     echo "Finished installing Oracle Database 18c software" 
     #
     echo "Call the root scripts..."
-    sudo $INVENTORY_DIRECTORY/orainstRoot.sh
+    # 20240515, M. van den Akker: Apparently orainstRoot.sh does not exist
+    # sudo $INVENTORY_DIRECTORY/orainstRoot.sh
     sudo $ORACLE_HOME/root.sh
     echo "Now run the Database Configuration Assistent."
     $ORACLE_HOME/bin/dbca -silent -createDatabase \

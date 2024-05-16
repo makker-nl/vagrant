@@ -1,0 +1,26 @@
+#######################################################
+#
+# Install Database 21c
+# @author: Martien van den Akker, Oracle Nederland B.V.
+#
+# Examples from:
+# . https://axisintoict.nl/ansible-oracle-database/
+#######################################################
+# database host configuration
+# ansible-playbook installODatabase.yml --inventory=../inventory --tags "host"
+#
+# database installation
+# ansible-playbook installODatabase.yml --inventory=../inventory --tags "install"
+#
+# database configuration
+# ansible-playbook installODatabase.yml --inventory=../inventory --tags "config"
+#######################################################
+- hosts: database
+  user: oracle
+  become: true
+  become_user: root
+  become_method: sudo
+  #
+  roles:
+    - { role: vars, tags: ['host','install','config'] }
+    - { role: hosts, tags: ['host'] }

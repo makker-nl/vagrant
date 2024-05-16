@@ -1,5 +1,7 @@
 .ssh
 .vagrant
+**/ol8_fmw14c/**
+/Stage/**/fmw/14.1.2/**
 /Stage/installBinaries/**/*.tar.gz
 /Stage/Extracted
 /Stage/installBinaries/**/*/.rpm
@@ -8,5 +10,7 @@
 /Stage/installBinaries/**/*.*.*.*.zip
 /Stage/installBinaries/**/*.tar
 /Stage/installBinaries/**/*.zip
+/Stage/installBinaries/Kubevirt/**
+/Stage/installBinaries/Oracle/FMW/**/*.pdf
 /Stage/commonScripts/oracle/**/runInstaller.out
 *.qcow

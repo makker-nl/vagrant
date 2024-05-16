@@ -72,6 +72,7 @@ The following provisioners are created.
 | installOCICLI          | never         | Install Oracle OCI CLI          |          |  
 | installAzCLI           | never         | Install Azure CLI               |          |
 | installTektonCLI       | never         | Install Tekton CLI              |          |
+| installRegctl          | never         | Install Registry Client         | [Install Regclient](https://github.com/regclient/regclient/blob/main/docs/install.md) |
 | installYq              | never         | Install yq yaml query           |          |
 | installNetbeans        | never         | Install Apache Netbeans         | [Install Readme](../Stage/commonScripts/opensource/netbeans/README.md) | 
 | installSQLDeveloper    | never         | Install Oracle SQL Developer    | [Install Readme](../Stage/commonScripts/oracle/db/sqldev/README.md), [Download Installer](../Stage/installBinaries/Oracle/DB/SQLDeveloper/README.md) |

@@ -1,0 +1,16 @@
+infra:
+  hosts:
+    infraserver1:
+      ansible_ssh_host: fmw14c.oracle.local
+      ansible_ssh_port: 22
+      ansible_ssh_user: oracle
+      ansible_ssh_private_key_file: /home/oracle/.ssh/id_rsa
+  vars:
+    proxy: proxy.infra.example.com
+database:
+  hosts:
+    dbserver1:
+      ansible_ssh_host: fmw14c.oracle.local
+      ansible_ssh_port: 22
+      ansible_ssh_user: oracle
+      ansible_ssh_private_key_file: /home/oracle/.ssh/id_rsa

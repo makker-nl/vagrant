@@ -1,0 +1,6 @@
+##### User and group settings #####
+# User and Group under which the software needs to be installed
+oracle_install_user: "oracle"
+oracle_install_password: "set_in_environment_specific_group_vars_file"
+oracle_install_group: "oinstall"
+oracle_install_group_id: "2000"

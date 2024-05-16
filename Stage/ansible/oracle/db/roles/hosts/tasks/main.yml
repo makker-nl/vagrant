@@ -1,0 +1,57 @@
+# /etc/ansible/db/roles/hosts/tasks/main.yml
+
+#- name: install oracle database server preinstall
+#  yum:
+#    name: http://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackage/oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm
+#    name: http://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackage/oracle-database-server-12cR2-preinstall-1.0-4.el7.x86_64.rpm
+#    state: present
+
+# - name: Install necessary packages
+  # yum:
+    # name={{ item }}
+    # state=present
+  # loop:
+    # - binutils
+    # - dos2unix
+    # - gcc
+    # - gcc-c++
+    # - glibc
+    # - glibc-devel
+    # - kmod
+    # - ksh
+    # - libaio
+    # - libaio-devel
+    # - libgcc
+    # - libnsl
+    # - libstdc++
+    # - libstdc++-devel
+    # - libX11
+    # - libXau
+    # - libxcb
+    # - libXext
+    # - libXi
+    # - libXrender
+    # - libXtst
+    # - lsof
+    # - ksh
+    # - make
+    # - net-tools
+    # - perl
+    # - smartmontools
+    # - strace
+    # - sysstat
+    # - unzip
+
+- name: create group
+  group:
+    name={{ oracle_install_group }}
+    gid={{ oracle_install_group_id }}
+    state=present
+    
+- name: create user
+  user:
+    name={{ oracle_install_user }}
+    state=present
+    createhome=yes
+    group={{ oracle_install_group_id }}
+    password={{ oracle_install_password }}

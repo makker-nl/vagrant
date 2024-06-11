@@ -62,8 +62,8 @@ The following provisioners are created.
 | installPython3         | once          | Install Python 3                |          |
 | installMaven           | once          | Install Apache Maven            |          |
 | installEclipse         | once          | Install Eclipse                 | [Install Readme](../Stage/commonScripts/opensource/eclipse/README.md), [Download Installer](../Stage/installBinaries/OpenSource/Eclipse/README.md) |
-| installDocker          | once          | Install Docker                  |          |
-| installDockerCompose   | once          | Install docker-compose          |          |
+| installDocker          | never         | Install Docker                  |          |
+| installDockerCompose   | never         | Install docker-compose          |          |
 | installSoapUI          | once          | Install SoapUI                  | [Install Readme](../Stage/commonScripts/opensource/SoapUI/README.md), [Download Installer](../Stage/installBinaries/OpenSource/SoapUI/README.md) |
 | installPostman         | once          | Install Postman (Latest)        |          |
 | installSoaQS           | never         | Install Oracle SOA QuickStart   | _to be described_ |
@@ -78,6 +78,27 @@ The following provisioners are created.
 | installSQLDeveloper    | never         | Install Oracle SQL Developer    | [Install Readme](../Stage/commonScripts/oracle/db/sqldev/README.md), [Download Installer](../Stage/installBinaries/Oracle/DB/SQLDeveloper/README.md) |
 | installNodeJS          | never         | Install Node.js                 |          |
 | installVSCode          | never         | Install Visual Studio Code      |          |
+| installLensDesktop     | never         | Install Lens desktop            |          |
+| installPodman          | never         | Install Podman                  | [Install Podman](https://podman.io/docs/installation), [Get started with Podman](https://docs.oracle.com/en/learn/intro_podman/index.html#introduction), [Relocate image data](https://docs.oracle.com/en/operating-systems/oracle-linux/podman/podman-ConfiguringStorageforPodman.html#podman-install-storage)      |
+| installSkopeo          | never         | Install Skopeo                  | [Install](https://github.com/containers/skopeo/blob/main/install.md#rhel--centos-stream--8) |
+
+"
+  description: ""
+  user: "oracle"
+  run: "never"
+  commonScript: "/opensource/lens/ol_installLens.sh"
+podman:
+  name: ""
+  description: ""
+  user: "oracle"
+  run: "never"
+  commonScript:  "/opensource/podman/installPodman.sh"
+skopeo:
+  name: ""
+  description: "Install "
+  user: "oracle"
+  run: "never"
+
 
 The [provisioners.yml](provisioners.yml) file allows for toggling the run property, to be able to pick&choose which provisioners should be run. Additional Provisioners can be added when needed, and using this file enabled or disabled. The some provisioners the user for which the provisioner will be run can be changed. In most cases this is the _oracle_ user and should not be changed.
 

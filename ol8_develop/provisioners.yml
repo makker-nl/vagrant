@@ -75,7 +75,7 @@ docker:
   name: "installDocker"
   description: "Docker"
   user: "oracle"
-  run: "once"
+  run: "never"
   docker_user: oracle
   docker_password: welcome1
   scriptHome: "/opensource/docker"
@@ -193,6 +193,12 @@ lensdesktop:
 podman:
   name: "installPodman"
   description: "Install Podman"
-  user: "vagrant"
+  user: "oracle"
   run: "never"
-  commonScript:  "/opensource/podman/ol8InstallPodman.sh"
+  commonScript:  "/opensource/podman/installPodman.sh"
+skopeo:
+  name: "installSkopeo"
+  description: "Install Skopeo"
+  user: "oracle"
+  run: "never"
+  commonScript:  "/opensource/skopeo/installSkopeo.sh"

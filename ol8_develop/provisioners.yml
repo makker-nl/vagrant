@@ -202,3 +202,9 @@ skopeo:
   user: "oracle"
   run: "never"
   commonScript:  "/opensource/skopeo/installSkopeo.sh"
+argocd:
+  name: "installArgoCDCli"
+  description: "ArgoCD CLI"
+  user: "oracle"
+  run: "never"
+  commonScript: "opensource/argocd/install_argocd.sh"

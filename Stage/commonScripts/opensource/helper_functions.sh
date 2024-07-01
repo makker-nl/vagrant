@@ -38,4 +38,5 @@ function download_from_git(){
   echo Download/Setup $tool_binary from $git_url
   sudo curl -L $git_url -o $BIN_DIR/$tool_binary
   sudo install -o root -g root -m 0755 $DOWNLOAD_DIR/$tool_binary $BIN_DIR/$tool_binary
+  sudo rm $DOWNLOAD_DIR/$tool_binary
 }

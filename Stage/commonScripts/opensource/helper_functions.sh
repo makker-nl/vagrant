@@ -33,10 +33,10 @@ function download_from_git(){
   local base_url=$2
   local download_name=$3
   local git_download_version=$4
-  local git_url="$YQ_BASE_URL/releases/download/$git_download_version/$download_name"
+  local git_url="$base_url/releases/download/$git_download_version/$download_name"
  
   echo Download/Setup $tool_binary from $git_url
-  sudo curl -L $git_url -o $BIN_DIR/$tool_binary
+  sudo curl -L $git_url -o $DOWNLOAD_DIR/$tool_binary
   sudo install -o root -g root -m 0755 $DOWNLOAD_DIR/$tool_binary $BIN_DIR/$tool_binary
   sudo rm $DOWNLOAD_DIR/$tool_binary
 }

@@ -17,22 +17,23 @@ ACD_DOWNLOAD_NAME="argocd-linux-amd64 "
 #
 # Show current version of yq
 function acd_show_version(){
-   $ACD_BIN --version
+   $ACD_BIN version --client
 }
 #
 # Get the yq bin version
 function get_acd_bin_version(){
-  local acd_version=$(acd_show_version | grep version | rev | cut -d' ' -f 1 | rev | xargs)
+  local acd_version=$(acd_show_version | grep argocd | cut -d':' -f2 | cut -d'+' -f1 | xargs)
   echo $acd_version
 }
 #
 # Main
 function main(){
   local acd_bin_path=$BIN_DIR/$ACD_BIN
+  acd_latest_version=$(get_git_version $ACD_BASE_URL)
+  echo "ArgoCD Latest version: $acd_latest_version"
   if [ -f "$acd_bin_path" ]; then
     acd_cur_ver=$(get_acd_bin_version)
     echo "$ACD_BIN already available. Current version is: $acd_cur_ver"
-    acd_latest_version=$(get_git_version $ACD_BASE_URL)
     if [ "$acd_cur_ver" = "$acd_latest_version" ]; then
       echo "Current version ($acd_cur_ver) is the latest ($acd_latest_version)."
     else
@@ -42,9 +43,9 @@ function main(){
   else
     echo "$ACD_BIN not available yet."
   fi
-  #
+  
   if [ ! -f "$acd_bin_path" ]; then
-    download_from_git $ACD_BIN $ACD_BASE_URL $ACD_DOWNLOAD_NAME $ACD_VER
+    download_from_git $ACD_BIN $ACD_BASE_URL $ACD_DOWNLOAD_NAME $acd_latest_version
   else
     echo $ACD_BIN already available as: $acd_bin_path
   fi

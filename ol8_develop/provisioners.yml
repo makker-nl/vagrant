@@ -208,3 +208,15 @@ argocd:
   user: "oracle"
   run: "never"
   commonScript: "opensource/argocd/install_argocd.sh"
+terraform:
+  name: "installTerraform"
+  description: "Terraform"
+  user: "oracle"
+  run: "never"
+  commonScript: "opensource/terraform/install_terraform_latest.sh"
+terraform_12:
+  name: "installTerraform_1.2"
+  description: "Terraform 1.2"
+  user: "oracle"
+  run: "never"
+  commonScript: "opensource/terraform/install_terraform_1.2.sh"

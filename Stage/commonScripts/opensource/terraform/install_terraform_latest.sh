@@ -42,3 +42,7 @@ else
 fi
 echo "Installed Terraform Version:"
 $TF_CLI --version
+
+echo "Install Terraform OCI Provider"
+sudo yum-config-manager --enable ol8_developer
+sudo dnf -y install terraform-provider-oci

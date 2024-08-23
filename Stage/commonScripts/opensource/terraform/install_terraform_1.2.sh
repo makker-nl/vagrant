@@ -1,15 +1,22 @@
 #!/bin/bash
+###################################################################################################
+# Install latest version <=1.2.x of Terraform
+# @author: Martien van den Akker, Oracle Consulting NL.
+#
+# https://learn.hashicorp.com/tutorials/terraform/install-cli
+#
+# History:
+# 2024-08-23, Martien van den Akker, Initial Creation
+###################################################################################################
 #
 SCRIPTPATH=$(dirname $0)
 #
 . $SCRIPTPATH/../../install_env.sh
 #
-# https://learn.hashicorp.com/tutorials/terraform/install-cli
-#
 TF_LATEST_VERSION=1.2
 TF_RELEASES_URL=https://releases.hashicorp.com/terraform
 FILTER_LABELS='latest|rc|alpha|beta|debug'
-# Get the Highst version >= $TF_LATEST_VERSION
+# Get the Highst version <= $TF_LATEST_VERSION
 TF_VERSION=$((echo $TF_LATEST_VERSION.9999; curl -ks $TF_RELEASES_URL | grep '<a href' | cut -d'>' -f2 | cut -d'<' -f1 | egrep "([0-9]\.)+[0-9]" | cut -d'_' -f2 ) | sort --version-sort --field-separator=. --reverse | sed -e '1,/9999/d' | egrep -v $FILTER_LABELS | head -n 1)
 TF_ZIP=terraform_${TF_VERSION}_linux_amd64.zip
 TF_URL="$TF_RELEASES_URL/$TF_VERSION/$TF_ZIP"

@@ -1,15 +1,26 @@
 #!/bin/bash
+###################################################################################################
+# Install latest version of Terraform, with a minimum of 1.3.0
+# @author: Martien van den Akker, Oracle Consulting NL.
+#
+# https://learn.hashicorp.com/tutorials/terraform/install-cli
+# https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/terraforminstallation.htm
+# https://oracle-base.com/articles/misc/terraform-installation#install-terraform
+# Unfortunately terraform appears not to be in the ol8_developer or oraclelinux-developer-release-el8 repositories.
+# So, download it directly from hashicorp.
+#
+# History:
+# 2024-08-23, Martien van den Akker, Initial Creation
+###################################################################################################
 #
 SCRIPTPATH=$(dirname $0)
 #
 . $SCRIPTPATH/../../install_env.sh
 #
-# https://learn.hashicorp.com/tutorials/terraform/install-cli
-#
-TF_MIN_VERSION=1.3
+TF_MIN_VERSION=1.3.0
 TF_RELEASES_URL=https://releases.hashicorp.com/terraform
 FILTER_LABELS='latest|rc|alpha|beta|debug'
-# Get the Highst version >= $TF_LATEST_VERSION
+# Get the Highest version >= $TF_MIN_VERSION
 TF_VERSION=$((echo "$TF_MIN_VERSION.9999"; curl -ks $TF_RELEASES_URL | egrep '<a href'  | cut -d'>' -f2 | cut -d'<' -f1 | cut -d'_' -f2 | egrep -v $FILTER_LABELS | egrep "([0-9]\.)+[0-9]") | sort --version-sort --field-separator=. | sed -e '1,/9999/d'  | tail -n 1  )
 TF_ZIP=terraform_${TF_VERSION}_linux_amd64.zip
 TF_URL="$TF_RELEASES_URL/$TF_VERSION/$TF_ZIP"

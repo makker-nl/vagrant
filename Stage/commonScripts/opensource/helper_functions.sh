@@ -7,8 +7,8 @@ SCRIPTPATH=$(dirname $0)
 #
 #######################################################################################
 #
-DOWNLOAD_DIR=~/Downloads
-BIN_DIR=/usr/local/bin
+export DOWNLOAD_DIR=~/Downloads
+export BIN_DIR=/usr/local/bin
 #
 # Show the latest version of tool on github
 function get_git_version(){
@@ -24,7 +24,7 @@ local current_version=$2
 local bin_path=$BIN_DIR/$tool_binary
 local bck_bin_path=$bin_path-$current_version
 echo "Backup $bin_path to $bck_bin_path"
-sudo mv $ $bin_path $bck_bin_path
+sudo mv $bin_path $bck_bin_path
 }
 #
 # Download from github

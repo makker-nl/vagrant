@@ -44,7 +44,7 @@ function main(){
   fi
   #
   if [ ! -f "$yq_bin_path" ]; then
-    download_from_git $YQ_BIN $YQ_BASE_URL $YQ_DOWNLOAD_NAME $YQ_VER
+    download_from_git $YQ_BIN $YQ_BASE_URL $YQ_DOWNLOAD_NAME $yq_latest_version
   else
     echo $YQ_BIN already available as: $yq_bin_path
   fi

@@ -214,9 +214,15 @@ terraform:
   user: "oracle"
   run: "never"
   commonScript: "opensource/terraform/install_terraform_latest.sh"
-terraform_12:
+terraform_1.2:
   name: "installTerraform_1.2"
   description: "Terraform 1.2"
   user: "oracle"
   run: "never"
   commonScript: "opensource/terraform/install_terraform_1.2.sh"
+terraform_1.5:
+  name: "installTerraform_1.5"
+  description: "Terraform 1.5"
+  user: "oracle"
+  run: "never"
+  commonScript: "opensource/terraform/install_terraform_1.5.sh"

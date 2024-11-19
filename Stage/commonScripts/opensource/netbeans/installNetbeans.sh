@@ -4,7 +4,7 @@
 SCRIPTPATH=$(dirname $0)
 #
 . $SCRIPTPATH/../../install_env.sh
-NBS_VERSION=17
+NBS_VERSION=23
 #NBS_ZIP=netbeans-11.3-bin.zip
 #NBS_ZIP_URL=https://archive.apache.org/dist/netbeans/netbeans/11.3/${NBS_ZIP}
 NBS_ZIP=netbeans-${NBS_VERSION}-bin.zip

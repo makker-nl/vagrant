@@ -226,3 +226,10 @@ terraform_1.5:
   user: "oracle"
   run: "never"
   commonScript: "opensource/terraform/install_terraform_1.5.sh"
+velero:
+  name: "installVelero"
+  description: "Velero commandline interface"
+  user: "oracle"
+  run: "never"
+#  run: "once"
+  commonScript: "opensource/kubernetes/installVelero.sh"

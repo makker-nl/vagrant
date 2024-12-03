@@ -233,3 +233,10 @@ velero:
   run: "never"
 #  run: "once"
   commonScript: "opensource/kubernetes/installVelero.sh"
+oraclewit:
+  name: "installOracleWIT"
+  description: "Oracle Weblogic Image Tool"
+  user: "oracle"
+  run: "never"
+#  run: "once"
+  commonScript: "oracle/k8s/installWIT.sh"

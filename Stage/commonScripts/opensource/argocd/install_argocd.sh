@@ -13,7 +13,7 @@ SCRIPTBASE=$(realpath $SCRIPTPATH/..)
 #
 ACD_BASE_URL=https://github.com/argoproj/argo-cd
 ACD_BIN=argocd
-ACD_DOWNLOAD_NAME="argocd-linux-amd64 "
+ACD_DOWNLOAD_NAME="argocd-linux-amd64"
 #
 # Show current version of yq
 function acd_show_version(){

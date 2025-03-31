@@ -7,6 +7,7 @@ SCRIPTPATH=$(dirname $0)
 # Taken from: https://blogs.oracle.com/wim/post/installing-visual-studio-code-on-oracle-linux-7
 #
 VSCODE_BIN=/usr/bin/code
+SETTINGS_JSON=~/.config/Code/User/settings.json
 #
 #
 function install_vscode(){
@@ -24,6 +25,13 @@ function install_vscode(){
   else
     echo "Visual Studio Code already available as: $VSCODE_BIN"
   fi
+  if [ ! -f "$SETTINGS_JSON" ]; then
+    echo "Set native window style"
+    echo '{ "window.titleBarStyle": "native" }' > $SETTINGS_JSON
+  else
+    echo "Settings file $SETTINGS_JSON already exists!"
+  fi
+ 
 }
 #
 function show_version(){

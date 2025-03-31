@@ -18,32 +18,47 @@ BIN_DIR=/usr/local/bin
 HELM_BIN=helm
 HELM_BIN_PATH=/usr/local/bin/$HELM_BIN
 #
-if [ -f "$HELM_BIN_PATH" ]; then
-  HELM_CUR_VER=$($HELM_BIN version | cut -d',' -f 1 |cut -d':' -f 2 | tr -d '"')
-  echo "$HELM_BIN already available. Current version is: $HELM_CUR_VER"
-  if [ "$HELM_VER" = "$HELM_CUR_VER" ]; then
-    echo "Current version ($HELM_CUR_VER) is the latest ($HELM_VER)."
+function check_version(){
+  if [ -f "$HELM_BIN_PATH" ]; then
+    HELM_CUR_VER=$($HELM_BIN version | cut -d',' -f 1 |cut -d':' -f 2 | tr -d '"')
+    echo "$HELM_BIN already available. Current version is: $HELM_CUR_VER"
+    if [ "$HELM_VER" = "$HELM_CUR_VER" ]; then
+      echo "Current version ($HELM_CUR_VER) is the latest ($HELM_VER)."
+    else
+      HELM_BCK_PATH=${HELM_BIN_PATH}-${HELM_CUR_VER}
+      echo "Current version ($HELM_CUR_VER) is not the latest ($HELM_VER). Backup $HELM_BIN_PATH to $HELM_BCK_PATH"
+      sudo mv $HELM_BIN_PATH $HELM_BCK_PATH
+    fi
   else
-    HELM_BCK_PATH=${HELM_BIN_PATH}-${HELM_CUR_VER}
-    echo "Current version ($HELM_CUR_VER) is not the latest ($HELM_VER). Backup $HELM_BIN_PATH to $HELM_BCK_PATH"
-    sudo mv $HELM_BIN_PATH $HELM_BCK_PATH
+    echo $HELM_BIN not available yet.
   fi
-else
-  echo $HELM_BIN not available yet.
-fi
+}
 #
-if [ ! -f "$HELM_BIN_PATH" ]; then
- #
-  # Download/Setup helm
-  echo Download/Setup $HELM_BIN
-  mkdir -p $HELM_DIR
-  curl -L $HELM_URL -o $HELM_TAR_PATH
-  tar -zxvf $HELM_TAR_PATH --directory $HELM_DIR
-  sudo mv $HELM_DIR/linux-amd64/$HELM_BIN $HELM_BIN_PATH
-  rm -rf $HELM_DIR
-  rm -rf $HELM_TAR_PATH
-else
-  echo $HELM_BIN already available as: $HELM_BIN_PATH
-fi
-echo "Get $HELM_BIN version:"
-$HELM_BIN version
+function install_helm(){
+  if [ ! -f "$HELM_BIN_PATH" ]; then
+   #
+    # Download/Setup helm
+    echo Download/Setup $HELM_BIN
+    mkdir -p $HELM_DIR
+    curl -L $HELM_URL -o $HELM_TAR_PATH
+    tar -zxvf $HELM_TAR_PATH --directory $HELM_DIR
+    sudo mv $HELM_DIR/linux-amd64/$HELM_BIN $HELM_BIN_PATH
+    rm -rf $HELM_DIR
+    rm -rf $HELM_TAR_PATH
+  else
+    echo $HELM_BIN already available as: $HELM_BIN_PATH
+  fi
+}
+#
+function show_version(){
+  echo "Get $HELM_BIN version:"
+  $HELM_BIN version
+}
+#
+function main(){
+  check_version
+  install_helm
+  show_version
+}
+
+main "$@"

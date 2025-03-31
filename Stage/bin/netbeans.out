@@ -1,0 +1,8 @@
+WARNING: package com.apple.eio not in java.desktop
+WARNING: package jdk.internal.opt not in jdk.internal.opt
+WARNING: package com.sun.java.swing.plaf.windows not in java.desktop
+WARNING: package com.apple.laf not in java.desktop
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by org.netbeans.TopSecurityManager (file:/app/opensource/netbeans-23/platform/lib/boot.jar)
+WARNING: Please consider reporting this to the maintainers of org.netbeans.TopSecurityManager
+WARNING: System::setSecurityManager will be removed in a future release

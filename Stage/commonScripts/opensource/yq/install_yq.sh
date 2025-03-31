@@ -29,10 +29,10 @@ function get_yq_bin_version(){
 # Main
 function main(){
   local yq_bin_path=$BIN_DIR/$YQ_BIN
+  yq_latest_version=$(get_git_version $YQ_BASE_URL)
   if [ -f "$yq_bin_path" ]; then
     yq_cur_ver=$(get_yq_bin_version)
     echo "$YQ_BIN already available. Current version is: $yq_cur_ver"
-    yq_latest_version=$(get_git_version $YQ_BASE_URL)
     if [ "$yq_cur_ver" = "$yq_latest_version" ]; then
       echo "Current version ($yq_cur_ver) is the latest ($yq_latest_version)."
     else

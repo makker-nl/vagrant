@@ -17,14 +17,9 @@ function install_vscode(){
     sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 
     # 2. Create the necessary info for the local visual studio code repository. 
-    echo -e "[vscode]
-  name=vscode
-  baseurl=https://packages.microsoft.com/yumrepos/vscode/
-  enabled=1
-  gpgcheck=1
-  gpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo
-
+    echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
     # 3. Install with dnf install.
+    sudo dnf check-update
     sudo dnf install -q -y code
   else
     echo "Visual Studio Code already available as: $VSCODE_BIN"

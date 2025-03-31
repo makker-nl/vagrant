@@ -13,4 +13,5 @@
 /Stage/installBinaries/Kubevirt/**
 /Stage/installBinaries/Oracle/FMW/**/*.pdf
 /Stage/commonScripts/oracle/**/runInstaller.out
+Stage/imagetool
 *.qcow

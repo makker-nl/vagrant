@@ -31,7 +31,7 @@ function create_fs(){
   echo "Add /dev/$volume_group_name/$volume_name mounted to $mount_point to fstab"
   sudo sh -c "echo \"/dev/$volume_group_name/$volume_name       $mount_point                    xfs     defaults        0 0\" >> /etc/fstab"
   sudo systemctl daemon-reload
-  sudo mount /app
+  sudo mount $mount_point
 }
 
 function main(){

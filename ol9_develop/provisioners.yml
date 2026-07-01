@@ -53,11 +53,19 @@ oraclejava17:
   user: "oracle"
   run: "once"
   commonScript: "/oracle/java/jdk17/installJava17.sh"
+oraclejava25:
+  name: "installOJava25"
+  description: "Oracle JDK 25"
+  user: "oracle"
+  run: "once"
+  commonScript: "/oracle/java/jdk25/installJava25.sh"
 python3:
+  # Python3.9 should be installed already on OL9, because of OCI CLI.
+  # Be carefull with installing other versions of Python.
   name: "installPython3"
   description: "Python 3"
   user: "oracle"
-  run: "once"
+  run: "never"
   commonScript: "/opensource/python/ol9InstallPython3.sh"
 maven:
   name: "installMaven"
@@ -126,10 +134,12 @@ istioctl:
 #  run: "once"
   commonScript: "opensource/kubernetes/installIstioctl.sh"
 oracleocicli:
+  # OCI CLI should be installed by default
+  # See https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/climanualinst.htm.
   name: "installOCICLI"
   description: "Oracle OCI CLI"
   user: "oracle"
-  run: "once"
+  run: "never"
   commonScript: "/oracle/oci/install_ocicli-OL9.sh"
 azurecli:
   name: "installAzCLI"

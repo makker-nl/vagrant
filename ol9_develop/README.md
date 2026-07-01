@@ -1,4 +1,4 @@
-# Oracle Linux 8: Oracle Development environment
+# Oracle Linux 9: Oracle Development environment
 This vagrant project creates a VM with a development environment.
 
 ## Upgrade remarks
@@ -18,8 +18,8 @@ The main VM settings are abstracted into the [settings.yml](settings.yml) file.
 
 | Property               | Default       | Description                                     |
 | ---------------------- | ------------- |  ---------------------------------------------- |
-| environment.vmMemory   | 11264         | Allocated memory for the VM. At least 8GB is recommended. Depending on the available host memory. |
-| environment.vmCpus     | 4             | Number of CPU's allocated to the VM. Don't exceed the available cores of the host. | 
+| environment.vmMemory   | 16384         | Allocated memory for the VM. At least 8GB is recommended. Depending on the available host memory. |
+| environment.vmCpus     | 8             | Number of CPU's allocated to the VM. Don't exceed the available cores of the host. | 
 | environment.vmGui      | false         | Toggle to denote if the Desktop is to be shown (true) or should run in head-less mode (false) |
 | environment.vmsHome               | C:/Data/VirtualMachines/VirtualBox | Location where VirtualBox will store the VM's. Make sure it reflects the setting in VirtualBox Preferences -> _General_ -> *Default Machine Folder*. Or vice versa. |
 | environment.disks.vmsDisk2Size    | 524288        | Size of the additional disk that will be created (1024 * 512 = 524288).|
